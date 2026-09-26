@@ -1,4 +1,5 @@
 import { listen, UnlistenFn } from "@tauri-apps/api/event";
+import { invoke } from "@tauri-apps/api/core";
 import { eventBus } from "./eventBus";
 import { PriorityManager } from "./priorityManager";
 import { useIslandStore } from "../stores/islandStore";
@@ -36,6 +37,17 @@ export function notifyUserVolumeAdjustment() {
 
 export async function setupNativeBridge(): Promise<() => void> {
   try {
+    // 0. Proactively sync current Windows volume on startup
+    invoke<{ volume: number; muted: boolean }>("get_volume")
+      .then((status) => {
+        if (status && typeof status.volume === "number") {
+          useIslandStore.getState().updateVolume(status.volume, status.muted);
+        }
+      })
+      .catch((err) => {
+        console.warn("[NativeBridge] Failed to fetch initial volume:", err);
+      });
+
     // 1. Listen to real Windows Volume changes
     const unlistenVol = await listen<{ volume: number; muted: boolean }>(
       "bous://volume-change",

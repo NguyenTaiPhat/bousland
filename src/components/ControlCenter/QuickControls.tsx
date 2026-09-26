@@ -30,6 +30,18 @@ export const QuickControls: React.FC = () => {
     }
   }, [volume.volume]);
 
+  // Always verify fresh volume on mount when ControlCenter opens
+  useEffect(() => {
+    invoke<{ volume: number; muted: boolean }>("get_volume")
+      .then((status) => {
+        if (status && typeof status.volume === "number") {
+          updateVolume(status.volume, status.muted);
+          setSliderVal(status.volume);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const sendVolumeToBackend = (val: number) => {
     if (throttleTimerRef.current) {
       clearTimeout(throttleTimerRef.current);

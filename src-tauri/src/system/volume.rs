@@ -116,8 +116,12 @@ pub fn get_volume() -> Result<VolumeStatus, String> {
             .Activate(CLSCTX_ALL, None)
             .map_err(|e| e.to_string())?;
 
-        let current_vol = endpoint_volume.GetMasterVolumeLevelScalar().unwrap_or(0.5);
-        let current_mute = endpoint_volume.GetMute().unwrap_or(BOOL(0));
+        let current_vol = endpoint_volume
+            .GetMasterVolumeLevelScalar()
+            .map_err(|e| format!("Failed to get volume scalar: {}", e))?;
+        let current_mute = endpoint_volume
+            .GetMute()
+            .map_err(|e| format!("Failed to get mute status: {}", e))?;
 
         Ok(VolumeStatus {
             volume: (current_vol * 100.0).round() as u32,

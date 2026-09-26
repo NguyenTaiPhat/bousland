@@ -121,7 +121,7 @@ export const useIslandStore = create<IslandStoreState>((set, get) => ({
   activeEvent: null,
 
   volume: {
-    volume: 50,
+    volume: 100,
     muted: false,
   },
 
