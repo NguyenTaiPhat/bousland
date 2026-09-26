@@ -16,12 +16,13 @@ pub fn setup_tray(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     let sep3 = PredefinedMenuItem::separator(app)?;
     let pause = MenuItem::with_id(app, "pause", "Tạm dừng", true, None::<&str>)?;
     let sep4 = PredefinedMenuItem::separator(app)?;
+    let is_autostart = crate::system::autostart::is_autostart_enabled();
     let autostart = CheckMenuItem::with_id(
         app,
         "autostart",
         "Khởi động cùng Windows",
         true,
-        true,
+        is_autostart,
         None::<&str>,
     )?;
     let sep5 = PredefinedMenuItem::separator(app)?;
@@ -84,6 +85,16 @@ pub fn setup_tray(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
                     let _ = w.show();
                     let _ = w.set_focus();
                 }
+            }
+            "autostart" => {
+                let current_state = crate::system::autostart::is_autostart_enabled();
+                let new_state = !current_state;
+                let _ = crate::system::autostart::set_autostart(new_state);
+                if let Ok(mut settings) = crate::system::config::load_settings() {
+                    settings.start_with_windows = new_state;
+                    let _ = crate::system::config::save_settings(settings);
+                }
+                let _ = app.emit("bous://autostart-changed", new_state);
             }
             "exit" => {
                 app.exit(0);

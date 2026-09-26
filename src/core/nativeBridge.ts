@@ -357,6 +357,11 @@ export async function setupNativeBridge(): Promise<() => void> {
       useIslandStore.getState().setIslandState("SETTINGS");
     });
     unlisteners.push(unlistenTraySettings);
+
+    const unlistenAutostart = await listen<boolean>("bous://autostart-changed", (event) => {
+      useSettingsStore.setState({ start_with_windows: event.payload });
+    });
+    unlisteners.push(unlistenAutostart);
   } catch (err) {
     console.debug("[NativeBridge] Not in Tauri environment or error:", err);
   }

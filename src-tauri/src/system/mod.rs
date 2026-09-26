@@ -9,3 +9,4 @@ pub mod config;
 pub mod scratchpad;
 pub mod launcher;
 pub mod updater;
+pub mod autostart;

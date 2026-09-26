@@ -81,6 +81,9 @@ pub fn load_settings() -> Result<BousSettings, String> {
 
 #[tauri::command]
 pub fn save_settings(settings: BousSettings) -> Result<(), String> {
+    // Sync autostart configuration with Windows Run registry
+    let _ = crate::system::autostart::set_autostart(settings.start_with_windows);
+
     let path = match get_config_path() {
         Some(p) => p,
         None => return Err("Could not determine config path".to_string()),

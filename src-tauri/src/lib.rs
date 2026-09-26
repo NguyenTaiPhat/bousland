@@ -69,6 +69,8 @@ pub fn run() {
             system::config::save_settings,
             system::config::get_system_accent_color,
             system::config::get_device_name,
+            system::autostart::get_autostart_status,
+            system::autostart::set_autostart_status,
             system::scratchpad::load_scratchpad,
             system::scratchpad::save_scratchpad,
             system::launcher::quick_launch,
@@ -81,6 +83,11 @@ pub fn run() {
             if let Some(window) = app.get_webview_window("main") {
                 // Initial positioning: compact canvas wraps both normal (280px) and media (330px) pills with shadow breathing room
                 let _ = windows::manager::position_island_at_top(&window, 360.0, 60.0);
+            }
+
+            // Synchronize Windows autostart configuration with saved settings
+            if let Ok(settings) = system::config::load_settings() {
+                let _ = system::autostart::set_autostart(settings.start_with_windows);
             }
 
             // Initialize real Windows Core Audio volume listener
