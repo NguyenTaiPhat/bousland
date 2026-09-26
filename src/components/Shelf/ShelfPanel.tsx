@@ -7,6 +7,10 @@ import {
   X,
   File as FileIcon,
   Check,
+  Archive,
+  FolderOpen,
+  ShieldCheck,
+  Binary,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { invoke } from "@tauri-apps/api/core";
@@ -17,8 +21,23 @@ import styles from "./shelf.module.css";
 
 export const ShelfPanel: React.FC = () => {
   const { collapse } = useIslandStore();
-  const { files, removeFile, clearShelf, copyFilePath } = useShelfStore();
+  const {
+    files,
+    removeFile,
+    clearShelf,
+    copyFilePath,
+    compressToZip,
+    showInFolder,
+    computeHash,
+    copyBase64,
+  } = useShelfStore();
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [actionFeedback, setActionFeedback] = useState<{ id: string; msg: string } | null>(null);
+
+  const showFeedback = (id: string, msg: string) => {
+    setActionFeedback({ id, msg });
+    setTimeout(() => setActionFeedback(null), 2000);
+  };
 
   // Esc key listener
   useEffect(() => {
@@ -34,6 +53,7 @@ export const ShelfPanel: React.FC = () => {
   const handleCopyPath = async (item: ShelfFileItem) => {
     await copyFilePath(item.path);
     setCopiedId(item.id);
+    showFeedback(item.id, "Đã chép đường dẫn!");
     setTimeout(() => setCopiedId(null), 1500);
   };
 
@@ -41,6 +61,43 @@ export const ShelfPanel: React.FC = () => {
     invoke("open_screenshot_file", { filePath: path }).catch((err) => {
       console.debug("[ShelfPanel] Open file error:", err);
     });
+  };
+
+  const handleZip = async (item: ShelfFileItem) => {
+    try {
+      const zipPath = await compressToZip(item.path);
+      showFeedback(item.id, "Đã nén tệp .ZIP!");
+      console.log("[ShelfPanel] Created ZIP at:", zipPath);
+    } catch (err: any) {
+      showFeedback(item.id, "Lỗi nén ZIP");
+    }
+  };
+
+  const handleFolder = async (item: ShelfFileItem) => {
+    try {
+      await showInFolder(item.path);
+      showFeedback(item.id, "Đã mở thư mục!");
+    } catch (err: any) {
+      showFeedback(item.id, "Lỗi mở Explorer");
+    }
+  };
+
+  const handleHash = async (item: ShelfFileItem) => {
+    try {
+      const hash = await computeHash(item.path);
+      showFeedback(item.id, `Đã chép SHA256: ${hash.slice(0, 8)}...`);
+    } catch (err: any) {
+      showFeedback(item.id, "Lỗi tính SHA256");
+    }
+  };
+
+  const handleBase64 = async (item: ShelfFileItem) => {
+    try {
+      await copyBase64(item.path);
+      showFeedback(item.id, "Đã chép mã Base64!");
+    } catch (err: any) {
+      showFeedback(item.id, err?.message || "Lỗi chuyển Base64");
+    }
   };
 
   return (
@@ -122,6 +179,50 @@ export const ShelfPanel: React.FC = () => {
                   </div>
 
                   <div className={styles.fileActions}>
+                    {actionFeedback && actionFeedback.id === file.id && (
+                      <span className={styles.actionSuccessPill} style={{ fontSize: 11, padding: "2px 8px", borderRadius: 4 }}>
+                        {actionFeedback.msg}
+                      </span>
+                    )}
+
+                    <button
+                      className={styles.actionPill}
+                      onClick={() => handleZip(file)}
+                      title="Nén tệp này thành file .ZIP ngay lập tức"
+                    >
+                      <Archive size={12} color="var(--accent)" />
+                      <span>Nén ZIP</span>
+                    </button>
+
+                    <button
+                      className={styles.actionPill}
+                      onClick={() => handleFolder(file)}
+                      title="Xem vị trí tệp trong Windows Explorer"
+                    >
+                      <FolderOpen size={12} />
+                      <span>Thư mục</span>
+                    </button>
+
+                    <button
+                      className={styles.actionPill}
+                      onClick={() => handleHash(file)}
+                      title="Tính và sao chép mã băm bảo mật SHA-256"
+                    >
+                      <ShieldCheck size={12} />
+                      <span>SHA256</span>
+                    </button>
+
+                    {file.type.startsWith("image/") && (
+                      <button
+                        className={styles.actionPill}
+                        onClick={() => handleBase64(file)}
+                        title="Chuyển đổi và sao chép mã Data URI Base64"
+                      >
+                        <Binary size={12} />
+                        <span>Base64</span>
+                      </button>
+                    )}
+
                     <button
                       className={styles.actionPill}
                       onClick={() => handleCopyPath(file)}
@@ -132,13 +233,13 @@ export const ShelfPanel: React.FC = () => {
                       ) : (
                         <Copy size={12} />
                       )}
-                      <span>{copiedId === file.id ? "Đã chép" : "Đường dẫn"}</span>
+                      <span>Đường dẫn</span>
                     </button>
 
                     <button
                       className={styles.actionPill}
                       onClick={() => handleOpenFile(file.path)}
-                      title="Mở tệp"
+                      title="Mở tệp bằng ứng dụng mặc định"
                     >
                       <ExternalLink size={12} />
                       <span>Mở</span>

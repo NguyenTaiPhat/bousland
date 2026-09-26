@@ -10,3 +10,4 @@ pub mod scratchpad;
 pub mod launcher;
 pub mod updater;
 pub mod autostart;
+pub mod file_actions;

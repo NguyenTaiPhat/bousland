@@ -73,7 +73,7 @@ export const SettingsModal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>("general");
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
-  const [appVersion, setAppVersion] = useState("1.0.3");
+  const [appVersion, setAppVersion] = useState("1.0.4");
 
   useEffect(() => {
     invoke<string>("get_app_version")

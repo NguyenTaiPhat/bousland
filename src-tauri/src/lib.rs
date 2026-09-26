@@ -85,6 +85,10 @@ pub fn run() {
             system::launcher::quick_launch,
             system::updater::check_for_updates,
             system::updater::download_and_install_update,
+            system::file_actions::show_in_folder,
+            system::file_actions::compress_to_zip,
+            system::file_actions::compute_file_hash,
+            system::file_actions::copy_file_base64,
         ])
         .setup(move |app| {
             let handle = app.handle().clone();

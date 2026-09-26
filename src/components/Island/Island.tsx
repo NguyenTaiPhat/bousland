@@ -114,8 +114,11 @@ export const Island: React.FC = () => {
           >
             {isDraggingOver && (
               <div className={shelfStyles.dropZoneOverlay}>
-                <FolderArchive size={16} />
-                <span>Thả tệp vào Quick Shelf</span>
+                <div className={shelfStyles.dropZoneTitle}>
+                  <FolderArchive size={14} />
+                  <span>Smart Action Dropzone</span>
+                </div>
+                <span className={shelfStyles.dropZoneSub}>Thả để Nén ZIP • Mở Thư Mục • Tính SHA-256</span>
               </div>
             )}
             <AnimatePresence mode="popLayout">
