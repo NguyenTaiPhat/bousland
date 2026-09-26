@@ -1,0 +1,26 @@
+.visualizerContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  height: 14px;
+  padding: 0 2px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.visualizerBar {
+  width: 2.5px;
+  height: 14px;
+  border-radius: 9999px;
+  background-color: var(--accent, #38bdf8);
+  transform-origin: bottom;
+  will-change: transform;
+  transition: transform 0.07s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 0 4px rgba(56, 189, 248, 0.25);
+}
+
+.paused {
+  opacity: 0.45;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}

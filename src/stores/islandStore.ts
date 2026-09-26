@@ -54,6 +54,8 @@ interface IslandStoreState {
   updateMedia: (media: Partial<IslandStoreState["media"]>) => void;
   updateNetwork: (net: Partial<IslandStoreState["network"]>) => void;
   updateSystem: (sys: Partial<IslandStoreState["system"]>) => void;
+  spectrum: [number, number, number, number];
+  updateSpectrum: (bands: [number, number, number, number]) => void;
   collapse: () => void;
 }
 
@@ -156,6 +158,8 @@ export const useIslandStore = create<IslandStoreState>((set, get) => ({
     diskUsage: 0,
   },
 
+  spectrum: [0, 0, 0, 0],
+
   isVisible: true,
 
   setIsVisible: (visible) => {
@@ -219,6 +223,10 @@ export const useIslandStore = create<IslandStoreState>((set, get) => ({
 
   updateSystem: (sysUpdate) => {
     set((s) => ({ system: { ...s.system, ...sysUpdate } }));
+  },
+
+  updateSpectrum: (bands) => {
+    set({ spectrum: bands });
   },
 
   collapse: () => {

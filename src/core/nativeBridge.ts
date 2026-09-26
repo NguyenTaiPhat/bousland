@@ -379,6 +379,17 @@ export async function setupNativeBridge(): Promise<() => void> {
       useIslandStore.getState().setIsVisible(true);
     });
     unlisteners.push(unlistenShowIsland);
+
+    // 11. Listen to real-time Audio Visualizer spectrum
+    const unlistenAudioSpectrum = await listen<{ bands: [number, number, number, number] }>(
+      "bous://audio-spectrum",
+      (event) => {
+        if (event.payload?.bands) {
+          useIslandStore.getState().updateSpectrum(event.payload.bands);
+        }
+      }
+    );
+    unlisteners.push(unlistenAudioSpectrum);
   } catch (err) {
     console.debug("[NativeBridge] Not in Tauri environment or error:", err);
   }
