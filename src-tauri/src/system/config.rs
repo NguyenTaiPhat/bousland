@@ -139,3 +139,8 @@ pub fn get_device_name() -> Result<String, String> {
     Ok(name)
 }
 
+#[tauri::command]
+pub fn get_app_version(app: tauri::AppHandle) -> String {
+    app.package_info().version.to_string()
+}
+

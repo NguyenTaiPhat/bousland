@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollReveal();
   initShowcaseTabs();
   initFaqAccordion();
+  initDynamicReleaseLinks();
 });
 
 /* ==========================================================================
@@ -211,3 +212,32 @@ function initFaqAccordion() {
     });
   });
 }
+
+/* ==========================================================================
+   6. Dynamic GitHub Release Links (Zero 404 Guard)
+   ========================================================================== */
+function initDynamicReleaseLinks() {
+  fetch("https://api.github.com/repos/NguyenTaiPhat/bousland/releases")
+    .then((res) => {
+      if (!res.ok) return null;
+      return res.json();
+    })
+    .then((releases) => {
+      if (!Array.isArray(releases) || releases.length === 0) return;
+      for (const rel of releases) {
+        if (!rel.assets || rel.assets.length === 0) continue;
+        const msiAsset = rel.assets.find((a) => a.name && a.name.endsWith(".msi"));
+        if (msiAsset && msiAsset.browser_download_url) {
+          const downloadBtns = document.querySelectorAll("a[href*='.msi']");
+          downloadBtns.forEach((btn) => {
+            btn.setAttribute("href", msiAsset.browser_download_url);
+          });
+          break;
+        }
+      }
+    })
+    .catch(() => {
+      // Fallback silently to HTML static link
+    });
+}
+

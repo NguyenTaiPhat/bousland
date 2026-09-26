@@ -77,6 +77,7 @@ pub fn run() {
             system::config::save_settings,
             system::config::get_system_accent_color,
             system::config::get_device_name,
+            system::config::get_app_version,
             system::autostart::get_autostart_status,
             system::autostart::set_autostart_status,
             system::scratchpad::load_scratchpad,

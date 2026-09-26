@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   X,
   Sliders,
@@ -16,7 +16,10 @@ import {
   RefreshCw,
   CheckCircle2,
   AlertCircle,
+  ExternalLink,
+  Cpu,
 } from "lucide-react";
+import { invoke } from "@tauri-apps/api/core";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSettingsStore } from "../../stores/settingsStore";
 import { useIslandStore } from "../../stores/islandStore";
@@ -70,6 +73,15 @@ export const SettingsModal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabId>("general");
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
+  const [appVersion, setAppVersion] = useState("1.0.2");
+
+  useEffect(() => {
+    invoke<string>("get_app_version")
+      .then((ver) => {
+        if (ver) setAppVersion(ver);
+      })
+      .catch(() => {});
+  }, []);
 
   const handleAddCustomColor = () => {
     let val = customHex.trim().toLowerCase();
@@ -649,55 +661,75 @@ export const SettingsModal: React.FC = () => {
             )}
 
             {activeTab === "about" && (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 16,
-                    padding: "16px 20px",
-                    borderRadius: 12,
-                    background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(56,189,248,0.06) 50%, rgba(167,139,250,0.06) 100%)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    marginBottom: 16,
-                  }}
-                >
-                  <BousLandLogo size={44} glow={true} />
-                  <div>
-                    <div style={{ fontSize: 16, fontWeight: 700, letterSpacing: "-0.02em", color: "#f8fafc" }}>
-                      BousLand for Windows
+              <div className={styles.aboutContainer}>
+                {/* Hero App Card */}
+                <div className={styles.aboutHeroCard}>
+                  <BousLandLogo size={46} glow={true} />
+                  <div className={styles.aboutHeroInfo}>
+                    <div className={styles.aboutHeroTitleRow}>
+                      <span className={styles.aboutHeroTitle}>BousLand for Windows</span>
+                      <span className={styles.aboutVersionBadge}>
+                        <span className={styles.aboutVersionDot} />
+                        v{appVersion}
+                      </span>
+                      <span className={styles.aboutEditionBadge}>Commercial Pro</span>
                     </div>
-                    <div style={{ fontSize: 12, color: "var(--accent)", marginTop: 2, fontWeight: 500 }}>
-                      Next-Gen Dynamic Desktop Island
+                    <div className={styles.aboutHeroSub}>
+                      Không gian thông minh tương tác chất lỏng Dynamic Island cho Windows 10 & 11
                     </div>
                   </div>
                 </div>
 
-                <h3 className={styles.sectionTitle}>Giới thiệu</h3>
-                <p style={{ fontSize: 13, lineHeight: "1.6", color: "var(--text-secondary)" }}>
-                  Không gian thông minh tương tác chất lỏng trên màn hình Windows. Đem trải nghiệm Dynamic Island đẳng cấp lên PC với độ trễ thấp và tối ưu hoá phần cứng tuyệt đối.
+                <p className={styles.aboutDesc}>
+                  BousLand tối ưu hóa triệt để không gian làm việc với độ trễ thấp, kết nối trực tiếp Win32 Native APIs và không lưu trữ dữ liệu người dùng ra bên ngoài (100% Local-First).
                 </p>
-                <div style={{ fontSize: 12, color: "var(--text-muted)", display: "flex", flexDirection: "column", gap: 6, marginTop: 12 }}>
-                  <span>Phiên bản: 1.0.0 (Commercial Edition)</span>
-                  <span>Công nghệ: Tauri 2 + Rust Core + React 18 + Framer Motion</span>
-                  <span>Hệ điều hành: Windows 10 / Windows 11</span>
-                  <span>API gốc: Windows Core Audio, SMTC Media, Win32 Desktop Native APIs</span>
+
+                {/* 2x2 Specifications Bento Grid */}
+                <div className={styles.aboutSpecsGrid}>
+                  <div className={styles.aboutSpecCard}>
+                    <div className={styles.aboutSpecIcon}>
+                      <Sparkles size={16} />
+                    </div>
+                    <div className={styles.aboutSpecText}>
+                      <span className={styles.aboutSpecLabel}>Phiên bản</span>
+                      <span className={styles.aboutSpecValue}>v{appVersion} • Kênh Stable</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.aboutSpecCard}>
+                    <div className={styles.aboutSpecIcon}>
+                      <Cpu size={16} />
+                    </div>
+                    <div className={styles.aboutSpecText}>
+                      <span className={styles.aboutSpecLabel}>Công nghệ</span>
+                      <span className={styles.aboutSpecValue}>Tauri 2 + Rust + React 19</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.aboutSpecCard}>
+                    <div className={styles.aboutSpecIcon}>
+                      <Monitor size={16} />
+                    </div>
+                    <div className={styles.aboutSpecText}>
+                      <span className={styles.aboutSpecLabel}>Hệ điều hành</span>
+                      <span className={styles.aboutSpecValue}>Windows 10 / 11 (x64)</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.aboutSpecCard}>
+                    <div className={styles.aboutSpecIcon}>
+                      <Layers size={16} />
+                    </div>
+                    <div className={styles.aboutSpecText}>
+                      <span className={styles.aboutSpecLabel}>Win32 Native API</span>
+                      <span className={styles.aboutSpecValue}>Core Audio, SMTC, Run Reg</span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Auto Update Section */}
-                <div
-                  style={{
-                    marginTop: 18,
-                    padding: "16px 18px",
-                    borderRadius: 12,
-                    background: "rgba(255, 255, 255, 0.03)",
-                    border: "1px solid var(--border)",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div className={styles.aboutUpdaterCard}>
+                  <div className={styles.aboutUpdaterHeader}>
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <RefreshCw
                         size={16}
@@ -705,10 +737,10 @@ export const SettingsModal: React.FC = () => {
                         color="var(--accent)"
                       />
                       <div>
-                        <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text)" }}>
+                        <div className={styles.aboutUpdaterTitle}>
                           Tự động cập nhật (Auto-Update)
                         </div>
-                        <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
+                        <div className={styles.aboutUpdaterSub}>
                           Nguồn phát hành: GitHub Releases (NguyenTaiPhat/bousland)
                         </div>
                       </div>
@@ -718,30 +750,23 @@ export const SettingsModal: React.FC = () => {
                       type="button"
                       disabled={updater.status === "checking" || updater.status === "downloading"}
                       onClick={() => updater.checkForUpdates()}
-                      style={{
-                        padding: "6px 14px",
-                        fontSize: 12,
-                        fontWeight: 600,
-                        borderRadius: 6,
-                        backgroundColor: "var(--accent)",
-                        color: "#000",
-                        border: "none",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 6,
-                        transition: "opacity 0.2s ease",
-                        opacity: updater.status === "checking" ? 0.6 : 1,
-                      }}
+                      className={styles.aboutUpdateBtn}
                     >
-                      {updater.status === "checking" ? "Đang kiểm tra..." : "Kiểm tra cập nhật"}
+                      {updater.status === "checking" ? (
+                        <>
+                          <RefreshCw size={12} className={styles.spinIcon} />
+                          <span>Đang kiểm tra...</span>
+                        </>
+                      ) : (
+                        "Kiểm tra cập nhật"
+                      )}
                     </button>
                   </div>
 
                   {updater.status === "up-to-date" && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#10b981" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#10b981", padding: "8px 12px", background: "rgba(16, 185, 129, 0.08)", borderRadius: 6 }}>
                       <CheckCircle2 size={14} />
-                      <span>{updater.updateInfo?.notes || "Bạn đang sử dụng phiên bản mới nhất (v1.0.0)."}</span>
+                      <span>{updater.updateInfo?.notes || `Bạn đang ở phiên bản mới nhất (v${appVersion}).`}</span>
                     </div>
                   )}
 
@@ -787,13 +812,29 @@ export const SettingsModal: React.FC = () => {
                   )}
 
                   {updater.status === "error" && (
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#f87171" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#f87171", padding: "8px 12px", background: "rgba(248, 113, 113, 0.08)", borderRadius: 6 }}>
                       <AlertCircle size={14} />
                       <span>{updater.errorMessage}</span>
                     </div>
                   )}
                 </div>
-              </>
+
+                {/* Footer Links & Copyright */}
+                <div className={styles.aboutFooterLinks}>
+                  <span>© 2026 BousLand • NguyenTaiPhat</span>
+                  <div className={styles.aboutLinksGroup}>
+                    <a
+                      href="https://github.com/NguyenTaiPhat/bousland"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.aboutLink}
+                    >
+                      <span>Mã nguồn GitHub</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  </div>
+                </div>
+              </div>
             )}
               </motion.div>
             </AnimatePresence>
