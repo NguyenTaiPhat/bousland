@@ -114,6 +114,9 @@ pub fn run() {
             // Start media playback monitor (SMTC)
             media::manager::start_media_monitor(handle.clone(), running_clone.clone());
 
+            // Start audio visualizer loopback monitor
+            media::visualizer::start_visualizer(handle.clone(), running_clone.clone());
+
             // Start fullscreen gaming mode detector
             system::fullscreen::start_fullscreen_detector(handle.clone(), running_clone.clone());
 
