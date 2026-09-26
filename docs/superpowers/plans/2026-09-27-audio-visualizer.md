@@ -29,7 +29,7 @@
   - Event payload: `bous://audio-spectrum` -> `[f32; 4]`
   - `pub fn extract_4_bands(pcm_samples: &[f32], channels: usize) -> [f32; 4]`
 
-- [ ] **Step 1: Write unit tests for 4-band audio extraction & smoothing**
+- [x] **Step 1: Write unit tests for 4-band audio extraction & smoothing**
 
 Add tests in `src-tauri/src/media/visualizer.rs`:
 ```rust
@@ -55,12 +55,12 @@ mod tests {
 }
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `cargo test --manifest-path src-tauri/Cargo.toml -- test_extract_4_bands`
 Expected: FAIL with "module visualizer not found"
 
-- [ ] **Step 3: Implement `src-tauri/src/media/visualizer.rs`**
+- [x] **Step 3: Implement `src-tauri/src/media/visualizer.rs`**
 
 Implement WASAPI Loopback Capture loop:
 - `IMMDeviceEnumerator` -> `GetDefaultAudioEndpoint(eRender, eConsole)`.
@@ -71,12 +71,12 @@ Implement WASAPI Loopback Capture loop:
 - Chạy ngầm trong `tokio::task::spawn_blocking`.
 - Đăng ký `pub mod visualizer;` trong `src-tauri/src/media/mod.rs`.
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `cargo test --manifest-path src-tauri/Cargo.toml -- test_extract_4_bands`
 Expected: PASS (2 passed)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src-tauri/src/media/visualizer.rs src-tauri/src/media/mod.rs
@@ -93,20 +93,20 @@ git commit -m "feat(media): implement WASAPI loopback capture and 4-band audio v
 **Interfaces:**
 - Consumes: `media::visualizer::start_visualizer(app_handle, running_clone)`
 
-- [ ] **Step 1: Check existing background threads in `src-tauri/src/lib.rs`**
+- [x] **Step 1: Check existing background threads in `src-tauri/src/lib.rs`**
 
 Examine how `battery_monitor` and `metrics_monitor` are spawned in `setup`.
 
-- [ ] **Step 2: Spawn `media::visualizer::start_visualizer` in `lib.rs`**
+- [x] **Step 2: Spawn `media::visualizer::start_visualizer` in `lib.rs`**
 
 Call `media::visualizer::start_visualizer(handle.clone(), running_clone.clone());` inside `.setup()` block.
 
-- [ ] **Step 3: Run cargo check to verify compilation**
+- [x] **Step 3: Run cargo check to verify compilation**
 
 Run: `cargo check --manifest-path src-tauri/Cargo.toml`
 Expected: SUCCESS with 0 errors.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src-tauri/src/lib.rs
@@ -127,16 +127,16 @@ git commit -m "feat(lib): start audio visualizer background worker on app initia
 - Consumes: Tauri event `bous://audio-spectrum`
 - Produces: `<AudioVisualizer isPlaying={boolean} />` component
 
-- [ ] **Step 1: Add spectrum state and updater in `src/stores/islandStore.ts`**
+- [x] **Step 1: Add spectrum state and updater in `src/stores/islandStore.ts`**
 
 Add `spectrum: [number, number, number, number]` defaulting to `[0, 0, 0, 0]`.
 Add `updateSpectrum: (bands: [number, number, number, number]) => void`.
 
-- [ ] **Step 2: Add event listener in `src/core/nativeBridge.ts`**
+- [x] **Step 2: Add event listener in `src/core/nativeBridge.ts`**
 
 Listen to `"bous://audio-spectrum"` and invoke `useIslandStore.getState().updateSpectrum(event.payload)`.
 
-- [ ] **Step 3: Create `src/components/Island/AudioVisualizer.tsx` & CSS**
+- [x] **Step 3: Create `src/components/Island/AudioVisualizer.tsx` & CSS**
 
 Render 4 vertical bars with:
 - `width: 2.5px`, `borderRadius: 2px`.
@@ -144,12 +144,12 @@ Render 4 vertical bars with:
 - `transform: scaleY(bandValue)` with `transformOrigin: "bottom"` for 60fps GPU acceleration.
 - When `isPlaying == false`, gracefully animate down to minimum height dot.
 
-- [ ] **Step 4: Run frontend build to verify typing**
+- [x] **Step 4: Run frontend build to verify typing**
 
 Run: `npm run build`
 Expected: SUCCESS
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/components/Island/AudioVisualizer.tsx src/components/Island/audioVisualizer.module.css src/stores/islandStore.ts src/core/nativeBridge.ts
@@ -168,20 +168,20 @@ git commit -m "feat(ui): create AudioVisualizer component with GPU-accelerated C
 - Consumes: `<AudioVisualizer />`
 - Places visualizer beside rotating album artwork in Compact mode.
 
-- [ ] **Step 1: Inspect `src/components/Island/CompactView.tsx` media display structure**
+- [x] **Step 1: Inspect `src/components/Island/CompactView.tsx` media display structure**
 
 Identify where album art and media badge are placed.
 
-- [ ] **Step 2: Place `<AudioVisualizer />` in CompactView**
+- [x] **Step 2: Place `<AudioVisualizer />` in CompactView**
 
 Display `<AudioVisualizer />` beside the album art whenever `media.isPlaying` is true or when audio is actively detected.
 
-- [ ] **Step 3: Test and verify visually**
+- [x] **Step 3: Test and verify visually**
 
 Run: `npm run build`
 Verify layout padding, alignment, and responsiveness.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/components/Island/CompactView.tsx src/components/Island/island.module.css
@@ -195,17 +195,17 @@ git commit -m "feat(ui): integrate AudioVisualizer beside media artwork in Compa
 **Files:**
 - None (verification task)
 
-- [ ] **Step 1: Run full unit test suite**
+- [x] **Step 1: Run full unit test suite**
 
 Run: `cargo test --manifest-path src-tauri/Cargo.toml`
 Expected: All tests pass.
 
-- [ ] **Step 2: Run frontend production build**
+- [x] **Step 2: Run frontend production build**
 
 Run: `npm run build`
 Expected: Zero errors.
 
-- [ ] **Step 3: Push changes to main**
+- [x] **Step 3: Push changes to main**
 
 ```bash
 git push origin main
