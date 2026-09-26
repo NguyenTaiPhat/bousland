@@ -1,0 +1,59 @@
+<svg width="600" height="340" viewBox="0 0 600 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="mediaBg" cx="50%" cy="0%" r="90%">
+      <stop offset="0%" stop-color="#1B192A" />
+      <stop offset="60%" stop-color="#0E0D14" />
+      <stop offset="100%" stop-color="#07060A" />
+    </radialGradient>
+    <linearGradient id="mediaCardBody" x1="110" y1="20" x2="490" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E1C2B" />
+      <stop offset="100%" stop-color="#111018" />
+    </linearGradient>
+    <linearGradient id="mediaCardRim" x1="110" y1="20" x2="490" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35" />
+      <stop offset="40%" stop-color="#A78BFA" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#38BDF8" stop-opacity="0.25" />
+    </linearGradient>
+    <linearGradient id="artGrad" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EC4899" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+    <filter id="mediaGlow" x="70" y="0" width="460" height="150" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="20" flood-color="#000000" flood-opacity="0.8" />
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#8B5CF6" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <rect width="600" height="340" rx="16" fill="url(#mediaBg)" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
+  <line x1="0" y1="1" x2="600" y2="1" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+
+  <!-- Expanded Media Island -->
+  <g filter="url(#mediaGlow)">
+    <rect x="110" y="16" width="380" height="88" rx="24" fill="url(#mediaCardBody)" stroke="url(#mediaCardRim)" stroke-width="1.5" />
+  </g>
+
+  <!-- Album Art -->
+  <rect x="128" y="34" width="52" height="52" rx="10" fill="url(#artGrad)" />
+  <circle cx="154" cy="60" r="10" fill="#000000" opacity="0.3" />
+  <circle cx="154" cy="60" r="4" fill="#FFFFFF" opacity="0.8" />
+
+  <!-- Track Info -->
+  <text x="194" y="52" fill="#F8FAFC" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Blinding Lights</text>
+  <text x="194" y="70" fill="#94A3B8" font-family="system-ui, sans-serif" font-size="12" font-weight="500">The Weeknd • Spotify</text>
+
+  <!-- Equalizer Visualizer Bars -->
+  <g transform="translate(425, 48)">
+    <rect x="0" y="4" width="3.5" height="20" rx="1.75" fill="#38BDF8" />
+    <rect x="6" y="0" width="3.5" height="28" rx="1.75" fill="#A78BFA" />
+    <rect x="12" y="8" width="3.5" height="16" rx="1.75" fill="#C084FC" />
+    <rect x="18" y="2" width="3.5" height="24" rx="1.75" fill="#38BDF8" />
+  </g>
+
+  <!-- Progress bar -->
+  <rect x="194" y="84" width="260" height="4" rx="2" fill="rgba(255,255,255,0.12)" />
+  <rect x="194" y="84" width="160" height="4" rx="2" fill="url(#mediaCardRim)" />
+
+  <text x="300" y="220" fill="#CBD5E1" font-family="system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">Trình Phát Nhạc Thông Minh (SMTC)</text>
+  <text x="300" y="245" fill="#64748B" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle">Tự động nhận diện mọi trình phát: Spotify, Apple Music, Youtube, Soundcloud</text>
+</svg>

@@ -1,0 +1,74 @@
+<svg width="800" height="480" viewBox="0 0 800 480" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Monitor Bezel Silver -->
+    <linearGradient id="monitorFrameSilver" x1="0" y1="0" x2="800" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#EBEBED" />
+      <stop offset="100%" stop-color="#DCDCE0" />
+    </linearGradient>
+
+    <!-- Natural Subtle Shadow on Clean Background -->
+    <filter id="deskIslandShadow" x="210" y="0" width="380" height="110" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.22" />
+    </filter>
+  </defs>
+
+  <!-- Monitor Outer Bezel (Precision Aluminum Silver) -->
+  <rect x="0" y="0" width="800" height="480" rx="16" fill="url(#monitorFrameSilver)" stroke="#D2D2D7" stroke-width="1.5" />
+  
+  <!-- Screen Area (Clean Pure Desktop) -->
+  <rect x="10" y="10" width="780" height="460" rx="10" fill="#F5F5F7" />
+
+  <!-- Desktop App Window (Apple Clean Minimal Window) -->
+  <g transform="translate(60, 90)">
+    <rect x="0" y="0" width="420" height="270" rx="12" fill="#FFFFFF" stroke="#E5E5EA" filter="drop-shadow(0 8px 24px rgba(0,0,0,0.04))" />
+    <rect x="0" y="0" width="420" height="34" rx="12" fill="#FAFAFA" />
+    <circle cx="16" cy="17" r="4.5" fill="#FF5F56" />
+    <circle cx="30" cy="17" r="4.5" fill="#FFBD2E" />
+    <circle cx="44" cy="17" r="4.5" fill="#27C93F" />
+    <!-- Window mock content -->
+    <rect x="24" y="56" width="140" height="10" rx="5" fill="#E5E5EA" />
+    <rect x="24" y="80" width="280" height="7" rx="3.5" fill="#F2F2F7" />
+    <rect x="24" y="96" width="240" height="7" rx="3.5" fill="#F2F2F7" />
+    <rect x="24" y="112" width="320" height="7" rx="3.5" fill="#F2F2F7" />
+    <rect x="24" y="136" width="84" height="26" rx="6" fill="#1D1D1F" />
+  </g>
+
+  <!-- Taskbar at Bottom (Clean White) -->
+  <g transform="translate(10, 436)">
+    <rect x="0" y="0" width="780" height="34" fill="#FFFFFF" stroke="#E5E5EA" stroke-width="1" />
+    <!-- Taskbar Icons Center -->
+    <g transform="translate(345, 6)">
+      <rect x="0" y="2" width="18" height="18" rx="4" fill="#0078D4" />
+      <rect x="26" y="2" width="18" height="18" rx="4" fill="#2B88D8" />
+      <rect x="52" y="2" width="18" height="18" rx="4" fill="#107C41" />
+      <rect x="78" y="2" width="18" height="18" rx="4" fill="#D83B01" />
+    </g>
+  </g>
+
+  <!-- The Crown Jewel: BousLand Dynamic Island (Solid Black Apple Pill) -->
+  <g filter="url(#deskIslandShadow)">
+    <rect x="235" y="10" width="330" height="48" rx="24" fill="#000000" stroke="rgba(255,255,255,0.18)" stroke-width="1" />
+  </g>
+
+  <!-- Island Content -->
+  <g transform="translate(255, 21)">
+    <!-- BousLand Logo -->
+    <rect x="0" y="3" width="22" height="20" rx="10" fill="#1C1C1E" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+    <circle cx="11" cy="13" r="5" fill="#FFFFFF" />
+
+    <!-- Current Title -->
+    <text x="32" y="17" fill="#FFFFFF" font-family="system-ui, sans-serif" font-size="13" font-weight="600">Starboy</text>
+    <text x="86" y="17" fill="#86868B" font-family="system-ui, sans-serif" font-size="12">• The Weeknd</text>
+
+    <!-- Equalizer wave (Clean White) -->
+    <g transform="translate(242, 6)">
+      <rect x="0" y="2" width="2.5" height="13" rx="1.25" fill="#FFFFFF" />
+      <rect x="5" y="0" width="2.5" height="17" rx="1.25" fill="#FFFFFF" />
+      <rect x="10" y="4" width="2.5" height="9" rx="1.25" fill="#FFFFFF" />
+      <rect x="15" y="1" width="2.5" height="15" rx="1.25" fill="#FFFFFF" />
+    </g>
+  </g>
+
+  <!-- Camera / Top sensor notch -->
+  <circle cx="400" cy="5" r="2.5" fill="#1D1D1F" />
+</svg>

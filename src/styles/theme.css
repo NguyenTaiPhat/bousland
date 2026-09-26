@@ -1,0 +1,98 @@
+:root {
+  --bg-color: #0D0D0F;
+  --surface: #151518;
+  --surface-2: #1B1B20;
+  --surface-hover: #222228;
+  --surface-active: #2A2A32;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(255, 255, 255, 0.24);
+  --text-primary: #FFFFFF;
+  --text-secondary: #8B8B93;
+  --text-muted: #5E5E66;
+  --accent: #FFFFFF;
+  --accent-hover: #E0E0E6;
+  --accent-muted: #6E6E78;
+  --accent-subtle: color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent) 45%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 22%, transparent);
+  
+  --status-warning: #D4A346;
+  --status-critical: #E05D52;
+  --status-success: #4EAA78;
+  --status-info: #5B95E0;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  --shadow-island: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --shadow-glow: 0 0 12px rgba(200, 200, 208, 0.06);
+  --glass-blur: none;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+
+  --spring-easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 1. Onyx Dark (Tối giản đen sâu mặc định) */
+[data-theme="dark"] {
+  --surface: #151518;
+  --surface-2: #1B1B20;
+  --surface-hover: #222228;
+  --surface-active: #2A2A32;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(255, 255, 255, 0.24);
+  --shadow-island: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --glass-blur: none;
+}
+
+/* 2. Frost Glass (Kính mờ trong suốt Acrylic độ mờ chuẩn, text siêu nét) */
+[data-theme="glass"] {
+  --surface: rgba(22, 25, 34, 0.88);
+  --surface-2: rgba(30, 34, 46, 0.84);
+  --surface-hover: rgba(42, 48, 64, 0.80);
+  --surface-active: rgba(54, 60, 80, 0.86);
+  --border: rgba(255, 255, 255, 0.16);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 255, 255, 0.32);
+  --shadow-island: 0 8px 24px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-glow: 0 0 12px rgba(255, 255, 255, 0.06);
+  --glass-blur: none;
+}
+
+/* 3. Mica Windows 11 (Mica than chì êm dịu thay thế Cyber Neon) */
+[data-theme="mica"] {
+  --surface: #18191E;
+  --surface-2: #212228;
+  --surface-hover: #2B2C33;
+  --surface-active: #35363F;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.05);
+  --border-focus: rgba(255, 255, 255, 0.22);
+  --shadow-island: 0 4px 16px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-glow: 0 0 12px rgba(255, 255, 255, 0.05);
+  --glass-blur: none;
+}
+
+/* 4. Titanium Slate (Kim loại xám thanh lịch) */
+[data-theme="titanium"] {
+  --surface: #1a1c22;
+  --surface-2: #22252e;
+  --surface-hover: #2c303c;
+  --surface-active: #363c4a;
+  --border: rgba(255, 255, 255, 0.16);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(255, 255, 255, 0.28);
+  --shadow-island: 0 4px 16px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.16);
+  --shadow-glow: 0 0 14px rgba(148, 163, 184, 0.1);
+  --glass-blur: none;
+}

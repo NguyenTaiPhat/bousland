@@ -1,0 +1,98 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Squircle Gradient: Deep Luxury Obsidian -->
+    <radialGradient id="bgGlow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#222338" />
+      <stop offset="45%" stop-color="#14141E" />
+      <stop offset="100%" stop-color="#09090D" />
+    </radialGradient>
+
+    <!-- Squircle Border: Metallic Rim -->
+    <linearGradient id="squircleBorder" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.45" />
+      <stop offset="25%" stop-color="#A78BFA" stop-opacity="0.3" />
+      <stop offset="70%" stop-color="#38BDF8" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.08" />
+    </linearGradient>
+
+    <!-- Outer Island Shell: Titanium Pill -->
+    <linearGradient id="pillShellGrad" x1="120" y1="180" x2="392" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2D2E42" />
+      <stop offset="50%" stop-color="#191924" />
+      <stop offset="100%" stop-color="#0D0D14" />
+    </linearGradient>
+
+    <!-- Shell Border -->
+    <linearGradient id="pillShellRim" x1="120" y1="180" x2="392" y2="332" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.6" />
+      <stop offset="30%" stop-color="#A78BFA" stop-opacity="0.4" />
+      <stop offset="70%" stop-color="#06B6D4" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.1" />
+    </linearGradient>
+
+    <!-- Core Dynamic Island Pill: Luminous Energy -->
+    <linearGradient id="pillCoreGrad" x1="160" y1="210" x2="352" y2="302" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="35%" stop-color="#8B5CF6" />
+      <stop offset="70%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+
+    <!-- Center Pulse Glow -->
+    <radialGradient id="centerPulse" cx="220" cy="256" r="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.95" />
+      <stop offset="30%" stop-color="#E0E7FF" stop-opacity="0.8" />
+      <stop offset="70%" stop-color="#8B5CF6" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Ambient Glow behind Island -->
+    <radialGradient id="ambientGlow" cx="256" cy="256" r="140" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.35" />
+      <stop offset="50%" stop-color="#06B6D4" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Specular Highlight Curve -->
+    <linearGradient id="specularGlint" x1="160" y1="184" x2="352" y2="184" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Soft Drop Shadow for Icon Base -->
+    <filter id="shadowSquircle" x="32" y="32" width="448" height="456" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#000000" flood-opacity="0.65" />
+    </filter>
+  </defs>
+
+  <!-- Base Icon Squircle (Luxury App Icon) -->
+  <g filter="url(#shadowSquircle)">
+    <rect x="64" y="64" width="384" height="384" rx="92" fill="url(#bgGlow)" stroke="url(#squircleBorder)" stroke-width="4" />
+  </g>
+
+  <!-- Ambient Light Reflection inside squircle -->
+  <ellipse cx="256" cy="256" rx="130" ry="80" fill="url(#ambientGlow)" />
+
+  <!-- Outer Island Pill Shell (Hardware Dynamic Island) -->
+  <rect x="116" y="196" width="280" height="120" rx="60" fill="url(#pillShellGrad)" stroke="url(#pillShellRim)" stroke-width="3" />
+
+  <!-- Inner Dynamic Pill Energy Core -->
+  <rect x="156" y="224" width="200" height="64" rx="32" fill="url(#pillCoreGrad)" />
+
+  <!-- Left Pulsing Sensor / Camera Core -->
+  <circle cx="216" cy="256" r="24" fill="url(#centerPulse)" />
+  <circle cx="216" cy="256" r="9" fill="#FFFFFF" />
+
+  <!-- Right Status Indicator (Cyan Glow Dot) -->
+  <circle cx="304" cy="256" r="10" fill="#38BDF8" />
+  <circle cx="304" cy="256" r="5" fill="#FFFFFF" />
+
+  <!-- Top Curved Specular Rim Glint -->
+  <path d="M176 200C200 197 312 197 336 200C296 208 216 208 176 200Z" fill="url(#specularGlint)" />
+
+  <!-- Futuristic Subtle Audio Wave Bars (Bottom Right in Core) -->
+  <rect x="324" y="249" width="3" height="14" rx="1.5" fill="#FFFFFF" opacity="0.8" />
+  <rect x="331" y="244" width="3" height="24" rx="1.5" fill="#FFFFFF" opacity="0.9" />
+  <rect x="338" y="251" width="3" height="10" rx="1.5" fill="#FFFFFF" opacity="0.7" />
+</svg>

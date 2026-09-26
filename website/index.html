@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BousLand — Dynamic Desktop Island Đẳng Cấp Cho Windows</title>
+  <meta name="description" content="Không gian thông minh tương tác chất lỏng trên màn hình Windows. Đem trải nghiệm Dynamic Island đẳng cấp lên PC với độ trễ thấp và tối ưu hoá phần cứng tuyệt đối.">
+  <meta name="keywords" content="BousLand, Dynamic Island Windows, Windows 11 utility, desktop widget, audio mixer, system monitor">
+  <meta name="author" content="NguyenTaiPhat">
+  <meta property="og:title" content="BousLand — Dynamic Desktop Island Cho Windows">
+  <meta property="og:description" content="Trải nghiệm Dynamic Island chất lỏng đẳng cấp trên PC. Quản trị âm thanh, giải trí, hiệu năng phần cứng tức thì.">
+  <meta property="og:image" content="assets/desktop-mockup.svg">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <img src="assets/logo.svg" alt="BousLand Logo" class="brand-logo" width="32" height="32">
+        <span class="brand-text">BousLand</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#simulator" class="nav-link">Trải nghiệm</a>
+        <a href="#showcase" class="nav-link">Bộ sưu tập</a>
+        <a href="#features" class="nav-link">Tính năng</a>
+        <a href="#specs" class="nav-link">Hiệu năng</a>
+        <a href="#faq" class="nav-link">Hỏi đáp</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/NguyenTaiPhat/bousland" target="_blank" rel="noopener" class="btn-github" title="Mã nguồn trên GitHub">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="#download" class="btn-primary">
+          <span>Tải BousLand</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">Phiên bản 1.0.0 • Tự động cập nhật</span>
+      </div>
+
+      <h1 class="hero-title">
+        Không Gian Thông Minh<br>
+        Dynamic Island Cho Windows
+      </h1>
+
+      <p class="hero-subtitle">
+        Trải nghiệm tương tác chất lỏng mượt mà tựa giọt nước ngay mép trên màn hình. Đồng bộ Core Audio, điều khiển nhạc SMTC, giám sát phần cứng và lưu tệp tạm thời không làm rác Desktop.
+      </p>
+
+      <div class="hero-cta-group" id="download">
+        <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.0/BousLand_1.0.0_x64-setup.exe" class="btn-cta-main" id="btnDownloadInstaller">
+          <div class="btn-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <div class="btn-text">
+            <span class="btn-label">Tải Bộ Cài Đặt (.exe)</span>
+            <span class="btn-sub">Windows 10 / 11 • Tự động Update</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.0/BousLand.exe" class="btn-cta-secondary" id="btnDownloadPortable">
+          <div class="btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <div class="btn-text">
+            <span class="btn-label">Bản Portable (Chạy ngay)</span>
+            <span class="btn-sub">Không cần cài đặt • 4.8 MB</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Trust Pillars -->
+      <div class="trust-row">
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>100% Local-First Bảo mật</span>
+        </div>
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span>Độ trễ phản hồi &lt; 5ms</span>
+        </div>
+        <div class="trust-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>Mã nguồn Rust Core siêu nhẹ</span>
+        </div>
+      </div>
+
+      <!-- Hero Mockup Display -->
+      <div class="hero-mockup-wrapper">
+        <img src="assets/desktop-mockup.svg" alt="BousLand trên màn hình Desktop Windows" class="hero-mockup-img" width="800" height="480">
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Simulator Section -->
+  <section class="section simulator-section" id="simulator">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">TRẢI NGHIỆM TRỰC TIẾP</span>
+        <h2 class="section-title">Thử Nghiệm BousLand Ngay Trên Web</h2>
+        <p class="section-desc">Bấm thử các nút điều khiển để xem Island co giãn chất lỏng và phản hồi với âm nhạc, âm lượng và trạng thái máy tính.</p>
+      </div>
+
+      <div class="simulator-box reveal">
+        <!-- Interactive Mock Screen -->
+        <div class="mock-bezel">
+          <div class="mock-screen">
+            <!-- Simulated Island Element -->
+            <div class="sim-island-container" id="simIsland">
+              <!-- Compact Mode View -->
+              <div class="sim-view sim-view-compact active" id="simViewCompact">
+                <div class="sim-brand">
+                  <img src="assets/logo.svg" alt="" width="18" height="18">
+                  <span class="sim-name" id="simBrandName">BousLand PC</span>
+                </div>
+                <div class="sim-badges">
+                  <span class="sim-badge sim-badge-cpu" id="simCpuBadge">CPU 15%</span>
+                  <span class="sim-badge sim-badge-bat" id="simBatBadge">95%</span>
+                </div>
+              </div>
+
+              <!-- Media Expanded View -->
+              <div class="sim-view sim-view-media" id="simViewMedia">
+                <div class="sim-media-art">
+                  <div class="sim-art-disc"></div>
+                </div>
+                <div class="sim-media-meta">
+                  <span class="sim-media-title">Starboy</span>
+                  <span class="sim-media-artist">The Weeknd • Spotify</span>
+                  <div class="sim-media-bar">
+                    <div class="sim-media-prog"></div>
+                  </div>
+                </div>
+                <div class="sim-eq-wave">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+
+              <!-- Volume Expanded View -->
+              <div class="sim-view sim-view-volume" id="simViewVolume">
+                <div class="sim-vol-left">
+                  <span class="sim-vol-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                  </span>
+                  <span class="sim-vol-title">Âm lượng hệ thống</span>
+                </div>
+                <div class="sim-vol-track">
+                  <div class="sim-vol-fill" id="simVolFill" style="width: 75%;"></div>
+                </div>
+                <span class="sim-vol-val" id="simVolText">75%</span>
+              </div>
+
+              <!-- Alert Expanded View -->
+              <div class="sim-view sim-view-alert" id="simViewAlert">
+                <div class="sim-alert-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <div class="sim-alert-meta">
+                  <span class="sim-alert-title">Cảnh báo tải CPU cao (94%)</span>
+                  <span class="sim-alert-sub">Hệ thống đang hoạt động với cường độ cao</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated Desktop Wallpaper Accent -->
+            <div class="sim-screen-content">
+              <span class="sim-screen-hint">Nhấp các nút bên dưới để đổi trạng thái Dynamic Island</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulator Buttons Controller -->
+        <div class="simulator-controls">
+          <button class="sim-btn active" data-action="compact">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <rect x="3" y="8" width="18" height="8" rx="4"></rect>
+              </svg>
+            </span>
+            <span>Chế độ Compact</span>
+          </button>
+          <button class="sim-btn" data-action="media">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+            </span>
+            <span>Phát bài hát</span>
+          </button>
+          <button class="sim-btn" data-action="volume">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+            </span>
+            <span>Tăng âm lượng (75%)</span>
+          </button>
+          <button class="sim-btn" data-action="alert">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </span>
+            <span>Tải CPU cao</span>
+          </button>
+          <button class="sim-btn" data-action="battery">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </span>
+            <span>Cắm sạc pin</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase Gallery Section -->
+  <section class="section showcase-section" id="showcase">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">BỘ SƯU TẬP HÌNH ẢNH</span>
+        <h2 class="section-title">Thiết Kế Tinh Xảo Cho Từng Khoảnh Khắc</h2>
+        <p class="section-desc">Mọi thành phần trong BousLand được chau chuốt kỹ lưỡng với ngôn ngữ thiết kế kính mờ Fluent Aero và hiệu ứng đàn hồi cao cấp.</p>
+      </div>
+
+      <!-- Tab Switcher -->
+      <div class="showcase-tabs">
+        <button class="tab-btn active" data-tab="tab-compact">Chế độ Compact</button>
+        <button class="tab-btn" data-tab="tab-media">Nghe nhạc SMTC</button>
+        <button class="tab-btn" data-tab="tab-control">Trung tâm điều khiển</button>
+        <button class="tab-btn" data-tab="tab-shelf">Quick Shelf kéo thả</button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="showcase-content">
+        <div class="showcase-panel active" id="tab-compact">
+          <div class="showcase-grid">
+            <div class="showcase-img-box">
+              <img src="assets/preview-compact.svg" alt="BousLand Compact Mode" width="600" height="340">
+            </div>
+            <div class="showcase-desc-box">
+              <h3>Nhẹ Nhàng, Không Phân Tâm</h3>
+              <p>Ẩn hiện mềm mại ở viền trên màn hình laptop hoặc màn hình rời. Cho bạn biết ngay nhịp tim hệ thống (CPU, RAM, Pin) mà không chiếm đoạt không gian làm việc.</p>
+              <ul class="feature-checklist">
+                <li>Tự động co giãn kích thước theo trạng thái</li>
+                <li>Đổi tên hiển thị theo thiết bị hoặc tùy chỉnh cá nhân</li>
+                <li>Hỗ trợ phím tắt ẩn/hiện toàn cầu (Ctrl+Shift+B)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-panel" id="tab-media">
+          <div class="showcase-grid">
+            <div class="showcase-img-box">
+              <img src="assets/preview-media.svg" alt="BousLand Media View" width="600" height="340">
+            </div>
+            <div class="showcase-desc-box">
+              <h3>Thế Giới Âm Nhạc Trong Tầm Mắt</h3>
+              <p>Tương thích hoàn hảo với giao thức Windows SMTC. Tự động nhận diện bài hát từ Spotify, YouTube, Apple Music, Edge và Chrome với sóng nhạc equalizer chuyển động tức thì.</p>
+              <ul class="feature-checklist">
+                <li>Hiển thị ảnh bìa album độ nét cao</li>
+                <li>Chuyển bài, tạm dừng chỉ với 1 cú nhấp chuột</li>
+                <li>Đồng bộ màu sắc giao diện theo ảnh bìa album bài hát</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-panel" id="tab-control">
+          <div class="showcase-grid">
+            <div class="showcase-img-box">
+              <img src="assets/preview-control.svg" alt="BousLand Control Center" width="600" height="420">
+            </div>
+            <div class="showcase-desc-box">
+              <h3>Toàn Quyền Điều Khiển Hệ Thống</h3>
+              <p>Mở Trung tâm điều khiển toàn diện với 1 click. Giám sát phần cứng thời gian thực, điều chỉnh âm lượng từng ứng dụng và phím tắt thao tác nhanh.</p>
+              <ul class="feature-checklist">
+                <li>Đồng hồ hiển thị thời gian và lời chào thông minh</li>
+                <li>Thanh trượt âm lượng mượt mà có phản hồi âm thanh</li>
+                <li>Mở nhanh Chụp ảnh màn hình, Khay nhớ tạm và Cài đặt</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-panel" id="tab-shelf">
+          <div class="showcase-grid">
+            <div class="showcase-img-box">
+              <img src="assets/preview-shelf.svg" alt="BousLand Quick Shelf" width="600" height="340">
+            </div>
+            <div class="showcase-desc-box">
+              <h3>Kéo Thả Tệp Không Rác Desktop</h3>
+              <p>Kéo bất kỳ file nào từ trình duyệt hoặc ứng dụng thả thẳng vào BousLand. Tệp được lưu trữ gọn gàng ở khay tạm Quick Shelf, sẵn sàng kéo thả đi bất cứ đâu.</p>
+              <ul class="feature-checklist">
+                <li>Lưu trữ ảnh chụp màn hình tự động</li>
+                <li>Sao chép đường dẫn tệp chỉ với 1 cú click</li>
+                <li>Tự động dọn dẹp khi khởi động lại máy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid Section -->
+  <section class="section features-section" id="features">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">TÍNH NĂNG ĐỘT PHÁ</span>
+        <h2 class="section-title">Xây Dựng Bằng Công Nghệ Desktop Tiên Tiến</h2>
+        <p class="section-desc">Không chỉ là giao diện đẹp mắt, BousLand kết nối sâu với Windows API để đạt độ mượt mà và tin cậy cao nhất.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+          </div>
+          <h3 class="card-title">Windows Core Audio</h3>
+          <p class="card-desc">Tương tác trực tiếp với Windows WASAPI. Nhận diện thay đổi âm lượng tức thì từ phím bấm bàn phím hoặc tai nghe Bluetooth với thanh trượt âm sắc nét.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+          </div>
+          <h3 class="card-title">SMTC Media Controller</h3>
+          <p class="card-desc">Tự động nhận diện mọi trình phát đa phương tiện. Hỗ trợ đầy đủ Spotify, Apple Music, YouTube Music, SoundCloud trên trình duyệt Chrome và Edge.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <line x1="9" y1="1" x2="9" y2="4"></line>
+              <line x1="15" y1="1" x2="15" y2="4"></line>
+              <line x1="9" y1="20" x2="9" y2="23"></line>
+              <line x1="15" y1="20" x2="15" y2="23"></line>
+              <line x1="20" y1="9" x2="23" y2="9"></line>
+              <line x1="20" y1="14" x2="23" y2="14"></line>
+              <line x1="1" y1="9" x2="4" y2="9"></line>
+              <line x1="1" y1="14" x2="4" y2="14"></line>
+            </svg>
+          </div>
+          <h3 class="card-title">Giám Sát Phần Cứng Tức Thì</h3>
+          <p class="card-desc">Đo nhịp tim CPU, RAM, Ổ đĩa và Pin với tần số 1Hz bằng sysinfo Rust. Cảnh báo thông minh khi CPU hoặc RAM vượt ngưỡng 90% để bảo vệ máy.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="21 8 21 21 3 21 3 8"></polyline>
+              <rect x="1" y="3" width="22" height="5"></rect>
+              <line x1="10" y1="12" x2="14" y2="12"></line>
+            </svg>
+          </div>
+          <h3 class="card-title">Quick Shelf Tệp Tạm</h3>
+          <p class="card-desc">Kéo và thả tệp bất kỳ lên đầu màn hình để lưu tạm thời. Không cần lưu file bừa bãi ra màn hình Desktop, dọn sạch không gian làm việc.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+              <path d="M9 14l2 2 4-4"></path>
+            </svg>
+          </div>
+          <h3 class="card-title">Khay Nhớ Tạm Bảo Mật</h3>
+          <p class="card-desc">Tự động phân loại nội dung sao chép thành Văn bản, Liên kết, Đoạn mã và Mã màu. Dữ liệu chỉ lưu cục bộ trên RAM và không bao giờ gửi ra ngoài.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="glass-card feature-card reveal">
+          <div class="card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+              <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+              <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+              <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+              <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+            </svg>
+          </div>
+          <h3 class="card-title">Tùy Biến Thẩm Mỹ Vô Hạn</h3>
+          <p class="card-desc">4 chủ đề cao cấp: Onyx Tối Giản, Kính Mờ Acrylic, Mica Fluent Windows 11 và Titanium Slate. Bảng mã màu nhấn không giới hạn đồng bộ toàn hệ thống.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance & Privacy Section -->
+  <!-- Performance & Architecture Section -->
+  <section class="section specs-section" id="specs">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-tag">HIỆU NĂNG &amp; KIẾN TRÚC</span>
+        <h2 class="section-title">Sức Mạnh Từ Rust Core. Nhẹ Nhàng Đến Vô Hình.</h2>
+        <p class="section-desc">Được tối ưu ở cấp độ hệ thống với mã máy Native C/Rust. Không cõng máy ảo cồng kềnh, không giật lag, giữ trọn vẹn 100% FPS khi chiến game và đồ họa.</p>
+      </div>
+
+      <!-- Performance Stat Counters -->
+      <div class="perf-metrics-grid reveal">
+        <div class="perf-metric-item">
+          <div class="perf-metric-num">&lt; 20 MB</div>
+          <div class="perf-metric-label">Chiếm dụng RAM</div>
+          <div class="perf-metric-sub">Ít hơn 95% so với app thông thường</div>
+        </div>
+        <div class="perf-metric-item">
+          <div class="perf-metric-num">&lt; 5 ms</div>
+          <div class="perf-metric-label">Độ trễ Core Audio</div>
+          <div class="perf-metric-sub">Phản xạ tức thì theo từng phím bấm</div>
+        </div>
+        <div class="perf-metric-item">
+          <div class="perf-metric-num">1.6 MB</div>
+          <div class="perf-metric-label">Dung lượng bộ cài</div>
+          <div class="perf-metric-sub">Tải xong trong 1 giây, mở là dùng ngay</div>
+        </div>
+        <div class="perf-metric-item">
+          <div class="perf-metric-num">0.0%</div>
+          <div class="perf-metric-label">CPU khi nhàn rỗi</div>
+          <div class="perf-metric-sub">Tự ngủ sâu, không nóng máy hay hao pin</div>
+        </div>
+      </div>
+
+      <!-- Visual Benchmark Comparison Card -->
+      <div class="perf-benchmark-card reveal">
+        <div class="benchmark-header">
+          <h3 class="benchmark-title">Đối Sánh Thực Tế: BousLand vs Ứng Dụng Khác</h3>
+          <span class="benchmark-badge">Đo kiểm trên Windows 11 Pro 64-bit</span>
+        </div>
+
+        <div class="benchmark-rows">
+          <!-- Metric 1: RAM Usage -->
+          <div class="benchmark-row">
+            <div class="benchmark-meta">
+              <span class="benchmark-label">Mức RAM chiếm dụng</span>
+              <span class="benchmark-highlight">BousLand nhẹ hơn ~95%</span>
+            </div>
+            <div class="benchmark-bars">
+              <div class="bar-entry">
+                <div class="bar-legend">
+                  <span class="legend-name">BousLand (Rust Native)</span>
+                  <span class="legend-val">20 MB</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill bar-fill-fast" style="width: 7%;"></div>
+                </div>
+              </div>
+              <div class="bar-entry">
+                <div class="bar-legend">
+                  <span class="legend-name">Ứng dụng Electron thông thường</span>
+                  <span class="legend-val legend-val-bad">450 MB</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill bar-fill-slow" style="width: 90%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metric 2: Installer Size -->
+          <div class="benchmark-row">
+            <div class="benchmark-meta">
+              <span class="benchmark-label">Dung lượng tệp cài đặt (.exe)</span>
+              <span class="benchmark-highlight">Gọn hơn 75 lần</span>
+            </div>
+            <div class="benchmark-bars">
+              <div class="bar-entry">
+                <div class="bar-legend">
+                  <span class="legend-name">BousLand NSIS Setup</span>
+                  <span class="legend-val">1.6 MB</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill bar-fill-fast" style="width: 4%;"></div>
+                </div>
+              </div>
+              <div class="bar-entry">
+                <div class="bar-legend">
+                  <span class="legend-name">Bộ cài Electron đóng gói Chromium</span>
+                  <span class="legend-val legend-val-bad">120 MB</span>
+                </div>
+                <div class="bar-track">
+                  <div class="bar-fill bar-fill-slow" style="width: 82%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Architecture Pillars Bento -->
+      <div class="perf-pillars-grid reveal">
+        <div class="perf-pillar-card">
+          <div class="pillar-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <h4 class="pillar-title">Game-Mode Bypass</h4>
+          <p class="pillar-desc">Tự động nhận diện cửa sổ toàn màn hình (DirectX 11/12, Vulkan) qua Win32 API. BousLand lập tức đóng băng render để hoàn trả 100% CPU và GPU cho khung hình game.</p>
+        </div>
+
+        <div class="perf-pillar-card">
+          <div class="pillar-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h4 class="pillar-title">100% Local-First</h4>
+          <p class="pillar-desc">Mọi xử lý âm thanh, clipboard và lưu tệp chỉ tồn tại trên RAM máy tính của bạn. Hoàn toàn không có mã theo dõi telemetry, không gửi dữ liệu ra bên ngoài.</p>
+        </div>
+
+        <div class="perf-pillar-card">
+          <div class="pillar-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </div>
+          <h4 class="pillar-title">Tauri v2 Native Core</h4>
+          <p class="pillar-desc">Biên dịch trực tiếp ra mã nhị phân Windows x64. Tận dụng runtime WebView2 có sẵn trong Windows 10/11 thay vì phải đóng gói thêm cả trình duyệt Chromium 200MB.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq-section" id="faq">
+    <div class="container faq-container reveal">
+      <div class="section-header text-center">
+        <span class="section-tag">CÂU HỎI THƯỜNG GẶP</span>
+        <h2 class="section-title">Giải Đáp Thắc Mắc Về BousLand</h2>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item active">
+          <div class="faq-question">
+            <span>BousLand hỗ trợ những hệ điều hành nào?</span>
+            <span class="faq-toggle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </div>
+          <div class="faq-answer">
+            <p>BousLand được thiết kế chuyên biệt và tối ưu hóa 100% cho <strong>Windows 10 và Windows 11 (64-bit)</strong>. Ứng dụng hỗ trợ cả màn hình laptop thông thường, màn hình rời siêu rộng (Ultrawide) và thiết lập đa màn hình.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Ứng dụng cập nhật phiên bản mới như thế nào?</span>
+            <span class="faq-toggle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </div>
+          <div class="faq-answer">
+            <p>BousLand tích hợp cơ chế <strong>Auto-Update thông minh</strong> liên kết trực tiếp với GitHub Releases của tác giả. Khi có bản cập nhật mới, ứng dụng sẽ thông báo trong Cài đặt và bạn chỉ cần bấm "Cài đặt & Khởi động lại" để hoàn tất trong 3 giây.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Làm thế nào để ẩn hoặc hiện BousLand nhanh?</span>
+            <span class="faq-toggle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </div>
+          <div class="faq-answer">
+            <p>Bạn có thể nhấn tổ hợp phím tắt toàn cầu <code>Ctrl + Shift + B</code> để ẩn Island lên mép trên màn hình (để lại một vạch sáng mỏng tinh tế). Khi rê chuột vào hoặc bấm lại tổ hợp phím, BousLand sẽ trồi xuống ngay lập tức.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>BousLand có an toàn và riêng tư không?</span>
+            <span class="faq-toggle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </div>
+          <div class="faq-answer">
+            <p>Hoàn toàn an toàn. BousLand tuân thủ triệt để nguyên tắc <strong>Local-First</strong>: không yêu cầu tài khoản, không có mã theo dõi telemetry, không lưu trữ dữ liệu khay nhớ tạm ra ngoài ổ đĩa máy tính của bạn.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Banner -->
+  <section class="final-cta-section">
+    <div class="container text-center">
+      <div class="cta-card reveal">
+        <img src="assets/logo.svg" alt="BousLand" width="56" height="56" class="cta-logo">
+        <h2 class="cta-title">Sẵn Sàng Nâng Tầm Màn Hình Windows Của Bạn?</h2>
+        <p class="cta-desc">Tải về miễn phí ngay hôm nay. Trải nghiệm không gian Dynamic Island thông minh, mượt mà và sang trọng.</p>
+        <div class="cta-buttons">
+          <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.0/BousLand_1.0.0_x64-setup.exe" class="btn-primary btn-large">
+            <span>Tải Bộ Cài Đặt Windows (.exe)</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </a>
+        </div>
+        <span class="cta-version-note">Phiên bản 1.0.0 • Tương thích Windows 10 / 11 • 100% Sạch & An toàn</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <img src="assets/logo.svg" alt="" width="24" height="24">
+          <span>BousLand for Windows</span>
+        </div>
+        <p class="footer-copy">© 2026 BousLand. Phát triển bởi NguyenTaiPhat. Giữ toàn quyền thương mại.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#features">Tính năng</a>
+        <a href="#simulator">Trải nghiệm</a>
+        <a href="#specs">Hiệu năng</a>
+        <a href="#faq">Hỏi đáp</a>
+        <a href="https://github.com/NguyenTaiPhat/bousland" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
