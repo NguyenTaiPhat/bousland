@@ -5,6 +5,7 @@ import { useIslandStore } from "../../stores/islandStore";
 import { useScratchpadStore } from "../../stores/scratchpadStore";
 import { useSettingsStore } from "../../stores/settingsStore";
 import { BousLandLogo } from "../Common/BousLandLogo";
+import { AudioVisualizer } from "./AudioVisualizer";
 import styles from "./island.module.css";
 
 export const CompactView: React.FC = () => {
@@ -85,19 +86,14 @@ export const CompactView: React.FC = () => {
             <motion.div
               key="equalizer"
               className={styles.compactItem}
-              title={`Đang phát: ${media.title || "Âm thanh"}`}
+              title={`Đang phát âm thanh: ${media.title || "Windows Core Audio"}`}
               initial={{ opacity: 0, width: 0, scale: 0.8 }}
               animate={{ opacity: 1, width: "auto", scale: 1 }}
               exit={{ opacity: 0, width: 0, scale: 0.8 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
-              style={{ overflow: "hidden" }}
+              style={{ overflow: "hidden", display: "flex", alignItems: "center" }}
             >
-              <div className={styles.equalizerWave}>
-                <span className={styles.equalizerBar} />
-                <span className={styles.equalizerBar} />
-                <span className={styles.equalizerBar} />
-                <span className={styles.equalizerBar} />
-              </div>
+              <AudioVisualizer isPlaying={media.isPlaying} />
             </motion.div>
           )}
         </AnimatePresence>
