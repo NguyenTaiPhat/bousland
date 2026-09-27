@@ -11,17 +11,28 @@ export const ExpandedBatteryView: React.FC<Props> = ({ event }) => {
   const isCritical = event.percentage <= 10;
 
   return (
-    <div className={styles.expandedBattery}>
-      <div className={styles.expandedLeft}>
-        {event.charging ? (
-          <BatteryCharging size={24} color="var(--status-success)" />
-        ) : isCritical ? (
-          <AlertCircle size={24} color="var(--status-critical)" />
-        ) : (
-          <BatteryWarning size={24} color="var(--status-warning)" />
-        )}
-        <div className={styles.batteryStatusText}>
-          <span className={styles.batteryTitle}>
+    <div className={styles.expandedNotification}>
+      <div className={styles.notificationLeft}>
+        <div
+          className={styles.notificationIconBadge}
+          style={{
+            color: event.charging
+              ? "var(--status-success)"
+              : isCritical
+              ? "var(--status-critical)"
+              : "var(--status-warning)",
+          }}
+        >
+          {event.charging ? (
+            <BatteryCharging size={18} />
+          ) : isCritical ? (
+            <AlertCircle size={18} />
+          ) : (
+            <BatteryWarning size={18} />
+          )}
+        </div>
+        <div className={styles.notificationTextCol}>
+          <span className={styles.notificationTitle}>
             {event.charging
               ? "Đang sạc pin"
               : isCritical
@@ -30,7 +41,7 @@ export const ExpandedBatteryView: React.FC<Props> = ({ event }) => {
               ? "Pin yếu"
               : "Đã ngắt sạc (Dùng pin)"}
           </span>
-          <span className={styles.batterySubtitle}>
+          <span className={styles.notificationSubtitle}>
             {event.percentage}% dung lượng
           </span>
         </div>

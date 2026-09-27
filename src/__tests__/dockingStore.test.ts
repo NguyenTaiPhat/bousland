@@ -11,6 +11,6 @@ describe("Docking dimensions", () => {
   });
 
   it("provides vertical expanded dimensions for toast banner", () => {
-    expect(STATE_DIMENSIONS_VERTICAL.EXPANDED).toEqual({ width: 380, height: 80 });
+    expect(STATE_DIMENSIONS_VERTICAL.EXPANDED).toEqual({ width: 380, height: 96 });
   });
 });

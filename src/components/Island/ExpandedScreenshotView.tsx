@@ -27,33 +27,37 @@ export const ExpandedScreenshotView: React.FC<Props> = ({ event }) => {
   };
 
   return (
-    <div className={styles.expandedBattery}>
-      <div className={styles.expandedLeft}>
-        <Camera size={22} color="var(--accent)" />
-        <div className={styles.batteryStatusText}>
-          <span className={styles.batteryTitle}>Đã chụp màn hình</span>
-          <span className={styles.batterySubtitle}>Lưu tại Pictures/Screenshots</span>
+    <div className={styles.expandedNotification}>
+      <div className={styles.notificationLeft}>
+        <div className={styles.notificationIconBadge}>
+          <Camera size={16} />
+        </div>
+        <div className={styles.notificationTextCol}>
+          <span className={styles.notificationTitle}>Đã chụp màn hình</span>
+          <span className={styles.notificationSubtitle} title={event.filePath}>
+            Lưu tại Pictures/Screenshots
+          </span>
         </div>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div className={styles.notificationActions}>
         <button
+          type="button"
           onClick={handleOpen}
-          className={styles.controlBtn}
-          title="Mở ảnh chụp màn hình"
-          style={{ width: "auto", padding: "6px 10px", borderRadius: 6, fontSize: 11, gap: 4 }}
+          className={styles.notifBtnSecondary}
+          title="Mở tệp ảnh đã chụp"
         >
           <ExternalLink size={12} />
           <span>Mở ảnh</span>
         </button>
 
         <button
+          type="button"
           onClick={handleCopy}
-          className={styles.controlBtn}
+          className={copied ? styles.notifBtnSuccess : styles.notifBtnPrimary}
           title="Sao chép ảnh vào khay nhớ tạm"
-          style={{ width: "auto", padding: "6px 10px", borderRadius: 6, fontSize: 11, gap: 4 }}
         >
-          {copied ? <Check size={12} color="var(--status-success)" /> : <Copy size={12} />}
+          {copied ? <Check size={12} /> : <Copy size={12} />}
           <span>{copied ? "Đã chép" : "Sao chép"}</span>
         </button>
       </div>

@@ -32,14 +32,15 @@ export const Island: React.FC = () => {
 
   const isExpanded = islandState === "EXPANDED" && activeEvent !== null;
   const isVertical = dock_position === "LEFT" || dock_position === "RIGHT";
+  const isMediaExpanded = isExpanded && activeEvent?.type === "MEDIA_CHANGED";
 
   const targetWidth = isVertical
     ? (isDraggingOver ? 54 : isExpanded ? 360 : 44)
-    : (isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280);
+    : (isDraggingOver ? 340 : isExpanded ? 420 : (media.isPlaying && media.title) ? 330 : 280);
 
   const targetHeight = isVertical
-    ? (isDraggingOver ? 340 : isExpanded ? 68 : (media.isPlaying && media.title) ? 330 : 280)
-    : (isDraggingOver ? 54 : isExpanded ? 88 : 44);
+    ? (isDraggingOver ? 340 : isExpanded ? (isMediaExpanded ? 80 : 68) : (media.isPlaying && media.title) ? 330 : 280)
+    : (isDraggingOver ? 54 : isExpanded ? (isMediaExpanded ? 80 : 64) : 44);
 
   const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
   const contactingBorder = getContactingBorderStyle(dock_position);

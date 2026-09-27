@@ -67,7 +67,7 @@ import { DockPosition } from "../core/types";
 
 export const STATE_DIMENSIONS: Record<IslandState, { width: number; height: number }> = {
   COMPACT: { width: 360, height: 60 },
-  EXPANDED: { width: 410, height: 110 },
+  EXPANDED: { width: 440, height: 96 },
   CONTROL_CENTER: { width: 480, height: 630 },
   COMMAND_BAR: { width: 580, height: 420 },
   SETTINGS: { width: 660, height: 540 },
@@ -78,7 +78,7 @@ export const STATE_DIMENSIONS: Record<IslandState, { width: number; height: numb
 
 export const STATE_DIMENSIONS_VERTICAL: Record<IslandState, { width: number; height: number }> = {
   COMPACT: { width: 44, height: 280 },
-  EXPANDED: { width: 380, height: 80 },
+  EXPANDED: { width: 380, height: 96 },
   CONTROL_CENTER: { width: 480, height: 630 },
   COMMAND_BAR: { width: 580, height: 420 },
   SETTINGS: { width: 660, height: 540 },

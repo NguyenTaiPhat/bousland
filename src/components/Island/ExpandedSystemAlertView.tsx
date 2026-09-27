@@ -11,30 +11,25 @@ export const ExpandedSystemAlertView: React.FC<Props> = ({ event }) => {
   const isCpu = event.metricType === "cpu";
 
   return (
-    <div className={styles.expandedBattery}>
-      <div className={styles.expandedLeft}>
+    <div className={styles.expandedNotification}>
+      <div className={styles.notificationLeft}>
         <div
+          className={styles.notificationIconBadge}
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
-            backgroundColor: "rgba(224, 93, 82, 0.15)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexShrink: 0,
+            backgroundColor: isCpu ? "rgba(239, 68, 68, 0.15)" : "rgba(245, 158, 11, 0.15)",
+            color: isCpu ? "var(--status-critical)" : "var(--status-warning)",
           }}
         >
           {isCpu ? (
-            <Cpu size={20} color="var(--status-critical)" />
+            <Cpu size={16} />
           ) : (
-            <HardDrive size={20} color="var(--status-warning)" />
+            <HardDrive size={16} />
           )}
         </div>
 
-        <div className={styles.batteryStatusText}>
-          <span className={styles.batteryTitle}>{event.title}</span>
-          <span className={styles.batterySubtitle}>{event.message}</span>
+        <div className={styles.notificationTextCol}>
+          <span className={styles.notificationTitle}>{event.title}</span>
+          <span className={styles.notificationSubtitle}>{event.message}</span>
         </div>
       </div>
     </div>
