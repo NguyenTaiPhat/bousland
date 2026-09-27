@@ -33,7 +33,6 @@
   -webkit-backdrop-filter: var(--glass-blur, none);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-island);
-  border-radius: var(--radius-xl);
   overflow: hidden;
   position: relative;
   display: flex;

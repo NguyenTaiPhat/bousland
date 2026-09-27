@@ -45,20 +45,38 @@ export function getBorderRadiusForDock(dock: DockPosition, isExpanded = false): 
   if (isExpanded) {
     if (dock === "LEFT") return "0px 18px 18px 0px";
     if (dock === "RIGHT") return "18px 0px 0px 18px";
-    if (dock === "TOP_LEFT") return "0px 0px 18px 18px";
-    if (dock === "TOP_RIGHT") return "0px 0px 18px 18px";
-    return "18px 18px 18px 18px";
+    if (dock === "TOP_LEFT") return "0px 0px 18px 0px";
+    if (dock === "TOP_RIGHT") return "0px 0px 0px 18px";
+    return "0px 0px 18px 18px";
   }
   switch (dock) {
     case "TOP_LEFT":
-      return "0px 22px 22px 22px";
+      return "0px 0px 22px 0px";
     case "TOP_RIGHT":
-      return "22px 0px 22px 22px";
+      return "0px 0px 0px 22px";
     case "LEFT":
       return "0px 22px 22px 0px";
     case "RIGHT":
       return "22px 0px 0px 22px";
+    case "TOP_CENTER":
     default:
-      return "22px 22px 22px 22px";
+      return "0px 0px 22px 22px";
+  }
+}
+
+export function getContactingBorderStyle(dock: DockPosition): Record<string, string> {
+  switch (dock) {
+    case "TOP_CENTER":
+      return { borderTop: "none" };
+    case "TOP_LEFT":
+      return { borderTop: "none", borderLeft: "none" };
+    case "TOP_RIGHT":
+      return { borderTop: "none", borderRight: "none" };
+    case "LEFT":
+      return { borderLeft: "none" };
+    case "RIGHT":
+      return { borderRight: "none" };
+    default:
+      return {};
   }
 }

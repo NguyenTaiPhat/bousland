@@ -5,7 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useIslandStore, syncWindowCanvas } from "../../stores/islandStore";
 import { useShelfStore } from "../../stores/shelfStore";
 import { useSettingsStore } from "../../stores/settingsStore";
-import { getBorderRadiusForDock } from "../../core/dockingHelper";
+import { getBorderRadiusForDock, getContactingBorderStyle } from "../../core/dockingHelper";
 import { CompactView } from "./CompactView";
 import { VerticalCompactView } from "./VerticalCompactView";
 import { ExpandedVolumeView } from "./ExpandedVolumeView";
@@ -38,6 +38,7 @@ export const Island: React.FC = () => {
     : (isDraggingOver ? 54 : isExpanded ? 88 : 44);
 
   const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
+  const contactingBorder = getContactingBorderStyle(dock_position);
 
   const handleClick = () => {
     if (islandState === "COMPACT") {
@@ -241,8 +242,17 @@ export const Island: React.FC = () => {
             onDrop={handleDrop}
             style={{
               cursor: isDraggingWindow ? "grabbing" : "grab",
+              borderRadius: reactiveBorderRadius,
+              ...contactingBorder,
             }}
-            initial={{ y: -24, opacity: 0, scaleX: 0.65, scaleY: 0.25, filter: "blur(8px)" }}
+            initial={{
+              y: -24,
+              opacity: 0,
+              scaleX: 0.65,
+              scaleY: 0.25,
+              filter: "blur(8px)",
+              borderRadius: reactiveBorderRadius,
+            }}
             animate={{
               y: 0,
               opacity: 1,
