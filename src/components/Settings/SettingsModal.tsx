@@ -505,41 +505,73 @@ export const SettingsModal: React.FC = () => {
                   ))}
                 </div>
 
-                {settings.dock_position === "TOP_CENTER" && (
-                  <div className={styles.settingRow} style={{ marginTop: 12 }}>
-                    <div className={styles.settingInfo}>
-                      <span className={styles.settingLabel}>Độ lệch ngang (Offset X)</span>
-                      <span className={styles.settingDesc}>
-                        Dịch chuyển Island sang trái/phải để tránh che khuất các tab trình duyệt ({settings.island_x_offset}px)
-                      </span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <input
-                        type="range"
-                        min="-500"
-                        max="500"
-                        step="10"
-                        value={settings.island_x_offset}
-                        onChange={(e) => {
-                          const ox = parseInt(e.target.value, 10);
-                          settings.updateSettings({ island_x_offset: ox });
-                          syncWindowCanvas(undefined, undefined, ox);
-                        }}
-                        style={{ width: 120 }}
-                      />
-                      <button
-                        type="button"
-                        className={styles.resetBtn}
-                        onClick={() => {
-                          settings.updateSettings({ island_x_offset: 0 });
-                          syncWindowCanvas(undefined, undefined, 0);
-                        }}
-                      >
-                        Về giữa
-                      </button>
-                    </div>
+                <div className={styles.settingRow} style={{ marginTop: 8 }}>
+                  <div className={styles.settingInfo}>
+                    <span className={styles.settingLabel}>Độ lệch ngang (Offset X)</span>
+                    <span className={styles.settingDesc}>
+                      Dịch chuyển ngang ({settings.island_x_offset}px) • 0px là sát mép chuẩn
+                    </span>
                   </div>
-                )}
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <input
+                      type="range"
+                      min="-600"
+                      max="600"
+                      step="5"
+                      value={settings.island_x_offset}
+                      onChange={(e) => {
+                        const ox = parseInt(e.target.value, 10);
+                        settings.updateSettings({ island_x_offset: ox });
+                        syncWindowCanvas(undefined, undefined, ox);
+                      }}
+                      style={{ width: 100 }}
+                    />
+                    <button
+                      type="button"
+                      className={styles.resetBtn}
+                      onClick={() => {
+                        settings.updateSettings({ island_x_offset: 0 });
+                        syncWindowCanvas(undefined, undefined, 0);
+                      }}
+                    >
+                      0px
+                    </button>
+                  </div>
+                </div>
+
+                <div className={styles.settingRow}>
+                  <div className={styles.settingInfo}>
+                    <span className={styles.settingLabel}>Độ lệch dọc (Offset Y)</span>
+                    <span className={styles.settingDesc}>
+                      Dịch chuyển dọc ({settings.island_y_offset}px) • 0px là sát đỉnh/giữa cạnh
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <input
+                      type="range"
+                      min="-500"
+                      max="500"
+                      step="5"
+                      value={settings.island_y_offset}
+                      onChange={(e) => {
+                        const oy = parseInt(e.target.value, 10);
+                        settings.updateSettings({ island_y_offset: oy });
+                        syncWindowCanvas(undefined, undefined, undefined, oy);
+                      }}
+                      style={{ width: 100 }}
+                    />
+                    <button
+                      type="button"
+                      className={styles.resetBtn}
+                      onClick={() => {
+                        settings.updateSettings({ island_y_offset: 0 });
+                        syncWindowCanvas(undefined, undefined, undefined, 0);
+                      }}
+                    >
+                      0px
+                    </button>
+                  </div>
+                </div>
               </>
             )}
 

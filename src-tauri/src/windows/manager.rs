@@ -40,20 +40,25 @@ pub fn position_island_window(
     let mon_logical_y = mon_pos.y as f64 / scale_factor;
 
     let (target_x, target_y) = match dock_position {
-        DockPosition::TopLeft => (mon_logical_x, mon_logical_y),
-        DockPosition::TopRight => (mon_logical_x + mon_logical_width - width, mon_logical_y),
+        DockPosition::TopLeft => (
+            mon_logical_x + offset_x,
+            mon_logical_y + offset_y,
+        ),
+        DockPosition::TopRight => (
+            mon_logical_x + mon_logical_width - width + offset_x,
+            mon_logical_y + offset_y,
+        ),
         DockPosition::Left => (
-            mon_logical_x,
+            mon_logical_x + offset_x,
             mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
         ),
         DockPosition::Right => (
-            mon_logical_x + mon_logical_width - width,
+            mon_logical_x + mon_logical_width - width + offset_x,
             mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
         ),
         DockPosition::TopCenter => {
             let base_x = mon_logical_x + (mon_logical_width - width) / 2.0 + offset_x;
-            let clamped_x = base_x.clamp(mon_logical_x + 8.0, mon_logical_x + mon_logical_width - width - 8.0);
-            (clamped_x, mon_logical_y + 10.0)
+            (base_x, mon_logical_y + offset_y)
         }
     };
 
@@ -106,6 +111,26 @@ pub fn set_window_ignore_cursor(
     ignore: bool,
 ) -> Result<(), String> {
     window.set_ignore_cursor_events(ignore).map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn set_window_position(
+    window: WebviewWindow,
+    x: f64,
+    y: f64,
+) -> Result<(), String> {
+    window
+        .set_position(Position::Logical(LogicalPosition { x, y }))
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn get_window_position(
+    window: WebviewWindow,
+) -> Result<(f64, f64), String> {
+    let scale = window.scale_factor().map_err(|e| e.to_string())?;
+    let pos = window.outer_position().map_err(|e| e.to_string())?;
+    Ok((pos.x as f64 / scale, pos.y as f64 / scale))
 }
 
 #[tauri::command]

@@ -41,7 +41,14 @@ export function evaluateSnapMode(input: SnapInput): DockPosition {
   return "TOP_CENTER";
 }
 
-export function getBorderRadiusForDock(dock: DockPosition): string {
+export function getBorderRadiusForDock(dock: DockPosition, isExpanded = false): string {
+  if (isExpanded) {
+    if (dock === "LEFT") return "0px 18px 18px 0px";
+    if (dock === "RIGHT") return "18px 0px 0px 18px";
+    if (dock === "TOP_LEFT") return "0px 0px 18px 18px";
+    if (dock === "TOP_RIGHT") return "0px 0px 18px 18px";
+    return "18px 18px 18px 18px";
+  }
   switch (dock) {
     case "TOP_LEFT":
       return "0px 22px 22px 22px";

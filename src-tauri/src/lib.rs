@@ -56,6 +56,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             windows::manager::resize_island_canvas,
             windows::manager::set_window_ignore_cursor,
+            windows::manager::set_window_position,
+            windows::manager::get_window_position,
             windows::manager::get_monitors_info,
             system::volume::get_volume,
             system::volume::set_volume,

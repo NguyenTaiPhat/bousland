@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FolderArchive } from "lucide-react";
-import { useIslandStore } from "../../stores/islandStore";
+import { invoke } from "@tauri-apps/api/core";
+import { useIslandStore, syncWindowCanvas } from "../../stores/islandStore";
 import { useShelfStore } from "../../stores/shelfStore";
 import { useSettingsStore } from "../../stores/settingsStore";
+import { DockPosition } from "../../core/types";
+import { getBorderRadiusForDock } from "../../core/dockingHelper";
 import { CompactView } from "./CompactView";
 import { VerticalCompactView } from "./VerticalCompactView";
 import { ExpandedVolumeView } from "./ExpandedVolumeView";
@@ -16,40 +19,26 @@ import { useIdleAutoHide } from "../../hooks/useIdleAutoHide";
 import styles from "./island.module.css";
 import shelfStyles from "../Shelf/shelf.module.css";
 
-export function getBorderRadiusForDock(dock: string): string {
-  switch (dock) {
-    case "TOP_LEFT":
-      return "0px 22px 22px 22px";
-    case "TOP_RIGHT":
-      return "22px 0px 22px 22px";
-    case "LEFT":
-      return "0px 22px 22px 0px";
-    case "RIGHT":
-      return "22px 0px 0px 22px";
-    default:
-      return "22px 22px 22px 22px";
-  }
-}
-
 export const Island: React.FC = () => {
   const { islandState, activeEvent, isVisible, media, setIslandState, collapse, toggleVisibility } =
     useIslandStore();
   const { dock_position } = useSettingsStore();
   const { handleMouseEnter, handleMouseLeave } = useIdleAutoHide();
   const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [isDraggingWindow, setIsDraggingWindow] = useState(false);
 
   const isExpanded = islandState === "EXPANDED" && activeEvent !== null;
   const isVertical = dock_position === "LEFT" || dock_position === "RIGHT";
 
   const targetWidth = isVertical
-    ? (isDraggingOver ? 54 : isExpanded ? 88 : 44)
+    ? (isDraggingOver ? 54 : isExpanded ? 360 : 44)
     : (isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280);
 
   const targetHeight = isVertical
-    ? (isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280)
+    ? (isDraggingOver ? 340 : isExpanded ? 68 : (media.isPlaying && media.title) ? 330 : 280)
     : (isDraggingOver ? 54 : isExpanded ? 88 : 44);
 
-  const reactiveBorderRadius = getBorderRadiusForDock(dock_position);
+  const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
 
   const handleClick = () => {
     if (islandState === "COMPACT") {
@@ -57,6 +46,99 @@ export const Island: React.FC = () => {
     } else if (islandState === "EXPANDED") {
       collapse();
     }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return;
+
+    const startX = e.screenX;
+    const startY = e.screenY;
+    let moved = false;
+    let initialWinX = 0;
+    let initialWinY = 0;
+
+    invoke<[number, number]>("get_window_position")
+      .then(([wx, wy]) => {
+        initialWinX = wx;
+        initialWinY = wy;
+      })
+      .catch(() => {});
+
+    const onMouseMove = (moveEvent: MouseEvent) => {
+      const dx = moveEvent.screenX - startX;
+      const dy = moveEvent.screenY - startY;
+
+      if (!moved && Math.hypot(dx, dy) > 4) {
+        moved = true;
+        setIsDraggingWindow(true);
+      }
+
+      if (moved) {
+        invoke("set_window_position", {
+          x: initialWinX + dx,
+          y: initialWinY + dy,
+        }).catch(() => {});
+      }
+    };
+
+    const onMouseUp = (upEvent: MouseEvent) => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+
+      if (moved) {
+        setIsDraggingWindow(false);
+        const finalX = initialWinX + (upEvent.screenX - startX);
+        const finalY = initialWinY + (upEvent.screenY - startY);
+        const screenW = window.screen.availWidth || 1920;
+        const screenH = window.screen.availHeight || 1080;
+
+        const SNAP_THRESHOLD = 50;
+        let newDock: DockPosition = dock_position;
+        let newOx = 0;
+        let newOy = 0;
+
+        if (finalX <= SNAP_THRESHOLD) {
+          newDock = "LEFT";
+          newOx = 0;
+          newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+        } else if (finalX >= screenW - targetWidth - SNAP_THRESHOLD) {
+          newDock = "RIGHT";
+          newOx = 0;
+          newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+        } else if (finalY <= SNAP_THRESHOLD) {
+          if (finalX <= 100) {
+            newDock = "TOP_LEFT";
+            newOx = 0;
+            newOy = 0;
+          } else if (finalX >= screenW - targetWidth - 100) {
+            newDock = "TOP_RIGHT";
+            newOx = 0;
+            newOy = 0;
+          } else {
+            newDock = "TOP_CENTER";
+            newOx = Math.round(finalX - (screenW - targetWidth) / 2);
+            newOy = 0;
+          }
+        } else {
+          // Floating freeform
+          newDock = "TOP_CENTER";
+          newOx = Math.round(finalX - (screenW - targetWidth) / 2);
+          newOy = Math.round(finalY);
+        }
+
+        useSettingsStore.getState().updateSettings({
+          dock_position: newDock,
+          island_x_offset: newOx,
+          island_y_offset: newOy,
+        });
+        syncWindowCanvas(undefined, newDock, newOx, newOy);
+      } else {
+        handleClick();
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
   };
 
   const handleContextMenu = (e: React.MouseEvent) => {
@@ -89,19 +171,39 @@ export const Island: React.FC = () => {
   };
 
   return (
-    <div className={styles.islandWrapper}>
+    <div
+      className={styles.islandWrapper}
+      style={{
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        justifyContent:
+          dock_position === "LEFT" || dock_position === "TOP_LEFT"
+            ? "flex-start"
+            : dock_position === "RIGHT" || dock_position === "TOP_RIGHT"
+            ? "flex-end"
+            : "center",
+        alignItems:
+          dock_position === "LEFT" || dock_position === "RIGHT"
+            ? "center"
+            : "flex-start",
+      }}
+    >
       <AnimatePresence mode="wait">
         {isVisible ? (
           <motion.div
             key="island-main"
             className={styles.islandContainer}
-            onClick={handleClick}
+            onMouseDown={handleMouseDown}
             onContextMenu={handleContextMenu}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
+            style={{
+              cursor: isDraggingWindow ? "grabbing" : "grab",
+            }}
             initial={{ y: -24, opacity: 0, scaleX: 0.65, scaleY: 0.25, filter: "blur(8px)" }}
             animate={{
               y: 0,

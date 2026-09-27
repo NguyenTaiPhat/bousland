@@ -6,7 +6,11 @@ describe("Docking dimensions", () => {
     expect(STATE_DIMENSIONS.COMPACT).toEqual({ width: 360, height: 60 });
   });
 
-  it("provides vertical compact dimensions", () => {
-    expect(STATE_DIMENSIONS_VERTICAL.COMPACT).toEqual({ width: 60, height: 360 });
+  it("provides vertical compact dimensions flush to edge", () => {
+    expect(STATE_DIMENSIONS_VERTICAL.COMPACT).toEqual({ width: 44, height: 280 });
+  });
+
+  it("provides vertical expanded dimensions for toast banner", () => {
+    expect(STATE_DIMENSIONS_VERTICAL.EXPANDED).toEqual({ width: 380, height: 80 });
   });
 });
