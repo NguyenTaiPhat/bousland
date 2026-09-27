@@ -40,20 +40,27 @@ export interface BousSettingsState {
 export function applyThemeToDOM(theme: string, accentHex?: string) {
   if (typeof document === "undefined") return;
   document.documentElement.setAttribute("data-theme", theme);
-  if (accentHex && accentHex !== "system") {
-    document.documentElement.style.setProperty("--accent", accentHex);
-    document.documentElement.style.setProperty("--accent-hover", accentHex);
+
+  const isLight = theme === "light" || theme === "snow";
+  let effectiveAccent = accentHex;
+  if (isLight && (!accentHex || accentHex.toUpperCase() === "#FFFFFF")) {
+    effectiveAccent = "#111827";
+  }
+
+  if (effectiveAccent && effectiveAccent !== "system") {
+    document.documentElement.style.setProperty("--accent", effectiveAccent);
+    document.documentElement.style.setProperty("--accent-hover", effectiveAccent);
     document.documentElement.style.setProperty(
       "--accent-subtle",
-      `color-mix(in srgb, ${accentHex} 16%, transparent)`
+      `color-mix(in srgb, ${effectiveAccent} 16%, transparent)`
     );
     document.documentElement.style.setProperty(
       "--accent-border",
-      `color-mix(in srgb, ${accentHex} 42%, transparent)`
+      `color-mix(in srgb, ${effectiveAccent} 42%, transparent)`
     );
     document.documentElement.style.setProperty(
       "--accent-glow",
-      `color-mix(in srgb, ${accentHex} 25%, transparent)`
+      `color-mix(in srgb, ${effectiveAccent} 25%, transparent)`
     );
   }
 }

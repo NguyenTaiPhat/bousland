@@ -18,6 +18,8 @@ import {
   AlertCircle,
   ExternalLink,
   Cpu,
+  Sun,
+  Snowflake,
 } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,6 +37,18 @@ const THEMES = [
     name: "Onyx Tối Giản",
     desc: "Đen tuyền lịch lãm, viền mờ chống phân tâm",
     icon: Moon,
+  },
+  {
+    id: "light",
+    name: "Trắng Sứ Tối Giản",
+    desc: "Nền trắng tuyết hiện đại, chữ đen sắc nét, đổ bóng tinh tế",
+    icon: Sun,
+  },
+  {
+    id: "snow",
+    name: "Kính Mờ Băng Tuyết",
+    desc: "Chất liệu kính trắng Fluent trong suốt cao cấp",
+    icon: Snowflake,
   },
   {
     id: "glass",
