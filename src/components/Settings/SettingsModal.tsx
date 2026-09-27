@@ -36,36 +36,42 @@ const THEMES = [
   {
     id: "dark",
     name: "Onyx Tối Giản",
+    shortName: "Onyx Đen",
     desc: "Đen tuyền lịch lãm, viền mờ chống phân tâm",
     icon: Moon,
   },
   {
     id: "light",
     name: "Trắng Sứ Tối Giản",
-    desc: "Nền trắng tuyết hiện đại, chữ đen sắc nét, đổ bóng tinh tế",
+    shortName: "Trắng Sứ",
+    desc: "Nền trắng tuyết hiện đại, chữ đen sắc nét",
     icon: Sun,
   },
   {
     id: "snow",
     name: "Kính Mờ Băng Tuyết",
+    shortName: "Băng Tuyết",
     desc: "Chất liệu kính trắng Fluent trong suốt cao cấp",
     icon: Snowflake,
   },
   {
     id: "glass",
     name: "Kính Mờ Trong Suốt",
-    desc: "Hiệu ứng Acrylic Aero nhìn xuyên thấu desktop",
+    shortName: "Acrylic Aero",
+    desc: "Hiệu ứng Acrylic nhìn xuyên thấu desktop",
     icon: Sparkles,
   },
   {
     id: "mica",
     name: "Mica Windows 11",
-    desc: "Chất liệu Mica Fluent mờ nhẹ, hòa hợp hoàn hảo với hệ thống",
+    shortName: "Mica Win11",
+    desc: "Chất liệu Mica Fluent mờ nhẹ chuẩn Windows 11",
     icon: Layers,
   },
   {
     id: "titanium",
     name: "Titanium Slate",
+    shortName: "Titanium",
     desc: "Tông xám kim loại sang trọng thanh lịch",
     icon: Box,
   },
@@ -198,7 +204,10 @@ export const SettingsModal: React.FC = () => {
               >
                 {activeTab === "general" && (
               <>
-                <h3 className={styles.sectionTitle}>Phong cách & Chủ đề</h3>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <h3 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Phong cách & Chủ đề</h3>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>6 giao diện Fluent</span>
+                </div>
                 <div className={styles.themeGrid}>
                   {THEMES.map((t) => {
                     const Icon = t.icon;
@@ -211,38 +220,30 @@ export const SettingsModal: React.FC = () => {
                           isActive ? styles.themeCardActive : ""
                         }`}
                         onClick={() => settings.setTheme(t.id)}
+                        title={`${t.name}: ${t.desc}`}
                       >
-                        <div className={styles.themeCardHeader}>
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: 6,
-                            }}
-                          >
-                            <Icon
-                              size={14}
-                              color={
-                                isActive
-                                  ? "var(--accent)"
-                                  : "var(--text-secondary)"
-                              }
-                            />
-                            <span className={styles.themeName}>{t.name}</span>
-                          </div>
-                          {isActive && <Check size={14} color="var(--accent)" />}
+                        <div className={styles.themeCardLeft}>
+                          <Icon
+                            size={14}
+                            color={
+                              isActive
+                                ? "var(--accent)"
+                                : "var(--text-secondary)"
+                            }
+                          />
+                          <span className={styles.themeName}>{t.shortName || t.name}</span>
                         </div>
-                        <span className={styles.themeDesc}>{t.desc}</span>
+                        {isActive && <Check size={13} color="var(--accent)" />}
                       </button>
                     );
                   })}
                 </div>
 
-                <div style={{ marginTop: 8 }}>
+                <div style={{ marginTop: 4 }}>
                   <div className={styles.settingInfo}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                       <span className={styles.settingLabel}>
-                        Màu nhấn phong cách
+                        Màu nhấn (Accent Color)
                       </span>
                       <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600 }}>
                         {settings.accent_color === "system"
@@ -252,9 +253,6 @@ export const SettingsModal: React.FC = () => {
                           : settings.accent_color}
                       </span>
                     </div>
-                    <span className={styles.settingDesc}>
-                      Đổi màu đồng bộ nguyên cụm: thanh bên, thẻ chủ đề, nút bật/tắt và biểu tượng
-                    </span>
                   </div>
                   <div className={styles.accentGrid}>
                     {ACCENT_COLORS.map((c) => {
@@ -478,27 +476,23 @@ export const SettingsModal: React.FC = () => {
                   </label>
                 </div>
 
-                <h3 className={styles.sectionTitle} style={{ marginTop: 20 }}>Vị trí & Docking Viền Màn Hình</h3>
-                <div className={styles.settingRow}>
-                  <div className={styles.settingInfo}>
-                    <span className={styles.settingLabel}>Chế độ Docking Viền</span>
-                    <span className={styles.settingDesc}>
-                      Cố định Island vào cạnh trên hoặc cạnh bên màn hình. Nhấn giữ Alt và kéo Island để định vị nhanh.
-                    </span>
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14 }}>
+                  <h3 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Vị trí & Docking Viền Màn Hình</h3>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Giữ Alt để kéo nhanh</span>
                 </div>
 
                 <div className={styles.dockSelectorGrid}>
                   {[
-                    { id: "TOP_LEFT", label: "Góc Trái (Top-Left)" },
-                    { id: "TOP_CENTER", label: "Giữa Trên (Top-Center)" },
-                    { id: "TOP_RIGHT", label: "Góc Phải (Top-Right)" },
-                    { id: "LEFT", label: "Cạnh Trái (Dọc)" },
-                    { id: "RIGHT", label: "Cạnh Phải (Dọc)" },
+                    { id: "TOP_LEFT", label: "Góc Trái", title: "Góc Trên Trái (Top-Left)" },
+                    { id: "TOP_CENTER", label: "Giữa Trên", title: "Chính Giữa Trên (Top-Center)" },
+                    { id: "TOP_RIGHT", label: "Góc Phải", title: "Góc Trên Phải (Top-Right)" },
+                    { id: "LEFT", label: "Cạnh Trái", title: "Cạnh Trái Dọc (Left Edge)" },
+                    { id: "RIGHT", label: "Cạnh Phải", title: "Cạnh Phải Dọc (Right Edge)" },
                   ].map((pos) => (
                     <button
                       key={pos.id}
                       type="button"
+                      title={pos.title}
                       className={`${styles.dockButton} ${settings.dock_position === pos.id ? styles.dockButtonActive : ""}`}
                       onClick={() => {
                         const newPos = pos.id as DockPosition;
