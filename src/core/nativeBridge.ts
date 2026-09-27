@@ -2,7 +2,7 @@ import { listen, UnlistenFn } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { eventBus } from "./eventBus";
 import { PriorityManager } from "./priorityManager";
-import { useIslandStore } from "../stores/islandStore";
+import { useIslandStore, syncWindowCanvas } from "../stores/islandStore";
 import { useClipboardStore } from "../stores/clipboardStore";
 import { useSettingsStore, applyThemeToDOM } from "../stores/settingsStore";
 import { useUpdaterStore } from "../stores/updaterStore";
@@ -378,6 +378,7 @@ export async function setupNativeBridge(): Promise<() => void> {
 
     const unlistenShowIsland = await listen("bous://show-island", () => {
       useIslandStore.getState().setIsVisible(true);
+      syncWindowCanvas("COMPACT");
     });
     unlisteners.push(unlistenShowIsland);
 

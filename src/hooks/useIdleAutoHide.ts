@@ -18,18 +18,11 @@ export function useIdleAutoHide() {
   const resetIdleTimer = () => {
     clearIdleTimer();
 
-    // If currently hovered by mouse, don't auto-hide
+    // If currently hovered by mouse, don't auto-close
     if (isHoveredRef.current) return;
 
-    if (islandState === "COMPACT" && isVisible) {
-      // After 4s of inactivity in compact mode, smoothly slide up and hide
-      idleTimerRef.current = setTimeout(() => {
-        if (!isHoveredRef.current && useIslandStore.getState().islandState === "COMPACT") {
-          setIsVisible(false);
-        }
-      }, 4000);
-    } else if (islandState === "CONTROL_CENTER" || islandState === "COMMAND_BAR") {
-      // In Control Center or Command Bar, after 12s of no mouse interaction, auto-close
+    if (islandState === "CONTROL_CENTER" || islandState === "COMMAND_BAR") {
+      // In Control Center or Command Bar, after 12s of no mouse interaction, auto-close back to compact
       idleTimerRef.current = setTimeout(() => {
         if (!isHoveredRef.current) {
           collapse();

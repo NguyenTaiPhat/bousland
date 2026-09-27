@@ -109,15 +109,12 @@ pub fn setup_tray(app: &AppHandle) -> Result<(), Box<dyn std::error::Error>> {
             } = event
             {
                 let app = tray.app_handle();
+                let _ = app.emit("bous://show-island", ());
                 if let Some(w) = app.get_webview_window("main") {
-                    if let Ok(visible) = w.is_visible() {
-                        if visible {
-                            let _ = w.set_focus();
-                        } else {
-                            let _ = w.show();
-                            let _ = w.set_focus();
-                        }
-                    }
+                    let _ = w.show();
+                    let _ = w.unminimize();
+                    let _ = w.set_focus();
+                    let _ = crate::windows::manager::position_island_at_top(&w, 360.0, 60.0);
                 }
             }
         })

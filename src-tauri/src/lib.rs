@@ -21,6 +21,7 @@ pub fn run() {
                 let _ = window.show();
                 let _ = window.unminimize();
                 let _ = window.set_focus();
+                let _ = crate::windows::manager::position_island_at_top(&window, 360.0, 60.0);
             }
         }))
         .plugin(tauri_plugin_opener::init())
@@ -94,6 +95,8 @@ pub fn run() {
             let handle = app.handle().clone();
 
             if let Some(window) = app.get_webview_window("main") {
+                let _ = window.show();
+                let _ = window.unminimize();
                 // Initial positioning: compact canvas wraps both normal (280px) and media (330px) pills with shadow breathing room
                 let _ = windows::manager::position_island_at_top(&window, 360.0, 60.0);
             }
