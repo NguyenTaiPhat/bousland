@@ -21,7 +21,7 @@ import styles from "./island.module.css";
 import shelfStyles from "../Shelf/shelf.module.css";
 
 export const Island: React.FC = () => {
-  const { islandState, activeEvent, isVisible, media, setIslandState, collapse, toggleVisibility } =
+  const { islandState, activeEvent, isVisible, media, battery, setIslandState, collapse, toggleVisibility } =
     useIslandStore();
   const { dock_position } = useSettingsStore();
   const { handleMouseEnter, handleMouseLeave } = useIdleAutoHide();

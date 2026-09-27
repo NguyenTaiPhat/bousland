@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { resolveAuraState, getAuraBoxShadow } from "../core/auraHelper";
-import { DockPosition } from "../core/types";
 
 describe("resolveAuraState", () => {
   it("prioritizes FLASH above all else", () => {

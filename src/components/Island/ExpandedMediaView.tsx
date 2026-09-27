@@ -3,6 +3,7 @@ import { Play, Pause, SkipBack, SkipForward, Music } from "lucide-react";
 import { motion } from "framer-motion";
 import { invoke } from "@tauri-apps/api/core";
 import { MediaChangedEvent } from "../../core/types";
+import { LiquidAurora } from "./LiquidAurora";
 import styles from "./island.module.css";
 
 interface Props {
@@ -46,12 +47,7 @@ export const ExpandedMediaView: React.FC<Props> = ({ event }) => {
             {event.title || "Không rõ bài hát"}
           </div>
           {event.isPlaying && (
-            <div className={styles.equalizerWave} style={{ height: 11, flexShrink: 0 }}>
-              <span className={styles.equalizerBar} />
-              <span className={styles.equalizerBar} />
-              <span className={styles.equalizerBar} />
-              <span className={styles.equalizerBar} />
-            </div>
+            <LiquidAurora isPlaying={event.isPlaying} width={54} height={12} className={styles.equalizerWave} />
           )}
         </div>
 
