@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { invoke } from "@tauri-apps/api/core";
+import { DockPosition } from "../core/types";
 
 export interface BousSettingsState {
   theme: string;
@@ -18,6 +19,9 @@ export interface BousSettingsState {
   island_name: string;
   name_display_mode: "default" | "device" | "custom";
   device_name: string;
+  dock_position: DockPosition;
+  island_x_offset: number;
+  island_y_offset: number;
 
   loadSettings: () => Promise<void>;
   updateSettings: (
@@ -91,6 +95,9 @@ export const useSettingsStore = create<BousSettingsState>((set, get) => ({
   island_name: "BousLand",
   name_display_mode: "default",
   device_name: "BousLand",
+  dock_position: "TOP_CENTER",
+  island_x_offset: 0,
+  island_y_offset: 0,
 
   loadSettings: async () => {
     try {
@@ -133,6 +140,9 @@ export const useSettingsStore = create<BousSettingsState>((set, get) => ({
           island_name: data.island_name ?? "BousLand",
           name_display_mode: data.name_display_mode ?? "default",
           device_name: devName,
+          dock_position: data.dock_position ?? "TOP_CENTER",
+          island_x_offset: data.island_x_offset ?? 0,
+          island_y_offset: data.island_y_offset ?? 0,
           enabled_modules: {
             volume: true,
             media: true,
@@ -187,6 +197,9 @@ export const useSettingsStore = create<BousSettingsState>((set, get) => ({
           enabled_modules: state.enabled_modules,
           island_name: state.island_name,
           name_display_mode: state.name_display_mode,
+          dock_position: state.dock_position,
+          island_x_offset: state.island_x_offset,
+          island_y_offset: state.island_y_offset,
         },
       });
     } catch (err) {

@@ -8,6 +8,8 @@ export type IslandState =
   | "QUICK_SHELF"
   | "SCRATCHPAD";
 
+export type DockPosition = "TOP_CENTER" | "TOP_LEFT" | "TOP_RIGHT" | "LEFT" | "RIGHT";
+
 export type EventPriority = "CRITICAL" | "HIGH" | "NORMAL" | "LOW";
 
 export interface BaseEvent {

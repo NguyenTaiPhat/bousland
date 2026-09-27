@@ -62,6 +62,9 @@ interface IslandStoreState {
 let lastSyncedDimensions = { width: 0, height: 0 };
 let shrinkTimer: ReturnType<typeof setTimeout> | null = null;
 
+import { useSettingsStore } from "./settingsStore";
+import { DockPosition } from "../core/types";
+
 export const STATE_DIMENSIONS: Record<IslandState, { width: number; height: number }> = {
   COMPACT: { width: 360, height: 60 },
   EXPANDED: { width: 410, height: 110 },
@@ -73,16 +76,39 @@ export const STATE_DIMENSIONS: Record<IslandState, { width: number; height: numb
   SCRATCHPAD: { width: 500, height: 480 },
 };
 
-export async function syncWindowCanvas(state?: IslandState) {
+export const STATE_DIMENSIONS_VERTICAL: Record<IslandState, { width: number; height: number }> = {
+  COMPACT: { width: 60, height: 360 },
+  EXPANDED: { width: 110, height: 410 },
+  CONTROL_CENTER: { width: 480, height: 630 },
+  COMMAND_BAR: { width: 580, height: 420 },
+  SETTINGS: { width: 660, height: 540 },
+  CLIPBOARD_HISTORY: { width: 540, height: 500 },
+  QUICK_SHELF: { width: 520, height: 460 },
+  SCRATCHPAD: { width: 500, height: 480 },
+};
+
+export async function syncWindowCanvas(
+  state?: IslandState,
+  dockPositionOverride?: DockPosition,
+  offsetXOverride?: number,
+  offsetYOverride?: number
+) {
   try {
     const s = useIslandStore.getState();
+    const settings = useSettingsStore.getState();
     const currentState = state ?? s.islandState;
+    const dock = dockPositionOverride ?? settings.dock_position;
+    const ox = offsetXOverride ?? settings.island_x_offset;
+    const oy = offsetYOverride ?? settings.island_y_offset;
+    const isVertical = dock === "LEFT" || dock === "RIGHT";
+    const dimTable = isVertical ? STATE_DIMENSIONS_VERTICAL : STATE_DIMENSIONS;
+
     let dim: { width: number; height: number };
 
     if (!s.isVisible) {
-      dim = { width: 70, height: 16 };
+      dim = isVertical ? { width: 16, height: 70 } : { width: 70, height: 16 };
     } else {
-      dim = STATE_DIMENSIONS[currentState] || { width: 360, height: 60 };
+      dim = dimTable[currentState] || (isVertical ? { width: 60, height: 360 } : { width: 360, height: 60 });
     }
 
     if (dim.width === lastSyncedDimensions.width && dim.height === lastSyncedDimensions.height) {
@@ -98,20 +124,30 @@ export async function syncWindowCanvas(state?: IslandState) {
       (lastSyncedDimensions.width > 0 && dim.width < lastSyncedDimensions.width) ||
       (lastSyncedDimensions.height > 0 && dim.height < lastSyncedDimensions.height);
 
+    const callIpc = async (w: number, h: number) => {
+      try {
+        await invoke("resize_island_canvas", {
+          width: w,
+          height: h,
+          dockPosition: dock,
+          offsetX: ox,
+          offsetY: oy,
+        });
+      } catch {
+        // ignore
+      }
+    };
+
     if (isShrinking) {
       // Khi thu nhỏ: Chờ 220ms để animation mượt mà của React/Framer Motion hoàn tất, tránh bị cửa sổ hệ điều hành cắt cụt
       shrinkTimer = setTimeout(async () => {
         lastSyncedDimensions = dim;
-        try {
-          await invoke("resize_island_canvas", { width: dim.width, height: dim.height });
-        } catch {
-          // ignore
-        }
+        await callIpc(dim.width, dim.height);
       }, 220);
     } else {
       // Khi mở rộng: Resize ngay lập tức để container có đủ không gian hiển thị animation
       lastSyncedDimensions = dim;
-      await invoke("resize_island_canvas", { width: dim.width, height: dim.height });
+      await callIpc(dim.width, dim.height);
     }
   } catch (err) {
     console.debug("[IslandStore] Window resize IPC not available:", err);
