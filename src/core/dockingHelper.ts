@@ -80,3 +80,20 @@ export function getContactingBorderStyle(dock: DockPosition): Record<string, str
       return {};
   }
 }
+
+export function getTransformOriginForDock(dock: DockPosition): string {
+  switch (dock) {
+    case "LEFT":
+      return "left center";
+    case "RIGHT":
+      return "right center";
+    case "TOP_LEFT":
+      return "top left";
+    case "TOP_RIGHT":
+      return "top right";
+    case "TOP_CENTER":
+    default:
+      return "top center";
+  }
+}
+
