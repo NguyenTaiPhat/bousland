@@ -8,6 +8,7 @@ import { useSettingsStore } from "../../stores/settingsStore";
 import { getBorderRadiusForDock, getContactingBorderStyle } from "../../core/dockingHelper";
 import { resolveAuraState, getAuraBoxShadow } from "../../core/auraHelper";
 import { extractDominantColor } from "../../utils/colorExtractor";
+import { calculateJellyScale, computeNormalizedVelocity } from "../../core/physicsHelper";
 import { CompactView } from "./CompactView";
 import { VerticalCompactView } from "./VerticalCompactView";
 import { ExpandedVolumeView } from "./ExpandedVolumeView";
@@ -27,6 +28,7 @@ export const Island: React.FC = () => {
   const { handleMouseEnter, handleMouseLeave } = useIdleAutoHide();
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [isDraggingWindow, setIsDraggingWindow] = useState(false);
+  const [jellyScale, setJellyScale] = useState({ scaleX: 1, scaleY: 1 });
 
   const isExpanded = islandState === "EXPANDED" && activeEvent !== null;
   const isVertical = dock_position === "LEFT" || dock_position === "RIGHT";
@@ -77,6 +79,8 @@ export const Island: React.FC = () => {
     let moved = false;
     let initialWinX = 0;
     let initialWinY = 0;
+    let lastTime = performance.now();
+    let lastMovePos = isVertical ? startY : startX;
 
     invoke<[number, number]>("get_window_position")
       .then(([wx, wy]) => {
@@ -95,6 +99,18 @@ export const Island: React.FC = () => {
       }
 
       if (moved) {
+        const now = performance.now();
+        const dt = Math.max(0.001, (now - lastTime) / 1000);
+        lastTime = now;
+
+        const currentPos = isVertical ? moveEvent.screenY : moveEvent.screenX;
+        const deltaPos = currentPos - lastMovePos;
+        lastMovePos = currentPos;
+
+        const velocity = computeNormalizedVelocity(deltaPos, dt);
+        const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        setJellyScale(calculateJellyScale(velocity, isVertical ? "vertical" : "horizontal", prefersReduced));
+
         const screenW = window.screen.availWidth || 1920;
         const screenH = window.screen.availHeight || 1080;
 
@@ -123,6 +139,7 @@ export const Island: React.FC = () => {
     const onMouseUp = (upEvent: MouseEvent) => {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
+      setJellyScale({ scaleX: 1, scaleY: 1 });
 
       if (moved) {
         setIsDraggingWindow(false);
@@ -277,8 +294,8 @@ export const Island: React.FC = () => {
             animate={{
               y: 0,
               opacity: 1,
-              scaleX: 1,
-              scaleY: 1,
+              scaleX: isDraggingWindow ? jellyScale.scaleX : 1,
+              scaleY: isDraggingWindow ? jellyScale.scaleY : 1,
               filter: "blur(0px)",
               scale: isDraggingOver ? 1.05 : 1,
               width: targetWidth,
@@ -307,9 +324,9 @@ export const Island: React.FC = () => {
             }}
             transition={{
               type: "spring",
-              stiffness: 380,
-              damping: 28,
-              mass: 0.55,
+              stiffness: 450,
+              damping: 22,
+              mass: 0.5,
             }}
             title="BousLand - Nhấp để mở Trung tâm điều khiển, chuột phải để ẩn"
           >
