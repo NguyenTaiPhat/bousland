@@ -87,11 +87,24 @@ const ACCENT_COLORS = [
   { id: "#fb7185", name: "Hồng Hoàng Hôn" },
 ];
 
+const TAB_ORDER: TabId[] = ["general", "behavior", "modules", "shortcuts", "privacy", "about"];
+
+const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
+  { id: "general", label: "Cài đặt chung", icon: <Sliders size={14} /> },
+  { id: "behavior", label: "Hành vi", icon: <Monitor size={14} /> },
+  { id: "modules", label: "Mô-đun", icon: <Layers size={14} /> },
+  { id: "shortcuts", label: "Phím tắt", icon: <Keyboard size={14} /> },
+  { id: "privacy", label: "Bảo mật", icon: <Shield size={14} /> },
+  { id: "about", label: "Giới thiệu", icon: <Info size={14} /> },
+];
+
 export const SettingsModal: React.FC = () => {
   const { collapse } = useIslandStore();
   const settings = useSettingsStore();
   const updater = useUpdaterStore();
   const [activeTab, setActiveTab] = useState<TabId>("general");
+  const [prevTab, setPrevTab] = useState<TabId>("general");
+  const direction = TAB_ORDER.indexOf(activeTab) >= TAB_ORDER.indexOf(prevTab) ? 1 : -1;
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
   const [appVersion, setAppVersion] = useState("1.0.6");
@@ -142,64 +155,37 @@ export const SettingsModal: React.FC = () => {
         <div className={styles.contentRow}>
           {/* Sidebar */}
           <div className={styles.navSidebar}>
-            <button
-              className={`${styles.navItem} ${activeTab === "general" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("general")}
-            >
-              <Sliders size={14} />
-              <span>Cài đặt chung</span>
-            </button>
-
-            <button
-              className={`${styles.navItem} ${activeTab === "behavior" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("behavior")}
-            >
-              <Monitor size={14} />
-              <span>Hành vi</span>
-            </button>
-
-            <button
-              className={`${styles.navItem} ${activeTab === "modules" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("modules")}
-            >
-              <Layers size={14} />
-              <span>Mô-đun</span>
-            </button>
-
-            <button
-              className={`${styles.navItem} ${activeTab === "shortcuts" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("shortcuts")}
-            >
-              <Keyboard size={14} />
-              <span>Phím tắt</span>
-            </button>
-
-            <button
-              className={`${styles.navItem} ${activeTab === "privacy" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("privacy")}
-            >
-              <Shield size={14} />
-              <span>Bảo mật</span>
-            </button>
-
-            <button
-              className={`${styles.navItem} ${activeTab === "about" ? styles.navItemActive : ""}`}
-              onClick={() => setActiveTab("about")}
-            >
-              <Info size={14} />
-              <span>Giới thiệu</span>
-            </button>
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                className={`${styles.navItem} ${activeTab === tab.id ? styles.navItemActive : ""}`}
+                onClick={() => {
+                  setPrevTab(activeTab);
+                  setActiveTab(tab.id);
+                }}
+              >
+                {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="activeSettingsTabPill"
+                    className={styles.activePillGlider}
+                    transition={{ type: "spring", stiffness: 480, damping: 34 }}
+                  />
+                )}
+                <span className={styles.navItemIcon}>{tab.icon}</span>
+                <span className={styles.navItemLabel}>{tab.label}</span>
+              </button>
+            ))}
           </div>
 
           {/* Panel content */}
           <div className={styles.panelContent}>
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={activeTab}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.16 }}
+                initial={{ opacity: 0, x: direction * 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -direction * 12 }}
+                transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                 style={{ display: "flex", flexDirection: "column", gap: 16 }}
               >
                 {activeTab === "general" && (
