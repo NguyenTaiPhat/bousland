@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FolderArchive } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
@@ -6,6 +6,8 @@ import { useIslandStore, syncWindowCanvas } from "../../stores/islandStore";
 import { useShelfStore } from "../../stores/shelfStore";
 import { useSettingsStore } from "../../stores/settingsStore";
 import { getBorderRadiusForDock, getContactingBorderStyle } from "../../core/dockingHelper";
+import { resolveAuraState, getAuraBoxShadow } from "../../core/auraHelper";
+import { extractDominantColor } from "../../utils/colorExtractor";
 import { CompactView } from "./CompactView";
 import { VerticalCompactView } from "./VerticalCompactView";
 import { ExpandedVolumeView } from "./ExpandedVolumeView";
@@ -39,6 +41,25 @@ export const Island: React.FC = () => {
 
   const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
   const contactingBorder = getContactingBorderStyle(dock_position);
+
+  const [mediaAuraColor, setMediaAuraColor] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (media.artwork && media.isPlaying) {
+      extractDominantColor(media.artwork).then(setMediaAuraColor);
+    } else {
+      setMediaAuraColor(null);
+    }
+  }, [media.artwork, media.isPlaying]);
+
+  const isScreenshotFlash = activeEvent?.type === "SCREENSHOT_CAPTURED";
+  const auraState = resolveAuraState({
+    isScreenshotFlash,
+    isCharging: battery.charging,
+    isPlaying: media.isPlaying,
+    batteryPct: battery.percentage,
+  });
+  const auraShadow = getAuraBoxShadow(auraState, dock_position, mediaAuraColor);
 
   const handleClick = () => {
     if (islandState === "COMPACT") {
@@ -263,6 +284,7 @@ export const Island: React.FC = () => {
               width: targetWidth,
               height: targetHeight,
               borderRadius: reactiveBorderRadius,
+              boxShadow: auraShadow !== "none" ? auraShadow : undefined,
             }}
             exit={{
               y: -24,
