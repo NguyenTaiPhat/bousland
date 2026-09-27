@@ -3,6 +3,17 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum DockPosition {
+    #[default]
+    TopCenter,
+    TopLeft,
+    TopRight,
+    Left,
+    Right,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct BousSettings {
@@ -20,6 +31,9 @@ pub struct BousSettings {
     pub enabled_modules: HashMap<String, bool>,
     pub island_name: String,
     pub name_display_mode: String, // "default" ("BousLand"), "device" (tên laptop), "custom" (tên tự đặt)
+    pub dock_position: DockPosition,
+    pub island_x_offset: f64,
+    pub island_y_offset: f64,
 }
 
 impl Default for BousSettings {
@@ -53,6 +67,9 @@ impl Default for BousSettings {
             enabled_modules: modules,
             island_name: "BousLand".to_string(),
             name_display_mode: "default".to_string(),
+            dock_position: DockPosition::TopCenter,
+            island_x_offset: 0.0,
+            island_y_offset: 0.0,
         }
     }
 }

@@ -10,8 +10,17 @@ pub struct MonitorInfo {
     pub is_primary: bool,
 }
 
-/// Reposition and resize the island window so it is perfectly centered at the top of the monitor
-pub fn position_island_at_top(window: &WebviewWindow, width: f64, height: f64) -> Result<(), String> {
+use crate::system::config::DockPosition;
+
+/// Reposition and resize the island window based on DockPosition and offsets
+pub fn position_island_window(
+    window: &WebviewWindow,
+    width: f64,
+    height: f64,
+    dock_position: DockPosition,
+    offset_x: f64,
+    offset_y: f64,
+) -> Result<(), String> {
     let monitor = match window.current_monitor().map_err(|e| e.to_string())? {
         Some(m) => m,
         None => match window.primary_monitor().map_err(|e| e.to_string())? {
@@ -26,12 +35,27 @@ pub fn position_island_at_top(window: &WebviewWindow, width: f64, height: f64) -
 
     // Logical monitor dimensions
     let mon_logical_width = mon_size.width as f64 / scale_factor;
+    let mon_logical_height = mon_size.height as f64 / scale_factor;
     let mon_logical_x = mon_pos.x as f64 / scale_factor;
     let mon_logical_y = mon_pos.y as f64 / scale_factor;
 
-    // Center horizontally, position 10px below top edge
-    let target_x = mon_logical_x + (mon_logical_width - width) / 2.0;
-    let target_y = mon_logical_y + 10.0;
+    let (target_x, target_y) = match dock_position {
+        DockPosition::TopLeft => (mon_logical_x, mon_logical_y),
+        DockPosition::TopRight => (mon_logical_x + mon_logical_width - width, mon_logical_y),
+        DockPosition::Left => (
+            mon_logical_x,
+            mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
+        ),
+        DockPosition::Right => (
+            mon_logical_x + mon_logical_width - width,
+            mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
+        ),
+        DockPosition::TopCenter => {
+            let base_x = mon_logical_x + (mon_logical_width - width) / 2.0 + offset_x;
+            let clamped_x = base_x.clamp(mon_logical_x + 8.0, mon_logical_x + mon_logical_width - width - 8.0);
+            (clamped_x, mon_logical_y + 10.0)
+        }
+    };
 
     window
         .set_size(Size::Logical(LogicalSize { width, height }))
@@ -47,13 +71,33 @@ pub fn position_island_at_top(window: &WebviewWindow, width: f64, height: f64) -
     Ok(())
 }
 
+/// Backward compatibility: Reposition and resize the island window centered at top
+pub fn position_island_at_top(window: &WebviewWindow, width: f64, height: f64) -> Result<(), String> {
+    let settings = crate::system::config::load_settings().unwrap_or_default();
+    position_island_window(
+        window,
+        width,
+        height,
+        settings.dock_position,
+        settings.island_x_offset,
+        settings.island_y_offset,
+    )
+}
+
 #[tauri::command]
 pub fn resize_island_canvas(
     window: WebviewWindow,
     width: f64,
     height: f64,
+    dock_position: Option<DockPosition>,
+    offset_x: Option<f64>,
+    offset_y: Option<f64>,
 ) -> Result<(), String> {
-    position_island_at_top(&window, width, height)
+    let settings = crate::system::config::load_settings().unwrap_or_default();
+    let pos = dock_position.unwrap_or(settings.dock_position);
+    let ox = offset_x.unwrap_or(settings.island_x_offset);
+    let oy = offset_y.unwrap_or(settings.island_y_offset);
+    position_island_window(&window, width, height, pos, ox, oy)
 }
 
 #[tauri::command]
