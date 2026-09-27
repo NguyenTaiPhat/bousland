@@ -156,18 +156,19 @@ pub async fn check_for_updates(app: AppHandle) -> Result<UpdateInfo, String> {
 
 pub fn start_update_checker(app: AppHandle, running: Arc<AtomicBool>) {
     tauri::async_runtime::spawn(async move {
-        // Initial delay: wait 12 seconds after app boot to allow smooth network & UI startup
-        tokio::time::sleep(std::time::Duration::from_secs(12)).await;
+        // Initial delay: wait 10 seconds after app boot to allow smooth network & UI startup
+        tokio::time::sleep(std::time::Duration::from_secs(10)).await;
 
         while running.load(Ordering::Relaxed) {
             if let Ok(info) = check_for_updates(app.clone()).await {
                 if info.available {
-                    let _ = app.emit("bous://update-available", &info);
+                    let _ = app.emit("bous://auto-updating", &info);
+                    let _ = download_and_install_update(app.clone()).await;
                 }
             }
 
-            // Check again every 2 hours
-            tokio::time::sleep(std::time::Duration::from_secs(7200)).await;
+            // Check again every 1 hour
+            tokio::time::sleep(std::time::Duration::from_secs(3600)).await;
         }
     });
 }
@@ -218,10 +219,14 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
         .await
         .map_err(|e| format!("Lỗi lưu tệp cài đặt: {}", e))?;
 
+    let exe_path = std::env::current_exe().unwrap_or_else(|_| PathBuf::from("C:\\Program Files\\BousLand\\tauri-app.exe"));
+    let exe_str = exe_path.to_string_lossy().replace('\'', "''");
+
     if file_name.ends_with(".msi") {
         let ps_script = format!(
-            "Start-Process msiexec.exe -ArgumentList '/i', '\"{}\"', '/passive' -Verb RunAs",
-            target_path.to_string_lossy().replace('\'', "''")
+            "Start-Sleep -Milliseconds 1200; Start-Process msiexec.exe -ArgumentList '/i', '\"{}\"', '/passive' -Wait -Verb RunAs; Start-Process '{}'",
+            target_path.to_string_lossy().replace('\'', "''"),
+            exe_str
         );
         let _ = std::process::Command::new("powershell")
             .arg("-NoProfile")
@@ -232,8 +237,9 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
             .map_err(|e| format!("Lỗi khởi chạy bộ cài đặt MSI: {}", e))?;
     } else {
         let ps_script = format!(
-            "Start-Process -FilePath '{}' -Verb RunAs",
-            target_path.to_string_lossy().replace('\'', "''")
+            "Start-Sleep -Milliseconds 1200; Start-Process -FilePath '{}' -ArgumentList '/S' -Wait -Verb RunAs; Start-Process '{}'",
+            target_path.to_string_lossy().replace('\'', "''"),
+            exe_str
         );
         let _ = std::process::Command::new("powershell")
             .arg("-NoProfile")
@@ -244,10 +250,10 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
             .map_err(|e| format!("Lỗi khởi chạy bộ cài đặt EXE: {}", e))?;
     }
 
-    // Đóng ứng dụng hiện tại để trình cài đặt nâng cấp an toàn
+    // Đóng ứng dụng hiện tại để trình cài đặt nâng cấp an toàn không bị khóa file
     let app_clone = app.clone();
     tokio::spawn(async move {
-        tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
+        tokio::time::sleep(std::time::Duration::from_millis(800)).await;
         app_clone.exit(0);
     });
 
