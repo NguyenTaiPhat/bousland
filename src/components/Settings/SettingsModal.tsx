@@ -24,8 +24,9 @@ import {
 import { invoke } from "@tauri-apps/api/core";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSettingsStore } from "../../stores/settingsStore";
-import { useIslandStore } from "../../stores/islandStore";
+import { useIslandStore, syncWindowCanvas } from "../../stores/islandStore";
 import { useUpdaterStore } from "../../stores/updaterStore";
+import { DockPosition } from "../../core/types";
 import { BousLandLogo } from "../Common/BousLandLogo";
 import styles from "./settings.module.css";
 
@@ -476,6 +477,75 @@ export const SettingsModal: React.FC = () => {
                     <span className={styles.slider} />
                   </label>
                 </div>
+
+                <h3 className={styles.sectionTitle} style={{ marginTop: 20 }}>Vị trí & Docking Viền Màn Hình</h3>
+                <div className={styles.settingRow}>
+                  <div className={styles.settingInfo}>
+                    <span className={styles.settingLabel}>Chế độ Docking Viền</span>
+                    <span className={styles.settingDesc}>
+                      Cố định Island vào cạnh trên hoặc cạnh bên màn hình. Nhấn giữ Alt và kéo Island để định vị nhanh.
+                    </span>
+                  </div>
+                </div>
+
+                <div className={styles.dockSelectorGrid}>
+                  {[
+                    { id: "TOP_LEFT", label: "Góc Trái (Top-Left)" },
+                    { id: "TOP_CENTER", label: "Giữa Trên (Top-Center)" },
+                    { id: "TOP_RIGHT", label: "Góc Phải (Top-Right)" },
+                    { id: "LEFT", label: "Cạnh Trái (Dọc)" },
+                    { id: "RIGHT", label: "Cạnh Phải (Dọc)" },
+                  ].map((pos) => (
+                    <button
+                      key={pos.id}
+                      type="button"
+                      className={`${styles.dockButton} ${settings.dock_position === pos.id ? styles.dockButtonActive : ""}`}
+                      onClick={() => {
+                        const newPos = pos.id as DockPosition;
+                        settings.updateSettings({ dock_position: newPos });
+                        syncWindowCanvas(undefined, newPos);
+                      }}
+                    >
+                      {pos.label}
+                    </button>
+                  ))}
+                </div>
+
+                {settings.dock_position === "TOP_CENTER" && (
+                  <div className={styles.settingRow} style={{ marginTop: 12 }}>
+                    <div className={styles.settingInfo}>
+                      <span className={styles.settingLabel}>Độ lệch ngang (Offset X)</span>
+                      <span className={styles.settingDesc}>
+                        Dịch chuyển Island sang trái/phải để tránh che khuất các tab trình duyệt ({settings.island_x_offset}px)
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <input
+                        type="range"
+                        min="-500"
+                        max="500"
+                        step="10"
+                        value={settings.island_x_offset}
+                        onChange={(e) => {
+                          const ox = parseInt(e.target.value, 10);
+                          settings.updateSettings({ island_x_offset: ox });
+                          syncWindowCanvas(undefined, undefined, ox);
+                        }}
+                        style={{ width: 120 }}
+                      />
+                      <button
+                        type="button"
+                        className={styles.resetBtn}
+                        onClick={() => {
+                          settings.updateSettings({ island_x_offset: 0 });
+                          syncWindowCanvas(undefined, undefined, 0);
+                        }}
+                      >
+                        Về giữa
+                      </button>
+                    </div>
+                  </div>
+                )}
               </>
             )}
 

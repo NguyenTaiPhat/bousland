@@ -1,19 +1,5 @@
 import { describe, it, expect } from "vitest";
-
-export function getBorderRadiusForDock(dock: string): string {
-  switch (dock) {
-    case "TOP_LEFT":
-      return "0px 22px 22px 22px";
-    case "TOP_RIGHT":
-      return "22px 0px 22px 22px";
-    case "LEFT":
-      return "0px 22px 22px 0px";
-    case "RIGHT":
-      return "22px 0px 0px 22px";
-    default:
-      return "22px 22px 22px 22px";
-  }
-}
+import { getBorderRadiusForDock } from "../core/dockingHelper";
 
 describe("getBorderRadiusForDock", () => {
   it("gives square top-left for TOP_LEFT", () => {
