@@ -63,6 +63,80 @@
   gap: 12px;
 }
 
+/* Vertical compact view */
+.verticalCompactView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 14px 0;
+  gap: 12px;
+}
+
+.verticalTop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.verticalCenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.verticalBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.verticalText {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.verticalMedia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.verticalArtwork {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.verticalMusicIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background-color: var(--surface-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.verticalVisualizerWrapper {
+  transform: rotate(90deg) scale(0.7);
+}
+
+.verticalCpu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
 .compactBrand {
   display: flex;
   align-items: center;

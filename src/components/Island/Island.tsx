@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FolderArchive } from "lucide-react";
 import { useIslandStore } from "../../stores/islandStore";
 import { useShelfStore } from "../../stores/shelfStore";
+import { useSettingsStore } from "../../stores/settingsStore";
 import { CompactView } from "./CompactView";
+import { VerticalCompactView } from "./VerticalCompactView";
 import { ExpandedVolumeView } from "./ExpandedVolumeView";
 import { ExpandedMediaView } from "./ExpandedMediaView";
 import { ExpandedBatteryView } from "./ExpandedBatteryView";
@@ -14,13 +16,40 @@ import { useIdleAutoHide } from "../../hooks/useIdleAutoHide";
 import styles from "./island.module.css";
 import shelfStyles from "../Shelf/shelf.module.css";
 
+export function getBorderRadiusForDock(dock: string): string {
+  switch (dock) {
+    case "TOP_LEFT":
+      return "0px 22px 22px 22px";
+    case "TOP_RIGHT":
+      return "22px 0px 22px 22px";
+    case "LEFT":
+      return "0px 22px 22px 0px";
+    case "RIGHT":
+      return "22px 0px 0px 22px";
+    default:
+      return "22px 22px 22px 22px";
+  }
+}
+
 export const Island: React.FC = () => {
   const { islandState, activeEvent, isVisible, media, setIslandState, collapse, toggleVisibility } =
     useIslandStore();
+  const { dock_position } = useSettingsStore();
   const { handleMouseEnter, handleMouseLeave } = useIdleAutoHide();
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
   const isExpanded = islandState === "EXPANDED" && activeEvent !== null;
+  const isVertical = dock_position === "LEFT" || dock_position === "RIGHT";
+
+  const targetWidth = isVertical
+    ? (isDraggingOver ? 54 : isExpanded ? 88 : 44)
+    : (isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280);
+
+  const targetHeight = isVertical
+    ? (isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280)
+    : (isDraggingOver ? 54 : isExpanded ? 88 : 44);
+
+  const reactiveBorderRadius = getBorderRadiusForDock(dock_position);
 
   const handleClick = () => {
     if (islandState === "COMPACT") {
@@ -81,9 +110,9 @@ export const Island: React.FC = () => {
               scaleY: 1,
               filter: "blur(0px)",
               scale: isDraggingOver ? 1.05 : 1,
-              width: isDraggingOver ? 340 : isExpanded ? 380 : (media.isPlaying && media.title) ? 330 : 280,
-              height: isDraggingOver ? 54 : isExpanded ? 88 : 44,
-              borderRadius: 22,
+              width: targetWidth,
+              height: targetHeight,
+              borderRadius: reactiveBorderRadius,
             }}
             exit={{
               y: -24,
@@ -124,14 +153,14 @@ export const Island: React.FC = () => {
             <AnimatePresence mode="popLayout">
               {!isExpanded ? (
                 <motion.div
-                  key="compact"
+                  key={isVertical ? "vertical-compact" : "horizontal-compact"}
                   initial={{ opacity: 0, scale: 0.96 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
                   style={{ width: "100%", height: "100%" }}
                 >
-                  <CompactView />
+                  {isVertical ? <VerticalCompactView /> : <CompactView />}
                 </motion.div>
               ) : (
                 <motion.div
