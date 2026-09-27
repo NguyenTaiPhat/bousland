@@ -40,25 +40,22 @@ pub fn position_island_window(
     let mon_logical_y = mon_pos.y as f64 / scale_factor;
 
     let (target_x, target_y) = match dock_position {
-        DockPosition::TopLeft => (
-            mon_logical_x + offset_x,
-            mon_logical_y + offset_y,
-        ),
-        DockPosition::TopRight => (
-            mon_logical_x + mon_logical_width - width + offset_x,
-            mon_logical_y + offset_y,
-        ),
-        DockPosition::Left => (
-            mon_logical_x + offset_x,
-            mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
-        ),
-        DockPosition::Right => (
-            mon_logical_x + mon_logical_width - width + offset_x,
-            mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y,
-        ),
+        DockPosition::TopLeft => (mon_logical_x, mon_logical_y),
+        DockPosition::TopRight => (mon_logical_x + mon_logical_width - width, mon_logical_y),
+        DockPosition::Left => {
+            let base_y = mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y;
+            let clamped_y = base_y.clamp(mon_logical_y, mon_logical_y + mon_logical_height - height);
+            (mon_logical_x, clamped_y)
+        }
+        DockPosition::Right => {
+            let base_y = mon_logical_y + (mon_logical_height - height) / 2.0 + offset_y;
+            let clamped_y = base_y.clamp(mon_logical_y, mon_logical_y + mon_logical_height - height);
+            (mon_logical_x + mon_logical_width - width, clamped_y)
+        }
         DockPosition::TopCenter => {
             let base_x = mon_logical_x + (mon_logical_width - width) / 2.0 + offset_x;
-            (base_x, mon_logical_y + offset_y)
+            let clamped_x = base_x.clamp(mon_logical_x, mon_logical_x + mon_logical_width - width);
+            (clamped_x, mon_logical_y)
         }
     };
 

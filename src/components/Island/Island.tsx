@@ -5,7 +5,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { useIslandStore, syncWindowCanvas } from "../../stores/islandStore";
 import { useShelfStore } from "../../stores/shelfStore";
 import { useSettingsStore } from "../../stores/settingsStore";
-import { DockPosition } from "../../core/types";
 import { getBorderRadiusForDock } from "../../core/dockingHelper";
 import { CompactView } from "./CompactView";
 import { VerticalCompactView } from "./VerticalCompactView";
@@ -74,9 +73,27 @@ export const Island: React.FC = () => {
       }
 
       if (moved) {
+        const screenW = window.screen.availWidth || 1920;
+        const screenH = window.screen.availHeight || 1080;
+
+        let curX = initialWinX;
+        let curY = initialWinY;
+
+        if (dock_position === "LEFT") {
+          curX = 0; // Strictly locked flush to left bezel
+          curY = Math.max(0, Math.min(screenH - targetHeight, initialWinY + dy));
+        } else if (dock_position === "RIGHT") {
+          curX = screenW - targetWidth; // Strictly locked flush to right bezel
+          curY = Math.max(0, Math.min(screenH - targetHeight, initialWinY + dy));
+        } else {
+          // TOP_CENTER, TOP_LEFT, TOP_RIGHT: Strictly locked flush to top bezel
+          curY = 0;
+          curX = Math.max(0, Math.min(screenW - targetWidth, initialWinX + dx));
+        }
+
         invoke("set_window_position", {
-          x: initialWinX + dx,
-          y: initialWinY + dy,
+          x: curX,
+          y: curY,
         }).catch(() => {});
       }
     };
@@ -87,51 +104,72 @@ export const Island: React.FC = () => {
 
       if (moved) {
         setIsDraggingWindow(false);
-        const finalX = initialWinX + (upEvent.screenX - startX);
-        const finalY = initialWinY + (upEvent.screenY - startY);
         const screenW = window.screen.availWidth || 1920;
         const screenH = window.screen.availHeight || 1080;
 
-        const SNAP_THRESHOLD = 50;
-        let newDock: DockPosition = dock_position;
-        let newOx = 0;
-        let newOy = 0;
-
-        if (finalX <= SNAP_THRESHOLD) {
-          newDock = "LEFT";
-          newOx = 0;
-          newOy = Math.round(finalY - (screenH - targetHeight) / 2);
-        } else if (finalX >= screenW - targetWidth - SNAP_THRESHOLD) {
-          newDock = "RIGHT";
-          newOx = 0;
-          newOy = Math.round(finalY - (screenH - targetHeight) / 2);
-        } else if (finalY <= SNAP_THRESHOLD) {
-          if (finalX <= 100) {
-            newDock = "TOP_LEFT";
-            newOx = 0;
-            newOy = 0;
-          } else if (finalX >= screenW - targetWidth - 100) {
-            newDock = "TOP_RIGHT";
-            newOx = 0;
-            newOy = 0;
+        if (dock_position === "LEFT") {
+          const finalY = Math.max(0, Math.min(screenH - targetHeight, initialWinY + (upEvent.screenY - startY)));
+          if (finalY <= 60) {
+            useSettingsStore.getState().updateSettings({
+              dock_position: "TOP_LEFT",
+              island_x_offset: 0,
+              island_y_offset: 0,
+            });
+            syncWindowCanvas(undefined, "TOP_LEFT", 0, 0);
           } else {
-            newDock = "TOP_CENTER";
-            newOx = Math.round(finalX - (screenW - targetWidth) / 2);
-            newOy = 0;
+            const newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            useSettingsStore.getState().updateSettings({
+              dock_position: "LEFT",
+              island_x_offset: 0,
+              island_y_offset: newOy,
+            });
+            syncWindowCanvas(undefined, "LEFT", 0, newOy);
+          }
+        } else if (dock_position === "RIGHT") {
+          const finalY = Math.max(0, Math.min(screenH - targetHeight, initialWinY + (upEvent.screenY - startY)));
+          if (finalY <= 60) {
+            useSettingsStore.getState().updateSettings({
+              dock_position: "TOP_RIGHT",
+              island_x_offset: 0,
+              island_y_offset: 0,
+            });
+            syncWindowCanvas(undefined, "TOP_RIGHT", 0, 0);
+          } else {
+            const newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            useSettingsStore.getState().updateSettings({
+              dock_position: "RIGHT",
+              island_x_offset: 0,
+              island_y_offset: newOy,
+            });
+            syncWindowCanvas(undefined, "RIGHT", 0, newOy);
           }
         } else {
-          // Floating freeform
-          newDock = "TOP_CENTER";
-          newOx = Math.round(finalX - (screenW - targetWidth) / 2);
-          newOy = Math.round(finalY);
+          // TOP_CENTER / TOP_LEFT / TOP_RIGHT
+          const finalX = Math.max(0, Math.min(screenW - targetWidth, initialWinX + (upEvent.screenX - startX)));
+          if (finalX <= 60) {
+            useSettingsStore.getState().updateSettings({
+              dock_position: "TOP_LEFT",
+              island_x_offset: 0,
+              island_y_offset: 0,
+            });
+            syncWindowCanvas(undefined, "TOP_LEFT", 0, 0);
+          } else if (finalX >= screenW - targetWidth - 60) {
+            useSettingsStore.getState().updateSettings({
+              dock_position: "TOP_RIGHT",
+              island_x_offset: 0,
+              island_y_offset: 0,
+            });
+            syncWindowCanvas(undefined, "TOP_RIGHT", 0, 0);
+          } else {
+            const newOx = Math.round(finalX - (screenW - targetWidth) / 2);
+            useSettingsStore.getState().updateSettings({
+              dock_position: "TOP_CENTER",
+              island_x_offset: newOx,
+              island_y_offset: 0,
+            });
+            syncWindowCanvas(undefined, "TOP_CENTER", newOx, 0);
+          }
         }
-
-        useSettingsStore.getState().updateSettings({
-          dock_position: newDock,
-          island_x_offset: newOx,
-          island_y_offset: newOy,
-        });
-        syncWindowCanvas(undefined, newDock, newOx, newOy);
       } else {
         handleClick();
       }
