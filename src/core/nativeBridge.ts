@@ -7,6 +7,7 @@ import { useClipboardStore } from "../stores/clipboardStore";
 import { useSettingsStore, applyThemeToDOM } from "../stores/settingsStore";
 import { useUpdaterStore } from "../stores/updaterStore";
 import { extractDominantColor } from "../utils/colorExtractor";
+import { updateRawAudioBuffer } from "./audioSmoothing";
 import {
   VolumeChangedEvent,
   BatteryChangedEvent,
@@ -387,7 +388,7 @@ export async function setupNativeBridge(): Promise<() => void> {
       "bous://audio-spectrum",
       (event) => {
         if (event.payload?.bands) {
-          useIslandStore.getState().updateSpectrum(event.payload.bands);
+          updateRawAudioBuffer(event.payload.bands);
         }
       }
     );
