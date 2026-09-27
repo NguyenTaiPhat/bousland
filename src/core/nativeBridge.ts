@@ -5,6 +5,7 @@ import { PriorityManager } from "./priorityManager";
 import { useIslandStore } from "../stores/islandStore";
 import { useClipboardStore } from "../stores/clipboardStore";
 import { useSettingsStore, applyThemeToDOM } from "../stores/settingsStore";
+import { useUpdaterStore } from "../stores/updaterStore";
 import { extractDominantColor } from "../utils/colorExtractor";
 import {
   VolumeChangedEvent,
@@ -390,6 +391,22 @@ export async function setupNativeBridge(): Promise<() => void> {
       }
     );
     unlisteners.push(unlistenAudioSpectrum);
+
+    // 12. Listen to auto-update available event & perform proactive check
+    const unlistenUpdateAvailable = await listen<any>("bous://update-available", (event) => {
+      if (event.payload) {
+        useUpdaterStore.setState({
+          status: "update-available",
+          updateInfo: event.payload,
+        });
+      }
+    });
+    unlisteners.push(unlistenUpdateAvailable);
+
+    // Proactively check for updates after 5s
+    setTimeout(() => {
+      useUpdaterStore.getState().checkForUpdates().catch(() => {});
+    }, 5000);
   } catch (err) {
     console.debug("[NativeBridge] Not in Tauri environment or error:", err);
   }

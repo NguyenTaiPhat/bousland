@@ -360,3 +360,26 @@
   font-size: 11px;
   color: var(--text-secondary);
 }
+
+.updatePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(129, 140, 248, 0.3));
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  color: #38bdf8;
+  cursor: pointer;
+  margin-left: 6px;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.updatePill:hover {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.35), rgba(129, 140, 248, 0.45));
+}
+

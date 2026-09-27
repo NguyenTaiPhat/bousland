@@ -1,6 +1,9 @@
 use serde::{Deserialize, Serialize};
+use std::os::windows::process::CommandExt;
 use std::path::PathBuf;
-use tauri::AppHandle;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::Arc;
+use tauri::{AppHandle, Emitter};
 use tauri_plugin_updater::UpdaterExt;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -100,8 +103,8 @@ pub async fn check_for_updates(app: AppHandle) -> Result<UpdateInfo, String> {
                 let download_url = release
                     .assets
                     .iter()
-                    .find(|a| a.name.ends_with(".msi"))
-                    .or_else(|| release.assets.iter().find(|a| a.name.ends_with(".exe")))
+                    .find(|a| a.name.ends_with(".exe"))
+                    .or_else(|| release.assets.iter().find(|a| a.name.ends_with(".msi")))
                     .map(|a| a.browser_download_url.clone())
                     .unwrap_or_else(|| release.html_url.clone());
 
@@ -151,6 +154,24 @@ pub async fn check_for_updates(app: AppHandle) -> Result<UpdateInfo, String> {
     }
 }
 
+pub fn start_update_checker(app: AppHandle, running: Arc<AtomicBool>) {
+    tauri::async_runtime::spawn(async move {
+        // Initial delay: wait 12 seconds after app boot to allow smooth network & UI startup
+        tokio::time::sleep(std::time::Duration::from_secs(12)).await;
+
+        while running.load(Ordering::Relaxed) {
+            if let Ok(info) = check_for_updates(app.clone()).await {
+                if info.available {
+                    let _ = app.emit("bous://update-available", &info);
+                }
+            }
+
+            // Check again every 2 hours
+            tokio::time::sleep(std::time::Duration::from_secs(7200)).await;
+        }
+    });
+}
+
 #[tauri::command]
 pub async fn download_and_install_update(app: AppHandle) -> Result<String, String> {
     // 1. Thử nâng cấp native qua Tauri Plugin Updater nếu có package hợp lệ
@@ -164,14 +185,14 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
         }
     }
 
-    // 2. Fallback: Tải file .msi trực tiếp từ GitHub Releases và chạy msiexec
+    // 2. Fallback: Tải file từ GitHub Releases và khởi chạy với quyền quản trị viên UAC
     let release = fetch_latest_github_release().await.map_err(|e| e.to_string())?;
     let asset = release
         .assets
         .iter()
-        .find(|a| a.name.ends_with(".msi"))
-        .or_else(|| release.assets.iter().find(|a| a.name.ends_with(".exe")))
-        .ok_or_else(|| "Không tìm thấy bộ cài đặt (.msi hoặc .exe) trong bản phát hành mới.".to_string())?;
+        .find(|a| a.name.ends_with(".exe"))
+        .or_else(|| release.assets.iter().find(|a| a.name.ends_with(".msi")))
+        .ok_or_else(|| "Không tìm thấy bộ cài đặt (.exe hoặc .msi) trong bản phát hành mới.".to_string())?;
 
     let file_name = &asset.name;
     let temp_dir = std::env::temp_dir();
@@ -198,14 +219,27 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
         .map_err(|e| format!("Lỗi lưu tệp cài đặt: {}", e))?;
 
     if file_name.ends_with(".msi") {
-        std::process::Command::new("msiexec")
-            .arg("/i")
-            .arg(&target_path)
-            .arg("/passive")
+        let ps_script = format!(
+            "Start-Process msiexec.exe -ArgumentList '/i', '\"{}\"', '/passive' -Verb RunAs",
+            target_path.to_string_lossy().replace('\'', "''")
+        );
+        let _ = std::process::Command::new("powershell")
+            .arg("-NoProfile")
+            .arg("-Command")
+            .arg(ps_script)
+            .creation_flags(0x08000000)
             .spawn()
             .map_err(|e| format!("Lỗi khởi chạy bộ cài đặt MSI: {}", e))?;
     } else {
-        std::process::Command::new(&target_path)
+        let ps_script = format!(
+            "Start-Process -FilePath '{}' -Verb RunAs",
+            target_path.to_string_lossy().replace('\'', "''")
+        );
+        let _ = std::process::Command::new("powershell")
+            .arg("-NoProfile")
+            .arg("-Command")
+            .arg(ps_script)
+            .creation_flags(0x08000000)
             .spawn()
             .map_err(|e| format!("Lỗi khởi chạy bộ cài đặt EXE: {}", e))?;
     }
@@ -213,7 +247,7 @@ pub async fn download_and_install_update(app: AppHandle) -> Result<String, Strin
     // Đóng ứng dụng hiện tại để trình cài đặt nâng cấp an toàn
     let app_clone = app.clone();
     tokio::spawn(async move {
-        tokio::time::sleep(std::time::Duration::from_millis(500)).await;
+        tokio::time::sleep(std::time::Duration::from_millis(1000)).await;
         app_clone.exit(0);
     });
 
@@ -233,4 +267,3 @@ mod tests {
         assert!(!release.assets.is_empty(), "Release assets should not be empty");
     }
 }
-

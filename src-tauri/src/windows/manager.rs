@@ -14,7 +14,10 @@ pub struct MonitorInfo {
 pub fn position_island_at_top(window: &WebviewWindow, width: f64, height: f64) -> Result<(), String> {
     let monitor = match window.current_monitor().map_err(|e| e.to_string())? {
         Some(m) => m,
-        None => return Err("No monitor detected for window".to_string()),
+        None => match window.primary_monitor().map_err(|e| e.to_string())? {
+            Some(pm) => pm,
+            None => return Err("No monitor detected for window".to_string()),
+        },
     };
 
     let scale_factor = monitor.scale_factor();

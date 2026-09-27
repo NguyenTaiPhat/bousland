@@ -1,9 +1,10 @@
 import React from "react";
-import { Battery, BatteryCharging, Cpu, Pin, Music } from "lucide-react";
+import { Battery, BatteryCharging, Cpu, Pin, Music, Download } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIslandStore } from "../../stores/islandStore";
 import { useScratchpadStore } from "../../stores/scratchpadStore";
 import { useSettingsStore } from "../../stores/settingsStore";
+import { useUpdaterStore } from "../../stores/updaterStore";
 import { BousLandLogo } from "../Common/BousLandLogo";
 import { AudioVisualizer } from "./AudioVisualizer";
 import styles from "./island.module.css";
@@ -12,6 +13,7 @@ export const CompactView: React.FC = () => {
   const { battery, media, system } = useIslandStore();
   const { island_name, name_display_mode, device_name } = useSettingsStore();
   const pinnedItem = useScratchpadStore((s) => s.getPinnedItem());
+  const updater = useUpdaterStore();
 
   const displayName = (() => {
     if (name_display_mode === "device") {
@@ -65,17 +67,33 @@ export const CompactView: React.FC = () => {
               <span className={styles.compactMediaTitle}>{media.title}</span>
             </motion.div>
           ) : (
-            <motion.span
-              key={brandKey}
-              className={styles.brandText}
-              title={`BousLand (${displayName})`}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.92 }}
-              transition={{ duration: 0.18, ease: "easeOut" }}
-            >
-              {displayName}
-            </motion.span>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <motion.span
+                key={brandKey}
+                className={styles.brandText}
+                title={`BousLand (${displayName})`}
+                initial={{ opacity: 0, scale: 0.92 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.92 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+              >
+                {displayName}
+              </motion.span>
+              {updater.status === "update-available" && (
+                <button
+                  type="button"
+                  className={styles.updatePill}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    useIslandStore.getState().setIslandState("SETTINGS");
+                  }}
+                  title={`Đã có BousLand v${updater.updateInfo?.latest_version}! Nhấp để cập nhật.`}
+                >
+                  <Download size={10} />
+                  <span>v{updater.updateInfo?.latest_version}</span>
+                </button>
+              )}
+            </div>
           )}
         </AnimatePresence>
       </div>

@@ -128,6 +128,9 @@ pub fn run() {
             system::screenshot::start_screenshot_monitor(handle.clone(), running_clone.clone());
             system::clipboard::start_clipboard_monitor(handle.clone(), running_clone.clone());
 
+            // Start background auto-update checker
+            system::updater::start_update_checker(handle.clone(), running_clone.clone());
+
             // Initialize global shortcuts
             commands::shortcuts::init_shortcuts(&handle);
 
