@@ -27,11 +27,13 @@ describe("applyThemeToDOM", () => {
     applyThemeToDOM("light", "#FFFFFF");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(document.documentElement.style.getPropertyValue("--accent")).toBe("#111827");
+    expect(document.documentElement.style.getPropertyValue("--accent-contrast")).toBe("#FFFFFF");
   });
 
   it("applies snow theme with custom colorful accent unchanged", () => {
     applyThemeToDOM("snow", "#38bdf8");
     expect(document.documentElement.getAttribute("data-theme")).toBe("snow");
     expect(document.documentElement.style.getPropertyValue("--accent")).toBe("#38bdf8");
+    expect(document.documentElement.style.getPropertyValue("--accent-contrast")).toBe("#000000");
   });
 });

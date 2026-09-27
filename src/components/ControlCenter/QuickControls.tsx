@@ -77,7 +77,7 @@ export const QuickControls: React.FC = () => {
   };
 
   const currentVol = volume.muted ? 0 : sliderVal;
-  const sliderGradient = `linear-gradient(to right, #38bdf8 0%, #a78bfa ${currentVol}%, rgba(255, 255, 255, 0.12) ${currentVol}%, rgba(255, 255, 255, 0.12) 100%)`;
+  const sliderGradient = `linear-gradient(to right, #38bdf8 0%, #a78bfa ${currentVol}%, var(--surface-hover) ${currentVol}%, var(--surface-hover) 100%)`;
 
   return (
     <div className={styles.quickControls}>

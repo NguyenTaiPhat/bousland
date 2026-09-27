@@ -223,7 +223,7 @@ input:checked + .slider {
 
 input:checked + .slider::before {
   transform: translateX(16px);
-  background-color: #0D0D0F;
+  background-color: var(--accent-contrast, #0D0D0F);
 }
 
 .shortcutBadge {
@@ -259,7 +259,7 @@ input:checked + .slider::before {
 }
 
 .themeCard:hover {
-  border-color: rgba(255, 255, 255, 0.25);
+  border-color: var(--border-focus);
   background-color: var(--surface-hover);
   transform: translateY(-1px);
 }
@@ -318,7 +318,7 @@ input:checked + .slider::before {
 }
 
 .colorDotSystem {
-  border: 1.5px dashed rgba(255, 255, 255, 0.4);
+  border: 1.5px dashed var(--border-focus);
 }
 
 .rangeInput {
@@ -417,7 +417,7 @@ input:checked + .slider::before {
 
 .addHexButton:hover {
   background-color: var(--accent);
-  color: #0D0D0F;
+  color: var(--accent-contrast, #ffffff);
 }
 
 .favoriteColorsRow {
@@ -564,8 +564,8 @@ input:checked + .slider::before {
   gap: 16px;
   padding: 18px 20px;
   border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, var(--accent-subtle) 100%);
-  border: 1px solid var(--accent-border);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
 }
@@ -733,7 +733,7 @@ input:checked + .slider::before {
   font-weight: 600;
   border-radius: var(--radius-sm);
   background-color: var(--accent);
-  color: #000;
+  color: var(--accent-contrast, #ffffff);
   border: none;
   cursor: pointer;
   display: inline-flex;

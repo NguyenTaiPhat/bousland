@@ -81,7 +81,7 @@
   padding: 10px 16px;
   gap: 8px;
   border-bottom: 1px solid var(--border-subtle);
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: var(--surface-2);
 }
 
 .inputField {
@@ -104,7 +104,7 @@
   font-weight: 500;
   border-radius: var(--radius-sm);
   background-color: var(--accent);
-  color: #ffffff;
+  color: var(--accent-contrast, #ffffff);
   border: none;
   cursor: pointer;
   display: flex;
@@ -132,7 +132,7 @@
   justify-content: space-between;
   padding: 8px 10px;
   border-radius: var(--radius-md);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--surface-2);
   border: 1px solid var(--border-subtle);
   transition: all 0.15s ease;
   gap: 8px;
@@ -140,7 +140,7 @@
 
 .todoItem:hover {
   background-color: var(--surface-hover);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: var(--border);
 }
 
 .todoItem.pinnedItem {
@@ -172,7 +172,7 @@
 .checkCircle.checked {
   background-color: var(--accent);
   border-color: var(--accent);
-  color: #ffffff;
+  color: var(--accent-contrast, #ffffff);
 }
 
 .todoText {

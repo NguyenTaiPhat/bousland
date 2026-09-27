@@ -41,6 +41,18 @@ export interface BousSettingsState {
   setNameDisplayMode: (mode: "default" | "device" | "custom") => Promise<void>;
 }
 
+export function getContrastColor(hex: string): string {
+  const clean = hex.replace("#", "");
+  if (clean.length === 6) {
+    const r = parseInt(clean.substring(0, 2), 16);
+    const g = parseInt(clean.substring(2, 4), 16);
+    const b = parseInt(clean.substring(4, 6), 16);
+    const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+    return yiq >= 150 ? "#000000" : "#FFFFFF";
+  }
+  return "#FFFFFF";
+}
+
 export function applyThemeToDOM(theme: string, accentHex?: string) {
   if (typeof document === "undefined") return;
   document.documentElement.setAttribute("data-theme", theme);
@@ -54,6 +66,10 @@ export function applyThemeToDOM(theme: string, accentHex?: string) {
   if (effectiveAccent && effectiveAccent !== "system") {
     document.documentElement.style.setProperty("--accent", effectiveAccent);
     document.documentElement.style.setProperty("--accent-hover", effectiveAccent);
+    document.documentElement.style.setProperty(
+      "--accent-contrast",
+      getContrastColor(effectiveAccent)
+    );
     document.documentElement.style.setProperty(
       "--accent-subtle",
       `color-mix(in srgb, ${effectiveAccent} 16%, transparent)`

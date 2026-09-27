@@ -11,6 +11,7 @@
   --text-secondary: #8B8B93;
   --text-muted: #5E5E66;
   --accent: #FFFFFF;
+  --accent-contrast: #000000;
   --accent-hover: #E0E0E6;
   --accent-muted: #6E6E78;
   --accent-subtle: color-mix(in srgb, var(--accent) 16%, transparent);
@@ -99,38 +100,50 @@
 
 /* 5. Pure Ceramic (Trắng sứ tối giản hiện đại) */
 [data-theme="light"] {
-  --bg-color: #F8F9FA;
+  --bg-color: #F8FAFC;
   --surface: #FFFFFF;
-  --surface-2: #F3F4F6;
-  --surface-hover: #E5E7EB;
-  --surface-active: #D1D5DB;
-  --border: rgba(0, 0, 0, 0.08);
-  --border-subtle: rgba(0, 0, 0, 0.04);
-  --border-focus: rgba(0, 0, 0, 0.20);
-  --text-primary: #111827;
-  --text-secondary: #4B5563;
-  --text-muted: #9CA3AF;
-  --shadow-island: 0 8px 24px rgba(0, 0, 0, 0.10), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --surface-2: #F8FAFC;
+  --surface-hover: #F1F5F9;
+  --surface-active: #E2E8F0;
+  --border: rgba(0, 0, 0, 0.10);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-focus: rgba(0, 0, 0, 0.22);
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --accent: #0F172A;
+  --accent-hover: #1E293B;
+  --accent-contrast: #FFFFFF;
+  --accent-subtle: rgba(15, 23, 42, 0.08);
+  --accent-border: rgba(15, 23, 42, 0.22);
+  --accent-glow: rgba(15, 23, 42, 0.12);
+  --shadow-island: 0 10px 30px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   --shadow-glow: 0 0 14px rgba(0, 0, 0, 0.06);
   --glass-blur: none;
 }
 
-/* 6. Frosted Snow (Kính mờ băng tuyết Fluent trong suốt) */
+/* 6. Frosted Snow (Kính mờ băng tuyết Fluent) */
 [data-theme="snow"] {
-  --bg-color: rgba(240, 244, 248, 0.7);
-  --surface: rgba(255, 255, 255, 0.84);
-  --surface-2: rgba(243, 244, 246, 0.88);
-  --surface-hover: rgba(229, 231, 235, 0.92);
-  --surface-active: rgba(209, 213, 219, 0.96);
-  --border: rgba(255, 255, 255, 0.85);
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-focus: rgba(59, 130, 246, 0.40);
-  --text-primary: #0F172A;
-  --text-secondary: #334155;
+  --bg-color: #F0F9FF;
+  --surface: #FFFFFF;
+  --surface-2: #F0F9FF;
+  --surface-hover: #E0F2FE;
+  --surface-active: #BAE6FD;
+  --border: rgba(14, 165, 233, 0.20);
+  --border-subtle: rgba(0, 0, 0, 0.05);
+  --border-focus: #0284C7;
+  --text-primary: #0C4A6E;
+  --text-secondary: #0369A1;
   --text-muted: #64748B;
-  --shadow-island: 0 10px 28px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --shadow-glow: 0 0 16px rgba(186, 230, 253, 0.4);
-  --glass-blur: blur(20px);
+  --accent: #0284C7;
+  --accent-hover: #0369A1;
+  --accent-contrast: #FFFFFF;
+  --accent-subtle: rgba(2, 132, 199, 0.10);
+  --accent-border: rgba(2, 132, 199, 0.28);
+  --accent-glow: rgba(2, 132, 199, 0.18);
+  --shadow-island: 0 12px 32px rgba(14, 165, 233, 0.14), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-card: 0 2px 8px rgba(14, 165, 233, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --shadow-glow: 0 0 16px rgba(186, 230, 253, 0.35);
+  --glass-blur: none;
 }

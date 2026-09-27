@@ -151,7 +151,7 @@
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-hover);
 }
 
 .metricValueRow {
@@ -172,7 +172,7 @@
 .metricStatusPill {
   font-size: 10px;
   font-weight: 600;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-hover);
   padding: 2px 6px;
   border-radius: var(--radius-full);
 }
@@ -368,7 +368,7 @@
   align-items: center;
   gap: 10px;
   padding: 4px 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-hover);
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
 }
