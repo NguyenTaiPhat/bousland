@@ -4,6 +4,7 @@ import { eventBus } from "./eventBus";
 import { PriorityManager } from "./priorityManager";
 import { useIslandStore, syncWindowCanvas } from "../stores/islandStore";
 import { useClipboardStore } from "../stores/clipboardStore";
+import { useShelfStore } from "../stores/shelfStore";
 import { useSettingsStore, applyThemeToDOM } from "../stores/settingsStore";
 import { useUpdaterStore } from "../stores/updaterStore";
 import { extractDominantColor } from "../utils/colorExtractor";
@@ -404,6 +405,31 @@ export async function setupNativeBridge(): Promise<() => void> {
       }
     });
     unlisteners.push(unlistenUpdateAvailable);
+
+    // 13. Listen to Native File Drag & Drop (Quick Shelf)
+    try {
+      const { getCurrentWebview } = await import("@tauri-apps/api/webview");
+      const unlistenDragDrop = await getCurrentWebview().onDragDropEvent((event) => {
+        if (event.payload.type === "enter" || event.payload.type === "over") {
+          useShelfStore.getState().setIsDraggingOver(true);
+        } else if (event.payload.type === "drop") {
+          useShelfStore.getState().setIsDraggingOver(false);
+          const paths = event.payload.paths;
+          if (paths && paths.length > 0) {
+            useShelfStore.getState().addPaths(paths);
+            const currentState = useIslandStore.getState().islandState;
+            if (currentState !== "QUICK_SHELF") {
+              useIslandStore.getState().setIslandState("QUICK_SHELF");
+            }
+          }
+        } else if (event.payload.type === "leave") {
+          useShelfStore.getState().setIsDraggingOver(false);
+        }
+      });
+      unlisteners.push(unlistenDragDrop);
+    } catch (dropErr) {
+      console.debug("[NativeBridge] onDragDropEvent listener initialization error:", dropErr);
+    }
 
     // Proactively check for updates after 5s
     setTimeout(() => {

@@ -92,6 +92,7 @@ pub fn run() {
             system::file_actions::compress_to_zip,
             system::file_actions::compute_file_hash,
             system::file_actions::copy_file_base64,
+            system::file_actions::get_file_metadata,
         ])
         .setup(move |app| {
             let handle = app.handle().clone();

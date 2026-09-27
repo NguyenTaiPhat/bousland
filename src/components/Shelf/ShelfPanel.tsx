@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   FolderArchive,
   Copy,
@@ -11,6 +11,7 @@ import {
   FolderOpen,
   ShieldCheck,
   Binary,
+  Plus,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { invoke } from "@tauri-apps/api/core";
@@ -25,8 +26,13 @@ export const ShelfPanel: React.FC = () => {
   const { collapse } = useIslandStore();
   const { dock_position } = useSettingsStore();
   const origin = getTransformOriginForDock(dock_position);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const {
     files,
+    isDraggingOver,
+    setIsDraggingOver,
+    addFiles,
+    addPaths,
     removeFile,
     clearShelf,
     copyFilePath,
@@ -53,6 +59,46 @@ export const ShelfPanel: React.FC = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [collapse]);
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const fileList = Array.from(e.target.files);
+      const paths = fileList.map((f: any) => f.path).filter(Boolean);
+      if (paths.length > 0) {
+        addPaths(paths);
+      } else {
+        addFiles(fileList);
+      }
+      e.target.value = "";
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingOver(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const fileList = Array.from(e.dataTransfer.files);
+      const paths = fileList.map((f: any) => f.path).filter(Boolean);
+      if (paths.length > 0) {
+        addPaths(paths);
+      } else {
+        addFiles(fileList);
+      }
+    }
+  };
 
   const handleCopyPath = async (item: ShelfFileItem) => {
     await copyFilePath(item.path);
@@ -106,14 +152,31 @@ export const ShelfPanel: React.FC = () => {
 
   return (
     <div className={styles.shelfWrapper}>
+      <input
+        type="file"
+        multiple
+        ref={fileInputRef}
+        onChange={handleFileInputChange}
+        style={{ display: "none" }}
+      />
       <motion.div
         className={styles.shelfContainer}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ type: "spring", stiffness: 380, damping: 28, mass: 0.6 }}
-        style={{ transformOrigin: origin }}
+        style={{ transformOrigin: origin, position: "relative" }}
       >
+        {isDraggingOver && (
+          <div className={styles.dropZoneOverlay}>
+            <FolderArchive size={24} color="var(--accent)" />
+            <span>Thả tệp vào đây để ghim vào Quick Shelf</span>
+          </div>
+        )}
+
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerLeft}>
@@ -124,6 +187,16 @@ export const ShelfPanel: React.FC = () => {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className={styles.addFileHeaderBtn}
+              title="Chọn tệp từ máy tính để ghim"
+            >
+              <Plus size={12} />
+              <span>Thêm tệp</span>
+            </button>
+
             {files.length > 0 && (
               <button
                 onClick={clearShelf}
@@ -147,11 +220,19 @@ export const ShelfPanel: React.FC = () => {
         <div className={styles.fileList}>
           {files.length === 0 ? (
             <div className={styles.emptyShelf}>
-              <FolderArchive size={28} color="var(--text-muted)" />
-              <span>Chưa có tệp nào trên Shelf</span>
+              <FolderArchive size={32} color="var(--text-muted)" />
+              <span style={{ fontWeight: 600, marginTop: 4 }}>Chưa có tệp nào trên Shelf</span>
               <span style={{ fontSize: 11, color: "var(--text-muted)" }}>
                 Kéo bất kỳ tệp nào từ máy tính vào Island để ghim tạm
               </span>
+              <button
+                type="button"
+                className={styles.emptyAddBtn}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <Plus size={14} />
+                <span>Chọn tệp từ máy tính</span>
+              </button>
             </div>
           ) : (
             <AnimatePresence>

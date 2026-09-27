@@ -18,6 +18,7 @@ interface ShelfStoreState {
   // Actions
   setIsDraggingOver: (dragging: boolean) => void;
   addFiles: (files: File[]) => void;
+  addPaths: (paths: string[]) => Promise<void>;
   removeFile: (id: string) => void;
   clearShelf: () => void;
   copyFilePath: (path: string) => Promise<void>;
@@ -55,9 +56,53 @@ export const useShelfStore = create<ShelfStoreState>((set) => ({
     });
 
     set((state) => ({
-      files: [...items, ...state.files].slice(0, 10), // keep up to 10 recent files
+      files: [...items, ...state.files].slice(0, 30),
       isDraggingOver: false,
     }));
+  },
+
+  addPaths: async (paths: string[]) => {
+    const newItems: ShelfFileItem[] = [];
+    for (const path of paths) {
+      if (!path) continue;
+      try {
+        const info = await invoke<{
+          name: string;
+          path: string;
+          size: number;
+          is_dir: boolean;
+          extension: string;
+        }>("get_file_metadata", { path });
+
+        newItems.push({
+          id: `shelf-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          name: info.name,
+          path: info.path,
+          size: info.size,
+          type: info.is_dir ? "folder" : info.extension,
+          timestamp: Date.now(),
+        });
+      } catch {
+        const name = path.split(/[/\\]/).pop() || path;
+        newItems.push({
+          id: `shelf-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          name,
+          path,
+          size: 0,
+          type: "",
+          timestamp: Date.now(),
+        });
+      }
+    }
+
+    set((state) => {
+      const existingPaths = new Set(state.files.map((f) => f.path));
+      const filtered = newItems.filter((item) => !existingPaths.has(item.path));
+      return {
+        files: [...filtered, ...state.files].slice(0, 30),
+        isDraggingOver: false,
+      };
+    });
   },
 
   removeFile: (id) => {

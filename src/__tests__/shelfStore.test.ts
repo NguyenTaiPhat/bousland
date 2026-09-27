@@ -1,5 +1,20 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { useShelfStore, formatFileSize } from "../stores/shelfStore";
+
+vi.mock("@tauri-apps/api/core", () => ({
+  invoke: vi.fn(async (cmd: string, args: any) => {
+    if (cmd === "get_file_metadata") {
+      return {
+        name: "test-report.pdf",
+        path: args.path,
+        size: 1048576,
+        is_dir: false,
+        extension: "pdf",
+      };
+    }
+    return null;
+  }),
+}));
 
 describe("shelfStore", () => {
   beforeEach(() => {
@@ -29,5 +44,15 @@ describe("shelfStore", () => {
     // Clear
     useShelfStore.getState().clearShelf();
     expect(useShelfStore.getState().files.length).toBe(0);
+  });
+
+  it("should add paths via addPaths with metadata", async () => {
+    await useShelfStore.getState().addPaths(["C:\\Documents\\test-report.pdf"]);
+    const files = useShelfStore.getState().files;
+    expect(files.length).toBe(1);
+    expect(files[0].name).toBe("test-report.pdf");
+    expect(files[0].path).toBe("C:\\Documents\\test-report.pdf");
+    expect(files[0].size).toBe(1048576);
+    expect(files[0].type).toBe("pdf");
   });
 });

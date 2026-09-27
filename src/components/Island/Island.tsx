@@ -242,7 +242,13 @@ export const Island: React.FC = () => {
     e.stopPropagation();
     setIsDraggingOver(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      useShelfStore.getState().addFiles(Array.from(e.dataTransfer.files));
+      const files = Array.from(e.dataTransfer.files);
+      const paths = files.map((f: any) => f.path).filter(Boolean);
+      if (paths.length > 0) {
+        useShelfStore.getState().addPaths(paths);
+      } else {
+        useShelfStore.getState().addFiles(files);
+      }
       setIslandState("QUICK_SHELF");
     }
   };

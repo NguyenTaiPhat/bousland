@@ -111,6 +111,43 @@ pub fn copy_file_base64(path: String) -> Result<String, String> {
     Ok(format!("data:{};base64,{}", mime, b64))
 }
 
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
+pub struct ShelfFileInfo {
+    pub name: String,
+    pub path: String,
+    pub size: u64,
+    pub is_dir: bool,
+    pub extension: String,
+}
+
+#[tauri::command]
+pub fn get_file_metadata(path: String) -> Result<ShelfFileInfo, String> {
+    let p = Path::new(&path);
+    if !p.exists() {
+        return Err("Tệp hoặc thư mục không tồn tại.".to_string());
+    }
+
+    let metadata = std::fs::metadata(p).map_err(|e| format!("Lỗi đọc metadata: {}", e))?;
+    let name = p
+        .file_name()
+        .and_then(|s| s.to_str())
+        .unwrap_or(&path)
+        .to_string();
+    let ext = p
+        .extension()
+        .and_then(|s| s.to_str())
+        .unwrap_or("")
+        .to_lowercase();
+
+    Ok(ShelfFileInfo {
+        name,
+        path,
+        size: metadata.len(),
+        is_dir: metadata.is_dir(),
+        extension: ext,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -130,6 +167,21 @@ mod tests {
         assert!(res.is_ok());
         let val = res.unwrap();
         assert!(val.starts_with("data:text/plain;base64,"));
+        let _ = std::fs::remove_file(file_path);
+    }
+
+    #[test]
+    fn test_get_file_metadata() {
+        let temp_dir = std::env::temp_dir();
+        let file_path = temp_dir.join("bous_meta_test.txt");
+        let _ = std::fs::write(&file_path, "12345");
+        let res = get_file_metadata(file_path.to_string_lossy().to_string());
+        assert!(res.is_ok());
+        let info = res.unwrap();
+        assert_eq!(info.name, "bous_meta_test.txt");
+        assert_eq!(info.size, 5);
+        assert_eq!(info.extension, "txt");
+        assert!(!info.is_dir);
         let _ = std::fs::remove_file(file_path);
     }
 }
