@@ -50,6 +50,7 @@ function initSimulator() {
         simIsland.style.width = "300px";
         simIsland.style.height = "44px";
         simIsland.style.borderColor = "rgba(255, 255, 255, 0.16)";
+        simIsland.style.boxShadow = "";
         views.compact.classList.add("active");
         break;
 
@@ -57,6 +58,7 @@ function initSimulator() {
         simIsland.style.width = "380px";
         simIsland.style.height = "84px";
         simIsland.style.borderColor = "rgba(255, 255, 255, 0.25)";
+        simIsland.style.boxShadow = "0 10px 30px rgba(167, 139, 250, 0.45), 0 0 20px rgba(56, 189, 248, 0.35)";
         views.media.classList.add("active");
         break;
 
@@ -64,6 +66,7 @@ function initSimulator() {
         simIsland.style.width = "370px";
         simIsland.style.height = "52px";
         simIsland.style.borderColor = "rgba(255, 255, 255, 0.25)";
+        simIsland.style.boxShadow = "";
         if (simVolFill && simVolText) {
           simVolFill.style.width = "75%";
           simVolText.textContent = "75%";
@@ -75,6 +78,7 @@ function initSimulator() {
         simIsland.style.width = "360px";
         simIsland.style.height = "64px";
         simIsland.style.borderColor = "rgba(255, 69, 58, 0.6)";
+        simIsland.style.boxShadow = "0 8px 24px rgba(255, 69, 58, 0.45)";
         views.alert.classList.add("active");
         break;
 
@@ -82,6 +86,7 @@ function initSimulator() {
         simIsland.style.width = "365px";
         simIsland.style.height = "44px";
         simIsland.style.borderColor = "rgba(52, 199, 89, 0.7)";
+        simIsland.style.boxShadow = "0 8px 24px rgba(52, 199, 89, 0.5)";
         views.compact.classList.add("active");
         if (simBatBadge) {
           simBatBadge.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="vertical-align:middle;margin-right:3px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>100% Đang sạc';
@@ -92,6 +97,7 @@ function initSimulator() {
             if (views.compact.classList.contains("active")) {
               simIsland.style.width = "300px";
               simIsland.style.borderColor = "rgba(255, 255, 255, 0.16)";
+              simIsland.style.boxShadow = "";
               triggerMorphing();
             }
           }, 3500);
