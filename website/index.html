@@ -144,62 +144,122 @@
       <div class="simulator-box reveal">
         <!-- Interactive Mock Screen -->
         <div class="mock-bezel">
-          <div class="mock-screen">
-            <!-- Simulated Island Element -->
-            <div class="sim-island-container" id="simIsland">
-              <!-- Compact Mode View -->
+          <div class="mock-screen" id="mockScreen">
+            <!-- Simulated Island Element (Defaults to Top Notch Dock) -->
+            <div class="sim-island-container dock-notch" id="simIsland" title="Nhấp để mở / đóng Trung tâm điều khiển">
+              <!-- 1. Compact Mode View -->
               <div class="sim-view sim-view-compact active" id="simViewCompact">
                 <div class="sim-brand">
-                  <img src="assets/logo.svg" alt="" width="18" height="18">
-                  <span class="sim-name" id="simBrandName">BousLand PC</span>
+                  <img src="assets/logo.svg" alt="" width="16" height="16">
+                  <span class="sim-name" id="simBrandName">BousLand</span>
                 </div>
-                <div class="sim-badges">
-                  <span class="sim-badge sim-badge-cpu" id="simCpuBadge">CPU 15%</span>
-                  <span class="sim-badge sim-badge-bat" id="simBatBadge">95%</span>
-                </div>
-              </div>
-
-              <!-- Media Expanded View -->
-              <div class="sim-view sim-view-media" id="simViewMedia">
-                <div class="sim-media-art">
-                  <div class="sim-art-disc"></div>
-                </div>
-                <div class="sim-media-meta">
-                  <span class="sim-media-title">Starboy</span>
-                  <span class="sim-media-artist">The Weeknd • Spotify</span>
-                  <div class="sim-media-bar">
-                    <div class="sim-media-prog"></div>
+                <div class="sim-compact-indicators">
+                  <div class="sim-compact-item" title="Tải CPU: 15%">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                      <rect x="9" y="9" width="6" height="6"></rect>
+                      <line x1="9" y1="1" x2="9" y2="4"></line>
+                      <line x1="15" y1="1" x2="15" y2="4"></line>
+                      <line x1="9" y1="20" x2="9" y2="23"></line>
+                      <line x1="15" y1="20" x2="15" y2="23"></line>
+                      <line x1="20" y1="9" x2="23" y2="9"></line>
+                      <line x1="20" y1="14" x2="23" y2="14"></line>
+                      <line x1="1" y1="9" x2="4" y2="9"></line>
+                      <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                    <span id="simCpuText">15%</span>
+                  </div>
+                  <div class="sim-compact-item" id="simCompactBat" title="Pin: 95%">
+                    <svg id="simBatIconCompact" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="6" width="18" height="12" rx="2"></rect>
+                      <line x1="23" y1="13" x2="23" y2="11"></line>
+                    </svg>
+                    <span id="simBatText">95%</span>
                   </div>
                 </div>
-                <div class="sim-eq-wave">
-                  <span></span><span></span><span></span><span></span>
+              </div>
+
+              <!-- 2. Media Expanded View (BousLand v1.0.7 Liquid Aurora & Real Controls) -->
+              <div class="sim-view sim-view-media" id="simViewMedia">
+                <div class="sim-media-art">
+                  <div class="sim-art-disc-art"></div>
+                </div>
+                <div class="sim-media-details">
+                  <div class="sim-media-header">
+                    <span class="sim-media-title" id="simSongTitle">Starboy</span>
+                    <!-- Liquid Aurora Wave Canvas -->
+                    <div class="sim-aurora-wrap" title="Sóng Âm Cực Quang (Liquid Aurora)">
+                      <canvas id="simAuroraCanvas" width="56" height="14"></canvas>
+                    </div>
+                  </div>
+                  <span class="sim-media-artist" id="simSongArtist">The Weeknd • Spotify</span>
+                  <div class="sim-media-controls">
+                    <button type="button" class="sim-ctrl-btn" id="simBtnPrev" title="Bài trước">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                        <line x1="5" y1="19" x2="5" y2="5"></line>
+                      </svg>
+                    </button>
+                    <button type="button" class="sim-ctrl-btn sim-ctrl-play" id="simBtnPlay" title="Phát / Tạm dừng">
+                      <svg id="simPlayPauseIcon" width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                        <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                      </svg>
+                    </button>
+                    <button type="button" class="sim-ctrl-btn" id="simBtnNext" title="Bài tiếp theo">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                        <line x1="19" y1="5" x2="19" y2="19"></line>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- Volume Expanded View -->
+              <!-- 3. Volume Expanded View (2-Row Layout Accurate to ExpandedVolumeView) -->
               <div class="sim-view sim-view-volume" id="simViewVolume">
-                <div class="sim-vol-left">
-                  <span class="sim-vol-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="sim-vol-row">
+                  <div class="sim-vol-left">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="simVolIcon">
                       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                     </svg>
-                  </span>
-                  <span class="sim-vol-title">Âm lượng hệ thống</span>
+                    <span class="sim-vol-label">Âm lượng</span>
+                  </div>
+                  <span class="sim-vol-val" id="simVolText">75%</span>
                 </div>
-                <div class="sim-vol-track">
+                <div class="sim-vol-track" id="simVolTrack">
                   <div class="sim-vol-fill" id="simVolFill" style="width: 75%;"></div>
                 </div>
-                <span class="sim-vol-val" id="simVolText">75%</span>
               </div>
 
-              <!-- Alert Expanded View -->
+              <!-- 4. Battery Expanded View (Accurate to ExpandedBatteryView) -->
+              <div class="sim-view sim-view-battery" id="simViewBattery">
+                <div class="sim-battery-icon-wrap">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  </svg>
+                </div>
+                <div class="sim-battery-text">
+                  <span class="sim-battery-title" id="simBatteryTitle">Đang sạc pin</span>
+                  <span class="sim-battery-subtitle" id="simBatterySubtitle">100% dung lượng</span>
+                </div>
+              </div>
+
+              <!-- 5. Alert Expanded View (Accurate to ExpandedSystemAlertView) -->
               <div class="sim-view sim-view-alert" id="simViewAlert">
-                <div class="sim-alert-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                <div class="sim-alert-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF453A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                    <rect x="9" y="9" width="6" height="6"></rect>
+                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                    <line x1="20" y1="14" x2="23" y2="14"></line>
+                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                    <line x1="1" y1="14" x2="4" y2="14"></line>
                   </svg>
                 </div>
                 <div class="sim-alert-meta">
@@ -207,17 +267,71 @@
                   <span class="sim-alert-sub">Hệ thống đang hoạt động với cường độ cao</span>
                 </div>
               </div>
+
+              <!-- 6. Control Center View (Accurate to ControlCenter.tsx) -->
+              <div class="sim-view sim-view-control" id="simViewControl">
+                <div class="sim-cc-header">
+                  <div class="sim-cc-greeting">
+                    <span class="sim-cc-title">Chào buổi sáng</span>
+                    <span class="sim-cc-date">Chủ Nhật, 27 tháng 9</span>
+                  </div>
+                  <span class="sim-cc-clock" id="simCcClock">09:41</span>
+                </div>
+                <div class="sim-cc-metrics">
+                  <div class="sim-metric-card">
+                    <span class="sim-metric-label">CPU LOAD</span>
+                    <span class="sim-metric-val sim-metric-cpu">18%</span>
+                  </div>
+                  <div class="sim-metric-card">
+                    <span class="sim-metric-label">RAM USAGE</span>
+                    <span class="sim-metric-val sim-metric-ram">42%</span>
+                  </div>
+                  <div class="sim-metric-card">
+                    <span class="sim-metric-label">BATTERY</span>
+                    <span class="sim-metric-val sim-metric-bat">95%</span>
+                  </div>
+                </div>
+                <div class="sim-cc-actions">
+                  <div class="sim-action-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Chụp ảnh</span>
+                  </div>
+                  <div class="sim-action-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Khay tạm</span>
+                  </div>
+                  <div class="sim-action-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="3"></circle>
+                      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Cài đặt</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- Simulated Desktop Wallpaper Accent -->
             <div class="sim-screen-content">
-              <span class="sim-screen-hint">Nhấp các nút bên dưới để đổi trạng thái Dynamic Island</span>
+              <span class="sim-screen-hint">Nhấp vào Island để mở Trung tâm điều khiển • Thử các nút hoặc kéo thả bên dưới</span>
             </div>
           </div>
         </div>
 
         <!-- Simulator Buttons Controller -->
         <div class="simulator-controls">
+          <!-- Dock Segmented Toggle -->
+          <div class="sim-dock-toggle" title="Chuyển chế độ Neo sát viền hoặc Tự do">
+            <button type="button" class="sim-dock-btn active" id="btnDockNotch" data-dock="notch">Sát mép trên</button>
+            <button type="button" class="sim-dock-btn" id="btnDockFloat" data-dock="float">Tự do</button>
+          </div>
+
           <button class="sim-btn active" data-action="compact">
             <span class="sim-btn-icon">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -245,6 +359,14 @@
             </span>
             <span>Tăng âm lượng (75%)</span>
           </button>
+          <button class="sim-btn" data-action="battery">
+            <span class="sim-btn-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+            </span>
+            <span>Cắm sạc pin</span>
+          </button>
           <button class="sim-btn" data-action="alert">
             <span class="sim-btn-icon">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -255,13 +377,16 @@
             </span>
             <span>Tải CPU cao</span>
           </button>
-          <button class="sim-btn" data-action="battery">
+          <button class="sim-btn" data-action="control">
             <span class="sim-btn-icon">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
               </svg>
             </span>
-            <span>Cắm sạc pin</span>
+            <span>Trung tâm điều khiển</span>
           </button>
         </div>
       </div>

@@ -359,7 +359,7 @@ body {
 
 .mock-screen {
   background: #FAFAFA;
-  height: 240px;
+  height: 290px;
   border-radius: 12px 12px 0 0;
   position: relative;
   display: flex;
@@ -371,20 +371,37 @@ body {
 
 /* The Simulated Dynamic Island Pill (Solid Jet Black) */
 .sim-island-container {
-  margin-top: 14px;
+  margin-top: 0;
   height: 44px;
-  width: 300px;
-  border-radius: 22px;
+  width: 280px;
+  border-radius: 0 0 22px 22px;
   background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top: none;
   box-shadow: var(--shadow-island);
   display: flex;
   align-items: center;
   overflow: hidden;
   position: relative;
-  transition: width 0.38s var(--spring), height 0.38s var(--spring), border-color 0.25s ease;
+  transition: width 0.38s var(--spring), height 0.38s var(--spring), border-radius 0.38s var(--spring), margin-top 0.38s var(--spring), box-shadow 0.25s ease, border-color 0.25s ease;
   z-index: 2;
   will-change: width, height, transform;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Top Notch Dock (Signature Flush Edge Mode) */
+.sim-island-container.dock-notch {
+  margin-top: 0;
+  border-radius: 0 0 22px 22px;
+  border-top: none;
+}
+
+/* Floating Dock Mode */
+.sim-island-container.dock-float {
+  margin-top: 16px;
+  border-radius: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .sim-island-container.morphing {
@@ -403,7 +420,7 @@ body {
   height: 100%;
   display: none;
   align-items: center;
-  padding: 0 14px;
+  padding: 0 16px;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -412,7 +429,7 @@ body {
   opacity: 1;
 }
 
-/* Compact view inside simulator */
+/* 1. Compact view inside simulator */
 .sim-brand {
   display: flex;
   align-items: center;
@@ -421,177 +438,240 @@ body {
   flex-shrink: 0;
 }
 .sim-name {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
+  letter-spacing: -0.2px;
   color: #FFFFFF;
   white-space: nowrap;
 }
-.sim-badges {
+.sim-compact-indicators {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
   white-space: nowrap;
   flex-shrink: 0;
 }
-.sim-badge {
-  font-size: 10.5px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 980px;
-  white-space: nowrap;
+.sim-compact-item {
+  font-size: 11px;
+  font-weight: 500;
+  color: #A1A1AA;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  flex-shrink: 0;
-  line-height: 1.2;
 }
-.sim-badge-cpu {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-}
-.sim-badge-bat {
-  background: rgba(52, 199, 89, 0.25);
-  color: #34C759;
+.sim-compact-item svg {
+  color: #A1A1AA;
 }
 
-/* Media view */
+/* 2. Media view (BousLand v1.0.7 with Liquid Aurora & Controls) */
+.sim-view-media {
+  padding: 12px 16px;
+  gap: 14px;
+}
 .sim-media-art {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
   background: #1C1C1E;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  overflow: hidden;
 }
-.sim-art-disc {
+.sim-art-disc-art {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #3B82F6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sim-art-disc-art::after {
+  content: "";
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: #FFFFFF;
-  opacity: 0.9;
+  opacity: 0.85;
 }
-.sim-media-meta {
-  margin-left: 12px;
+.sim-media-details {
   display: flex;
   flex-direction: column;
   flex: 1;
   min-width: 0;
+  gap: 2px;
+}
+.sim-media-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 .sim-media-title {
   font-size: 13px;
   font-weight: 600;
   color: #FFFFFF;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sim-aurora-wrap {
+  display: flex;
+  align-items: center;
+  height: 14px;
+  flex-shrink: 0;
 }
 .sim-media-artist {
   font-size: 11px;
   color: #86868B;
-}
-.sim-media-bar {
-  width: 100%;
-  height: 3px;
-  border-radius: 980px;
-  background: rgba(255, 255, 255, 0.16);
-  margin-top: 6px;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
-.sim-media-prog {
-  width: 60%;
-  height: 100%;
-  background: #FFFFFF;
-}
-.sim-eq-wave {
+.sim-media-controls {
   display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 18px;
-  margin-left: 12px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
 }
-.sim-eq-wave span {
-  width: 3px;
-  border-radius: 1.5px;
+.sim-ctrl-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.12s ease;
+}
+.sim-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.12);
+}
+.sim-ctrl-btn:active {
+  transform: scale(0.92);
+}
+.sim-ctrl-play {
   background: #FFFFFF;
-  animation: eqBounce 0.8s ease-in-out infinite alternate;
+  color: #000000;
 }
-.sim-eq-wave span:nth-child(1) { height: 12px; animation-delay: 0.1s; }
-.sim-eq-wave span:nth-child(2) { height: 18px; animation-delay: 0.3s; }
-.sim-eq-wave span:nth-child(3) { height: 8px; animation-delay: 0.2s; }
-.sim-eq-wave span:nth-child(4) { height: 15px; animation-delay: 0.4s; }
-
-@keyframes eqBounce {
-  from { height: 5px; }
-  to { height: 18px; }
+.sim-ctrl-play:hover {
+  background: #EAEAEA;
+  color: #000000;
 }
 
-/* Volume view (Interactive Slider) */
+/* 3. Volume view (2-Row Layout Accurate to ExpandedVolumeView) */
+.sim-view-volume {
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px 18px;
+  gap: 10px;
+}
+.sim-vol-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
 .sim-vol-left {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+}
+.sim-vol-label {
+  font-size: 13px;
+  font-weight: 500;
   color: #FFFFFF;
-  flex-shrink: 0;
+}
+.sim-vol-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #38BDF8;
+  font-variant-numeric: tabular-nums;
 }
 .sim-vol-track {
-  position: relative;
-  flex: 1;
+  width: 100%;
   height: 6px;
   border-radius: 980px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 0 12px;
+  background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
-  transition: background 0.15s ease, height 0.15s ease;
-  user-select: none;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.15s ease, background 0.15s ease;
 }
 .sim-vol-track:hover {
   height: 8px;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.25);
 }
 .sim-vol-fill {
-  position: relative;
   height: 100%;
-  background: #FFFFFF;
   border-radius: 980px;
+  background: linear-gradient(90deg, #94a3b8 0%, #38bdf8 100%);
   transition: width 0.08s ease-out;
   pointer-events: none;
 }
-.sim-vol-fill::after {
-  content: "";
-  position: absolute;
-  right: -4px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+
+/* 4. Battery Expanded view */
+.sim-view-battery {
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
 }
-.sim-vol-val {
-  font-size: 12px;
+.sim-battery-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(52, 199, 89, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sim-battery-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sim-battery-title {
+  font-size: 13px;
   font-weight: 600;
   color: #FFFFFF;
-  min-width: 32px;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
+}
+.sim-battery-subtitle {
+  font-size: 11px;
+  color: #86868B;
 }
 
-/* Alert view */
-.sim-alert-icon {
-  font-size: 20px;
-  margin-right: 10px;
+/* 5. Alert Expanded view */
+.sim-view-alert {
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+.sim-alert-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 69, 58, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 .sim-alert-meta {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 .sim-alert-title {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   color: #FF453A;
 }
@@ -600,12 +680,96 @@ body {
   color: #86868B;
 }
 
+/* 6. Control Center view */
+.sim-view-control {
+  flex-direction: column;
+  padding: 16px 18px;
+  gap: 12px;
+}
+.sim-cc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.sim-cc-greeting {
+  display: flex;
+  flex-direction: column;
+}
+.sim-cc-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+.sim-cc-date {
+  font-size: 10.5px;
+  color: #86868B;
+}
+.sim-cc-clock {
+  font-size: 16px;
+  font-weight: 800;
+  color: #A78BFA;
+  font-variant-numeric: tabular-nums;
+}
+.sim-cc-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+.sim-metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sim-metric-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #86868B;
+}
+.sim-metric-val {
+  font-size: 15px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.sim-metric-cpu { color: #38BDF8; }
+.sim-metric-ram { color: #A78BFA; }
+.sim-metric-bat { color: #34C759; }
+.sim-cc-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+.sim-action-pill {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.sim-action-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
 .sim-screen-content {
   margin-top: auto;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .sim-screen-hint {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--text-secondary);
   background: #FFFFFF;
   padding: 4px 14px;
@@ -625,6 +789,34 @@ body {
   border-top: 1px solid var(--border);
   flex-wrap: wrap;
 }
+
+/* Dock Segmented Pill */
+.sim-dock-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 980px;
+  padding: 3px;
+  margin-right: 6px;
+}
+.sim-dock-btn {
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 980px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.sim-dock-btn.active {
+  background: #000000;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
 .sim-btn {
   display: flex;
   align-items: center;
