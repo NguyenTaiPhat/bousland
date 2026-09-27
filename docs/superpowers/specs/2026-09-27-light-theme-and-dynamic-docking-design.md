@@ -12,34 +12,54 @@
 2. **Nhu cầu giao diện Sáng (Light Theme):** Hiện tại hệ thống có 4 theme đều thuộc gam tối (`dark`, `glass`, `mica`, `titanium`). Cần bổ sung 2 phong cách màu sáng cao cấp: **Trắng Sứ Tối Giản** (Pure Ceramic) và **Kính Mờ Băng Tuyết** (Frosted Snow).
 3. **Cơ chế Docking đa hướng (Corner & Vertical Dock):** 
    - Khi di chuyển Island vào sát góc trên màn hình, Island tự động chuyển sang kiểu góc vuông ôm trọn góc viền (`border-radius: 0` ở góc tiếp xúc).
-   - Khi di chuyển vào mép cạnh trái hoặc phải, Island tự động xoay sang hướng dọc (`vertical`, viên thuốc dựng đứng $44 \times 280\text{px}$) với các thành phần sắp xếp theo cột.
+   - Khi d## 2. Kiến Trúc DockPosition & Định Vị Cửa Sổ (Backend Rust)
 
----
+### 2.1 Kiểu Dữ Liệu Type-Safe `DockPosition`
+Thay thế kiểu `String` tự do bằng `enum` có kiểu dữ liệu chặt chẽ ở cả Backend và Frontend:
 
-## 2. Kiến Trúc DockPosition & Định Vị Cửa Sổ (Backend Rust)
-
-### 2.1 Kiểu dữ liệu Docking
-Trong `src-tauri/src/system/config.rs`:
+**Trong Rust (`src-tauri/src/system/config.rs`):**
 ```rust
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum DockPosition {
+    #[default]
+    TopCenter,
+    TopLeft,
+    TopRight,
+    Left,
+    Right,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct BousSettings {
     // ... các trường hiện tại ...
-    pub dock_position: String, // "TOP_CENTER" | "TOP_LEFT" | "TOP_RIGHT" | "LEFT" | "RIGHT"
+    pub dock_position: DockPosition,
     pub island_x_offset: f64,
     pub island_y_offset: f64,
 }
 ```
-Giá trị mặc định: `dock_position = "TOP_CENTER"`, `island_x_offset = 0.0`, `island_y_offset = 0.0`.
 
-### 2.2 Thuật toán Định vị trong `manager.rs`
-Hàm `position_island_window` trong `src-tauri/src/windows/manager.rs`:
+**Trong TypeScript (`src/core/types.ts`):**
+```typescript
+export type DockPosition = "TOP_CENTER" | "TOP_LEFT" | "TOP_RIGHT" | "LEFT" | "RIGHT";
+```
+
+### 2.2 Chuẩn Hóa Coordinate System & Đa Màn Hình (DPI / Multi-Monitor)
+1. **Đơn vị Tọa độ Chuẩn (Logical Units - DIP):**
+   - Mọi kích thước ($width, height$), độ dời ($offset\_x, offset\_y$) và vị trí chuột đều được tính toán theo **Logical Pixels (Device Independent Pixels)**.
+   - Tauri tự động xử lý chuyển đổi giữa Physical Pixels và Logical Pixels thông qua `scale_factor` của màn hình chứa cửa sổ.
+2. **Xử lý Đa Màn Hình (Multi-Monitor Awareness):**
+   - Xác định monitor hiện hành qua `window.current_monitor()`.
+   - Mỗi monitor có gốc tọa độ riêng trong không gian ảo của Windows: `mon_logical_x = mon_pos.x / scale_factor`, `mon_logical_y = mon_pos.y / scale_factor`.
+   - Tất cả phép tính vị trí ($target\_x, target\_y$) đều được neo tương đối với `mon_logical_x` và `mon_logical_y` của monitor đó, đảm bảo Island không bị nhảy tọa độ sai lệch khi di chuyển giữa các màn hình có độ phân giải và DPI khác nhau (ví dụ: màn chính 4K 150%, màn phụ Full HD 100%).
+3. **Phép tính Định vị Neo Mép:**
 ```rust
 pub fn position_island_window(
     window: &WebviewWindow,
     width: f64,
     height: f64,
-    dock_position: &str,
+    dock_position: DockPosition,
     offset_x: f64,
     offset_y: f64,
 ) -> Result<(), String> {
@@ -61,18 +81,17 @@ pub fn position_island_window(
     let mon_y = mon_pos.y as f64 / scale_factor;
 
     let (target_x, target_y) = match dock_position {
-        "TOP_LEFT" => (mon_x, mon_y),
-        "TOP_RIGHT" => (mon_x + mon_width - width, mon_y),
-        "LEFT" => (
+        DockPosition::TopLeft => (mon_x, mon_y),
+        DockPosition::TopRight => (mon_x + mon_width - width, mon_y),
+        DockPosition::Left => (
             mon_x,
             mon_y + (mon_height - height) / 2.0 + offset_y,
         ),
-        "RIGHT" => (
+        DockPosition::Right => (
             mon_x + mon_width - width,
             mon_y + (mon_height - height) / 2.0 + offset_y,
         ),
-        _ => {
-            // TOP_CENTER (Mặc định)
+        DockPosition::TopCenter => {
             let base_x = mon_x + (mon_width - width) / 2.0 + offset_x;
             let clamped_x = base_x.clamp(mon_x + 8.0, mon_x + mon_width - width - 8.0);
             (clamped_x, mon_y + 10.0)
@@ -168,29 +187,56 @@ Khi theme là `light` hoặc `snow`, nếu accent người dùng chọn là `#FF
 
 ---
 
-## 5. Tương Tác Kéo Thả & Bảng Điều Khiển Vị Trí
+## 5. Tương Tác Kéo Thả, Snap Threshold & Hysteresis
 
-1. **Kéo thả tự do bằng chuột:**
-   - Người dùng giữ phím `Alt` và kéo thả Island, hoặc bấm biểu tượng "Di chuyển" ở bảng Cài đặt.
-   - Khi kéo gần mép trái/phải trên cùng: Tự động hít vào góc và chuyển `TOP_LEFT` / `TOP_RIGHT`.
-   - Khi kéo vào mép cạnh trái/phải màn hình: Tự động chuyển hướng thành thanh dọc `LEFT` / `RIGHT`.
-   - Vị trí được tự động lưu vĩnh viễn vào tệp cấu hình qua IPC `save_settings`.
-2. **Nút bấm trực quan trong Cài Đặt:**
-   - 5 nút vị trí minh họa: `Góc Trái`, `Giữa Trên`, `Góc Phải`, `Cạnh Trái (Dọc)`, `Cạnh Phải (Dọc)`.
-   - Nút "Đặt lại về chính giữa" (Reset to Center).
-3. **Thao tác Click Chuột Phải (Quick Peek):**
-   - Click chuột phải lập tức ẩn Island thành vạch chỉ báo 5px sát mép, giải phóng toàn bộ không gian cho tab trình duyệt bên dưới.
-   - Rê chuột vào vạch chỉ báo hoặc bấm `Shift + B` để mở lại Island ngay lập tức.
+### 5.1 Thuật Toán Hysteresis Snap (Chống Rung Ranh Giới)
+Để tránh hiện tượng giật cục / flicker khi người dùng kéo chuột mấp mé ranh giới giữa 2 chế độ, hệ thống sử dụng cơ chế ngưỡng trễ hai chiều (Dual-threshold Hysteresis):
+
+1. **Ngưỡng Hút Vào (Snap-In Threshold - $T_{in}$):**
+   - Khoảng cách đến góc mép trên: $\le 60\text{px}$ $\rightarrow$ Hút vào `TOP_LEFT` hoặc `TOP_RIGHT`.
+   - Khoảng cách đến mép viền trái/phải: $\le 48\text{px}$ $\rightarrow$ Hút vào `LEFT` hoặc `RIGHT` (chuyển sang dọc).
+2. **Ngưỡng Thoát Ra (Break-Away Threshold - $T_{out}$):**
+   - Khi Island đang ở trạng thái đã snap (ví dụ `LEFT`), người dùng phải kéo chuột ra xa tối thiểu $\ge 80\text{px}$ từ viền màn hình mới nhả snap về `TOP_CENTER`.
+   - Độ chênh lệch Hysteresis: $\Delta = T_{out} - T_{in} = 32\text{px}$. 
+   - Lợi ích: Loại bỏ hoàn toàn tình trạng Island bị rung lắc hay liên tục gửi IPC resize khi người dùng rê chuột ngập ngừng tại ranh giới.
+
+```text
+[ Viền Màn Hình ] 0px -------------------- 48px (Snap-in) ---------- 80px (Break-away) ----------> Giữa màn hình
+                  |<------ Vùng Đã Hít ------>|                      |
+                  |<---------- Giữ nguyên chế độ Dock dọc ---------->| 
+                                                                     |---> Chuyển về ngang tự do
+```
+
+### 5.2 Transition & Animation Khi Chuyển Đổi Ngang ↔ Dọc (Framer Motion)
+Chuyển đổi giữa 2 hình thái kích thước chéo ($360 \times 60 \leftrightarrow 60 \times 360$) được thiết kế qua chuỗi animation mượt mà (Morph Sequence):
+1. **Pha 1 - Cross-fade Nội Dung (0ms - 120ms):**
+   - Nội dung thanh ngang (`CompactView`) mờ dần `opacity: 1 -> 0`.
+   - Khi `opacity` đạt 0, switch component hiển thị sang thanh dọc (`VerticalCompactView`).
+2. **Pha 2 - Morphing Khung Hình (0ms - 280ms):**
+   - Container viên thuốc biến đổi kích thước qua Spring physics:
+     `{ type: "spring", stiffness: 420, damping: 30, mass: 0.75 }`.
+   - Bo góc `border-radius` biến đổi đồng thời (ví dụ từ `22px` sang `0px` ở cạnh áp sát viền).
+3. **Pha 3 - Đồng Bộ Canvas Cửa Sổ HĐH:**
+   - Để tránh cửa sổ Windows cắt cụt viền (clipping) trong lúc co giãn, hàm `syncWindowCanvas` ngay lập tức nới rộng kích thước canvas bao bọc an toàn ($360 \times 360\text{px}$), sau khi Spring animation kết thúc (300ms) mới thu canvas về đúng kích thước chuẩn ($60 \times 360$ hoặc $360 \times 60$).
 
 ---
 
-## 6. Kế Hoạch Kiểm Thử (Testing & Verification)
-1. **Kiểm thử Theme:**
-   - Chuyển đổi giữa 6 theme (`dark`, `glass`, `mica`, `titanium`, `light`, `snow`).
-   - Kiểm tra độ tương phản văn bản, bóng đổ, màu icon và màu accent.
-2. **Kiểm thử Docking:**
-   - Chuyển lần lượt giữa 5 chế độ: `TOP_CENTER`, `TOP_LEFT`, `TOP_RIGHT`, `LEFT`, `RIGHT`.
-   - Xác nhận cửa sổ Tauri thay đổi kích thước và vị trí mượt mà, không bị giật hay cắt cụt nội dung.
-   - Kiểm tra click mở Control Center từ thanh dọc bung ra đúng hướng.
-3. **Kiểm thử Khởi động & Lưu trạng thái:**
-   - Đóng ứng dụng và mở lại, kiểm tra vị trí và theme đã lưu có được nạp chính xác hay không.
+## 6. Kế Hoạch Kiểm Thử Chuyên Sâu (Testing & Verification)
+
+### 6.1 Kiểm Thử Đa Màn Hình & DPI Lệch (Multi-Monitor & DPI Matrix)
+1. **Kiểm thử Scale Factor Đơn:**
+   - Windows Display Scaling ở các mức: `100%`, `125%`, `150%`, `175%`, `200%`.
+   - Xác nhận: Khi hít góc `TOP_LEFT` ($x=0, y=0$) và `TOP_RIGHT` ($x=\text{max}, y=0$), viền vuông ôm sát 100% không bị khe hở sub-pixel (không hở 1-2px) và không bị tràn viền gây mất góc.
+2. **Kiểm thử Hệ Thống 2 Màn Hình (Dual-Monitor):**
+   - Thiết lập Monitor 1 (Chính: 4K @ 150%) bên cạnh Monitor 2 (Phụ: 1080p @ 100%).
+   - Kéo Island từ Monitor 1 sang Monitor 2:
+     - Xác nhận `window.current_monitor()` cập nhật đúng màn hình đích.
+     - Vị trí neo mép của Monitor 2 được tính đúng theo gốc tọa độ `mon_logical_x` của Monitor 2.
+3. **Kiểm thử Hysteresis & Snap:**
+   - Rê chuột lắc qua lại quanh ranh giới 50px mép trái: Island phải giữ vững trạng thái neo, không bị nhấp nháy chuyển mode liên tục.
+   - Kéo dứt khoát ra ngoài > 80px: Island nhả snap mượt mà về dạng ngang.
+4. **Kiểm thử Theme:**
+   - Kiểm tra tương phản màu chữ/icon trên nền `light` và `snow` đạt chuẩn WCAG AA.
+   - Xác nhận chuyển đổi theme không làm reload lại toàn bộ state ứng dụng.
+5. **Kiểm thử Khởi động & Lưu trạng thái:**
+   - Đóng ứng dụng và mở lại, kiểm tra vị trí `dock_position`, `island_x_offset`, `island_y_offset` và theme đã lưu có được nạp chính xác hay không.
