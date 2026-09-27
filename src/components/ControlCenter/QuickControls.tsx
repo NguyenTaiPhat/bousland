@@ -76,20 +76,26 @@ export const QuickControls: React.FC = () => {
     invoke("set_mute", { mute: nextMuted }).catch(console.error);
   };
 
+  const currentVol = volume.muted ? 0 : sliderVal;
+  const sliderGradient = `linear-gradient(to right, #38bdf8 0%, #a78bfa ${currentVol}%, rgba(255, 255, 255, 0.12) ${currentVol}%, rgba(255, 255, 255, 0.12) 100%)`;
+
   return (
     <div className={styles.quickControls}>
       {/* Volume slider */}
       {showVolume && (
         <div className={styles.volumeControlRow}>
           <button
-            className={styles.actionBtn}
+            type="button"
+            className={styles.volumeMuteBtn}
             onClick={handleMuteToggle}
             title={volume.muted ? "Bật tiếng" : "Tắt tiếng"}
           >
             {volume.muted ? (
-              <VolumeX size={16} color="var(--status-critical)" />
+              <VolumeX size={16} color="#ef4444" />
+            ) : sliderVal < 40 ? (
+              <Volume2 size={16} color="#38bdf8" />
             ) : (
-              <Volume2 size={16} />
+              <Volume2 size={16} color="#a78bfa" />
             )}
           </button>
 
@@ -98,11 +104,12 @@ export const QuickControls: React.FC = () => {
               type="range"
               min="0"
               max="100"
-              value={volume.muted ? 0 : sliderVal}
+              value={currentVol}
               onChange={handleVolumeChange}
               onPointerDown={handlePointerDown}
               onPointerUp={handlePointerUp}
               className={styles.volumeSlider}
+              style={{ background: sliderGradient }}
             />
           </div>
 
@@ -112,42 +119,66 @@ export const QuickControls: React.FC = () => {
         </div>
       )}
 
-      {/* Quick toggles */}
-      <div className={styles.quickToggles}>
+      {/* Quick Action Tiles */}
+      <div className={styles.quickTogglesGrid}>
         <button
-          className={styles.toggleBtn}
+          type="button"
+          className={styles.actionTile}
           onClick={() => setIslandState("CLIPBOARD_HISTORY")}
           title="Lịch sử khay nhớ tạm (Ctrl+Shift+V)"
         >
-          <ClipboardList size={15} />
-          <span>Clipboard</span>
+          <div className={styles.actionTileIcon} style={{ background: "rgba(56, 189, 248, 0.12)", color: "#38bdf8" }}>
+            <ClipboardList size={16} />
+          </div>
+          <div className={styles.actionTileText}>
+            <span className={styles.actionTileTitle}>Clipboard</span>
+            <span className={styles.actionTileSub}>Khay nhớ tạm</span>
+          </div>
         </button>
 
         <button
-          className={styles.toggleBtn}
+          type="button"
+          className={styles.actionTile}
           onClick={() => setIslandState("QUICK_SHELF")}
-          title="Trạm kéo thả tệp nhanh"
+          title="Trạm kéo thả và ghim tệp nhanh"
         >
-          <FolderArchive size={15} />
-          <span>Quick Shelf</span>
+          <div className={styles.actionTileIcon} style={{ background: "rgba(251, 191, 36, 0.12)", color: "#fbbf24" }}>
+            <FolderArchive size={16} />
+          </div>
+          <div className={styles.actionTileText}>
+            <span className={styles.actionTileTitle}>Quick Shelf</span>
+            <span className={styles.actionTileSub}>Ghim tệp nhanh</span>
+          </div>
         </button>
 
         <button
-          className={styles.toggleBtn}
+          type="button"
+          className={styles.actionTile}
           onClick={() => setIslandState("SCRATCHPAD")}
           title="Ghi chú & Checklist việc cần làm"
         >
-          <CheckSquare size={15} />
-          <span>Ghi chú</span>
+          <div className={styles.actionTileIcon} style={{ background: "rgba(52, 211, 153, 0.12)", color: "#34d399" }}>
+            <CheckSquare size={16} />
+          </div>
+          <div className={styles.actionTileText}>
+            <span className={styles.actionTileTitle}>Ghi chú</span>
+            <span className={styles.actionTileSub}>Checklist việc</span>
+          </div>
         </button>
 
         <button
-          className={styles.toggleBtn}
+          type="button"
+          className={styles.actionTile}
           onClick={() => setIslandState("SETTINGS")}
           title="Cài đặt hệ thống"
         >
-          <Settings size={15} />
-          <span>Cài đặt</span>
+          <div className={styles.actionTileIcon} style={{ background: "rgba(167, 139, 250, 0.12)", color: "#a78bfa" }}>
+            <Settings size={16} />
+          </div>
+          <div className={styles.actionTileText}>
+            <span className={styles.actionTileTitle}>Cài đặt</span>
+            <span className={styles.actionTileSub}>Tùy chỉnh máy</span>
+          </div>
         </button>
       </div>
     </div>

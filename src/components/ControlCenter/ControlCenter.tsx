@@ -18,6 +18,13 @@ function getGreeting(): string {
   return "Chào buổi tối";
 }
 
+function getDateString(): string {
+  const now = new Date();
+  const days = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+  const dayName = days[now.getDay()];
+  return `${dayName}, ${now.getDate()} tháng ${now.getMonth() + 1}`;
+}
+
 export const ControlCenter: React.FC = () => {
   const { collapse } = useIslandStore();
   const { enabled_modules, dock_position } = useSettingsStore();
@@ -55,27 +62,27 @@ export const ControlCenter: React.FC = () => {
   }, [collapse]);
 
   const containerVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { opacity: 0, scale: 0.96 },
     visible: {
       opacity: 1,
       scale: 1,
       transition: {
         type: "spring" as const,
-        stiffness: 380,
-        damping: 28,
-        mass: 0.6,
-        staggerChildren: 0.04,
+        stiffness: 400,
+        damping: 30,
+        mass: 0.5,
+        staggerChildren: 0.03,
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.95,
+      scale: 0.96,
       transition: { duration: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 8 },
+    hidden: { opacity: 0, y: 6 },
     visible: {
       opacity: 1,
       y: 0,
@@ -97,20 +104,23 @@ export const ControlCenter: React.FC = () => {
       >
         {/* Header */}
         <motion.div className={styles.headerRow} variants={itemVariants}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <BousLandLogo size={18} glow={true} />
-            <span className={styles.greetingText}>{getGreeting()}</span>
+          <div className={styles.headerLeftCol}>
+            <div className={styles.greetingBadge}>
+              <BousLandLogo size={16} glow={true} />
+              <span className={styles.greetingText}>{getGreeting()}</span>
+            </div>
+            <span className={styles.dateSubtext}>{getDateString()}</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div className={styles.headerRightCol}>
             <span className={styles.clockText}>{timeStr}</span>
             <motion.button
               className={styles.closeButton}
               onClick={collapse}
               title="Đóng Trung tâm điều khiển (Esc)"
-              whileHover={{ scale: 1.15, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.12, rotate: 90 }}
+              whileTap={{ scale: 0.92 }}
             >
-              <X size={15} />
+              <X size={14} />
             </motion.button>
           </div>
         </motion.div>

@@ -21,14 +21,14 @@ export const MediaCard: React.FC = () => {
 
   if (!media.title && !media.isPlaying) {
     return (
-      <div className={styles.mediaCard} style={{ opacity: 0.7 }}>
+      <div className={styles.mediaCardIdle}>
         <div className={styles.mediaMain}>
-          <div className={styles.mediaArt}>
-            <Music size={18} color="var(--text-muted)" />
+          <div className={styles.mediaArtIdle}>
+            <Music size={16} color="#38bdf8" />
           </div>
           <div className={styles.mediaInfo}>
-            <span className={styles.mediaTitle}>Không có phiên phát nhạc</span>
-            <span className={styles.mediaArtist}>Mở nhạc trên Windows để điều khiển tại đây</span>
+            <span className={styles.mediaTitleIdle}>Sẵn sàng phát nhạc</span>
+            <span className={styles.mediaArtistIdle}>Mở Spotify, Youtube hoặc trình duyệt để điều khiển</span>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ export const MediaCard: React.FC = () => {
           {media.artwork ? (
             <img src={media.artwork} alt="Ảnh bìa" />
           ) : (
-            <Music size={18} color="var(--text-muted)" />
+            <Music size={18} color="#a78bfa" />
           )}
         </div>
         <div className={styles.mediaInfo}>
@@ -57,26 +57,28 @@ export const MediaCard: React.FC = () => {
 
       <div className={styles.mediaActions}>
         <button
+          type="button"
           className={styles.actionBtn}
           onClick={handlePrev}
           title="Bài trước"
         >
-          <SkipBack size={14} />
+          <SkipBack size={13} />
         </button>
         <button
-          className={styles.actionBtn}
+          type="button"
+          className={styles.playPauseBtn}
           onClick={handleToggle}
           title={media.isPlaying ? "Tạm dừng" : "Phát tiếp"}
-          style={{ width: 34, height: 34 }}
         >
-          {media.isPlaying ? <Pause size={16} /> : <Play size={16} />}
+          {media.isPlaying ? <Pause size={15} /> : <Play size={15} />}
         </button>
         <button
+          type="button"
           className={styles.actionBtn}
           onClick={handleNext}
           title="Bài tiếp theo"
         >
-          <SkipForward size={14} />
+          <SkipForward size={13} />
         </button>
       </div>
     </div>

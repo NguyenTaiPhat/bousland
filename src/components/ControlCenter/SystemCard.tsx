@@ -22,89 +22,130 @@ export const SystemCard: React.FC = () => {
     return null;
   }
 
-  const columnsCount = (showSystem ? 2 : 0) + (showNetwork ? 1 : 0);
-  const gridStyle: React.CSSProperties = {
-    gridTemplateColumns: columnsCount > 0 ? `repeat(${columnsCount}, 1fr)` : "1fr",
-  };
-
   return (
-    <div className={styles.metricsGrid} style={gridStyle}>
-      {/* CPU */}
+    <div className={styles.metricsGrid}>
+      {/* 1. CPU */}
       {showSystem && (
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span>CPU</span>
-            <Cpu size={14} />
+            <span className={styles.metricLabel}>CPU</span>
+            <div className={styles.metricIconWrap} style={{ color: "#38bdf8" }}>
+              <Cpu size={14} />
+            </div>
           </div>
-          <div className={styles.metricValue}>{system.cpuUsage}%</div>
+          <div className={styles.metricValueRow}>
+            <span className={styles.metricValue}>{system.cpuUsage}%</span>
+            <span className={styles.metricStatusPill} style={{ color: system.cpuUsage > 80 ? "#ef4444" : "#94a3b8" }}>
+              {system.cpuUsage > 80 ? "Tải cao" : "Ổn định"}
+            </span>
+          </div>
           <div className={styles.metricMiniBar}>
             <div
               className={styles.metricMiniBarFill}
-              style={{ width: `${system.cpuUsage}%` }}
+              style={{
+                width: `${system.cpuUsage}%`,
+                background: system.cpuUsage > 80
+                  ? "linear-gradient(90deg, #f59e0b, #ef4444)"
+                  : "linear-gradient(90deg, #38bdf8, #818cf8)",
+              }}
             />
           </div>
         </div>
       )}
 
-      {/* RAM */}
+      {/* 2. RAM */}
       {showSystem && (
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span>RAM</span>
-            <HardDrive size={14} />
+            <span className={styles.metricLabel}>RAM</span>
+            <div className={styles.metricIconWrap} style={{ color: "#a78bfa" }}>
+              <HardDrive size={14} />
+            </div>
           </div>
-          <div className={styles.metricValue}>{system.ramUsage}%</div>
-          <div className={styles.metricSubtext}>
-            {(system.ramUsedMb / 1024).toFixed(1)} / {(system.ramTotalMb / 1024).toFixed(1)} GB
+          <div className={styles.metricValueRow}>
+            <span className={styles.metricValue}>{system.ramUsage}%</span>
+            <span className={styles.metricSubtext}>
+              {(system.ramUsedMb / 1024).toFixed(1)} / {(system.ramTotalMb / 1024).toFixed(1)} GB
+            </span>
           </div>
           <div className={styles.metricMiniBar}>
             <div
               className={styles.metricMiniBarFill}
-              style={{ width: `${system.ramUsage}%` }}
+              style={{
+                width: `${system.ramUsage}%`,
+                background: "linear-gradient(90deg, #a78bfa, #c084fc)",
+              }}
             />
           </div>
         </div>
       )}
 
-      {/* Network */}
+      {/* 3. Network */}
       {showNetwork && (
         <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span>Mạng</span>
-            <Wifi size={14} />
+            <span className={styles.metricLabel}>Mạng</span>
+            <div className={styles.metricIconWrap} style={{ color: "#38bdf8" }}>
+              <Wifi size={14} />
+            </div>
           </div>
-          <div className={styles.metricValue} style={{ fontSize: 13 }}>
-            ↓ {formatBytes(network.downloadSpeed)}
+          <div className={styles.metricValueRow}>
+            <span className={styles.metricValue} style={{ fontSize: 13.5 }}>
+              ↓ {formatBytes(network.downloadSpeed)}
+            </span>
+            <span className={styles.metricSubtext}>
+              ↑ {formatBytes(network.uploadSpeed)}
+            </span>
           </div>
-          <div className={styles.metricSubtext}>
-            ↑ {formatBytes(network.uploadSpeed)}
+          <div className={styles.metricMiniBar}>
+            <div
+              className={styles.metricMiniBarFill}
+              style={{
+                width: network.downloadSpeed > 0 ? "70%" : "15%",
+                background: "linear-gradient(90deg, #38bdf8, #34d399)",
+              }}
+            />
           </div>
         </div>
       )}
 
-      {/* Battery */}
+      {/* 4. Battery */}
       {showBattery && (
-        <div className={styles.metricCard} style={{ gridColumn: "1 / -1" }}>
+        <div className={styles.metricCard}>
           <div className={styles.metricHeader}>
-            <span>Nguồn & Pin</span>
-            {battery.charging ? (
-              <BatteryCharging size={14} color="var(--status-success)" />
-            ) : (
-              <Battery size={14} />
-            )}
-          </div>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div className={styles.metricValue}>{battery.percentage}%</div>
-            <div className={styles.metricSubtext}>
-              {battery.charging ? "Đang cắm sạc, đang nạp" : battery.pluggedIn ? "Đã cắm sạc, pin đầy" : "Đang dùng pin"}
+            <span className={styles.metricLabel}>Nguồn & Pin</span>
+            <div
+              className={styles.metricIconWrap}
+              style={{
+                color: battery.charging || battery.percentage > 20 ? "#34d399" : "#ef4444",
+              }}
+            >
+              {battery.charging ? (
+                <BatteryCharging size={14} />
+              ) : (
+                <Battery size={14} />
+              )}
             </div>
+          </div>
+          <div className={styles.metricValueRow}>
+            <span className={styles.metricValue}>{battery.percentage}%</span>
+            <span
+              className={styles.metricStatusPill}
+              style={{
+                color: battery.charging ? "#34d399" : battery.percentage <= 20 ? "#ef4444" : "#94a3b8",
+              }}
+            >
+              {battery.charging ? "Đang sạc" : battery.pluggedIn ? "Pin đầy" : "Dùng pin"}
+            </span>
           </div>
           <div className={styles.metricMiniBar}>
             <div
               className={styles.metricMiniBarFill}
               style={{
                 width: `${battery.percentage}%`,
-                backgroundColor: battery.percentage <= 20 ? "var(--status-critical)" : "var(--status-success)",
+                background: battery.percentage <= 20
+                  ? "linear-gradient(90deg, #ef4444, #f87171)"
+                  : "linear-gradient(90deg, #34d399, #10b981)",
               }}
             />
           </div>
