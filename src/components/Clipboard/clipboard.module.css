@@ -107,10 +107,12 @@
   font-size: 11px;
   font-weight: 500;
   color: var(--text-secondary);
-  background-color: var(--surface-hover);
+  background-color: transparent;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
   white-space: nowrap;
+  position: relative;
+  border: 1px solid transparent;
 }
 
 .filterTag:hover {
@@ -118,9 +120,17 @@
 }
 
 .filterTagActive {
-  background-color: var(--surface-active);
   color: var(--text-primary);
-  border: 1px solid var(--border-focus);
+}
+
+.filterActivePill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--accent-subtle);
+  border: 1px solid var(--accent-border);
+  z-index: 0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 
 .itemList {

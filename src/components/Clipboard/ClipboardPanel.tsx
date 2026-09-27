@@ -14,6 +14,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useClipboardStore, ClipboardKind, ClipboardItem } from "../../stores/clipboardStore";
 import { useIslandStore } from "../../stores/islandStore";
+import { useSettingsStore } from "../../stores/settingsStore";
+import { getTransformOriginForDock } from "../../core/dockingHelper";
 import { BousLandLogo } from "../Common/BousLandLogo";
 import styles from "./clipboard.module.css";
 
@@ -90,15 +92,18 @@ export const ClipboardPanel: React.FC = () => {
     { id: "color", label: "Màu sắc" },
   ];
 
+  const { dock_position } = useSettingsStore();
+  const origin = getTransformOriginForDock(dock_position);
+
   return (
     <div className={styles.clipboardWrapper}>
       <motion.div
         className={styles.clipboardContainer}
-        initial={{ opacity: 0, scale: 0.93, y: -16, filter: "blur(8px)" }}
-        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, scale: 0.94, y: -12, filter: "blur(6px)" }}
-        transition={{ type: "spring", stiffness: 420, damping: 28, mass: 0.7 }}
-        style={{ position: "relative" }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 380, damping: 28, mass: 0.6 }}
+        style={{ position: "relative", transformOrigin: origin }}
       >
         {/* Header */}
         <div className={styles.header}>
@@ -150,7 +155,14 @@ export const ClipboardPanel: React.FC = () => {
               }`}
               onClick={() => setFilterKind(opt.id)}
             >
-              {opt.label}
+              {filterKind === opt.id && (
+                <motion.div
+                  layoutId="clipboardFilterPill"
+                  className={styles.filterActivePill}
+                  transition={{ type: "spring", stiffness: 450, damping: 32 }}
+                />
+              )}
+              <span style={{ position: "relative", zIndex: 1 }}>{opt.label}</span>
             </button>
           ))}
         </div>

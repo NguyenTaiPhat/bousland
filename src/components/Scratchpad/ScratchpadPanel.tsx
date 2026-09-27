@@ -3,11 +3,15 @@ import { CheckSquare, Pin, Trash2, X, Plus, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScratchpadStore, ScratchpadItem } from "../../stores/scratchpadStore";
 import { useIslandStore } from "../../stores/islandStore";
+import { useSettingsStore } from "../../stores/settingsStore";
+import { getTransformOriginForDock } from "../../core/dockingHelper";
 import { BousLandLogo } from "../Common/BousLandLogo";
 import styles from "./scratchpad.module.css";
 
 export const ScratchpadPanel: React.FC = () => {
   const { collapse } = useIslandStore();
+  const { dock_position } = useSettingsStore();
+  const origin = getTransformOriginForDock(dock_position);
   const {
     items,
     loadItems,
@@ -49,10 +53,11 @@ export const ScratchpadPanel: React.FC = () => {
     <div className={styles.scratchpadWrapper}>
       <motion.div
         className={styles.scratchpadContainer}
-        initial={{ opacity: 0, scale: 0.93, y: -16, filter: "blur(8px)" }}
-        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, scale: 0.94, y: -12, filter: "blur(6px)" }}
-        transition={{ type: "spring", stiffness: 420, damping: 28, mass: 0.7 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: "spring", stiffness: 380, damping: 28, mass: 0.6 }}
+        style={{ transformOrigin: origin }}
       >
         {/* Header */}
         <div className={styles.header}>

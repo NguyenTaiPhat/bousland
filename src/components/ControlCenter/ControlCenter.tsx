@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { motion } from "framer-motion";
 import { useIslandStore } from "../../stores/islandStore";
 import { useSettingsStore } from "../../stores/settingsStore";
+import { getTransformOriginForDock } from "../../core/dockingHelper";
 import { useIdleAutoHide } from "../../hooks/useIdleAutoHide";
 import { BousLandLogo } from "../Common/BousLandLogo";
 import { SystemCard } from "./SystemCard";
@@ -19,7 +20,8 @@ function getGreeting(): string {
 
 export const ControlCenter: React.FC = () => {
   const { collapse } = useIslandStore();
-  const { enabled_modules } = useSettingsStore();
+  const { enabled_modules, dock_position } = useSettingsStore();
+  const origin = getTransformOriginForDock(dock_position);
   const { handleMouseEnter, handleMouseLeave } = useIdleAutoHide();
   const [timeStr, setTimeStr] = useState("");
 
@@ -53,30 +55,27 @@ export const ControlCenter: React.FC = () => {
   }, [collapse]);
 
   const containerVariants = {
-    hidden: { opacity: 0, scale: 0.94, y: -16, filter: "blur(8px)" },
+    hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
-      y: 0,
-      filter: "blur(0px)",
       transition: {
         type: "spring" as const,
         stiffness: 380,
-        damping: 27,
-        staggerChildren: 0.05,
+        damping: 28,
+        mass: 0.6,
+        staggerChildren: 0.04,
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.94,
-      y: -12,
-      filter: "blur(6px)",
-      transition: { duration: 0.16 },
+      scale: 0.95,
+      transition: { duration: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
+    hidden: { opacity: 0, y: 8 },
     visible: {
       opacity: 1,
       y: 0,
@@ -94,6 +93,7 @@ export const ControlCenter: React.FC = () => {
         exit="exit"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        style={{ transformOrigin: origin }}
       >
         {/* Header */}
         <motion.div className={styles.headerRow} variants={itemVariants}>
