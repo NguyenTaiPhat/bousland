@@ -312,7 +312,7 @@ export const Island: React.FC = () => {
               width: targetWidth,
               height: targetHeight,
               borderRadius: reactiveBorderRadius,
-              boxShadow: auraShadow !== "none" ? auraShadow : undefined,
+              boxShadow: auraShadow !== "none" ? `var(--shadow-island), ${auraShadow}` : undefined,
             }}
             exit={{
               y: -24,

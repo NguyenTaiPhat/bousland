@@ -80,17 +80,17 @@ describe("getAuraBoxShadow", () => {
 
   it("uses dominant color for MEDIA state when provided", () => {
     const shadow = getAuraBoxShadow("MEDIA", "TOP_CENTER", "rgb(120, 40, 200)");
-    expect(shadow).toContain("rgb(120, 40, 200)");
+    expect(shadow).toContain("rgba(120, 40, 200");
   });
 
   it("applies directional offset depending on dock position", () => {
     const topShadow = getAuraBoxShadow("CHARGING", "TOP_CENTER");
-    expect(topShadow).toContain("0px 10px");
+    expect(topShadow).toContain("0px 4px");
 
     const leftShadow = getAuraBoxShadow("CHARGING", "LEFT");
-    expect(leftShadow).toContain("10px 0px");
+    expect(leftShadow).toContain("4px 0px");
 
     const rightShadow = getAuraBoxShadow("CHARGING", "RIGHT");
-    expect(rightShadow).toContain("-10px 0px");
+    expect(rightShadow).toContain("-4px 0px");
   });
 });

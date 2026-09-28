@@ -107,7 +107,7 @@ export const SettingsModal: React.FC = () => {
   const direction = TAB_ORDER.indexOf(activeTab) >= TAB_ORDER.indexOf(prevTab) ? 1 : -1;
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
-  const [appVersion, setAppVersion] = useState("1.0.9");
+  const [appVersion, setAppVersion] = useState("1.0.10");
 
   useEffect(() => {
     invoke<string>("get_app_version")
