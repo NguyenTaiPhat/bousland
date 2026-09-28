@@ -77,7 +77,7 @@ export const STATE_DIMENSIONS: Record<IslandState, { width: number; height: numb
 };
 
 export const STATE_DIMENSIONS_VERTICAL: Record<IslandState, { width: number; height: number }> = {
-  COMPACT: { width: 44, height: 280 },
+  COMPACT: { width: 68, height: 360 },
   EXPANDED: { width: 380, height: 96 },
   CONTROL_CENTER: { width: 480, height: 630 },
   COMMAND_BAR: { width: 580, height: 420 },

@@ -107,7 +107,7 @@ export const SettingsModal: React.FC = () => {
   const direction = TAB_ORDER.indexOf(activeTab) >= TAB_ORDER.indexOf(prevTab) ? 1 : -1;
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
-  const [appVersion, setAppVersion] = useState("1.0.10");
+  const [appVersion, setAppVersion] = useState("1.0.11");
 
   useEffect(() => {
     invoke<string>("get_app_version")
@@ -482,8 +482,8 @@ export const SettingsModal: React.FC = () => {
                       className={`${styles.dockButton} ${settings.dock_position === pos.id ? styles.dockButtonActive : ""}`}
                       onClick={() => {
                         const newPos = pos.id as DockPosition;
-                        settings.updateSettings({ dock_position: newPos });
-                        syncWindowCanvas(undefined, newPos);
+                        settings.updateSettings({ dock_position: newPos, island_x_offset: 0, island_y_offset: 0 });
+                        syncWindowCanvas(undefined, newPos, 0, 0);
                       }}
                     >
                       {pos.label}

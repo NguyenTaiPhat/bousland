@@ -39,7 +39,7 @@ export const Island: React.FC = () => {
     : (isDraggingOver ? 340 : isExpanded ? 420 : (media.isPlaying && media.title) ? 330 : 280);
 
   const targetHeight = isVertical
-    ? (isDraggingOver ? 340 : isExpanded ? (isMediaExpanded ? 72 : 68) : (media.isPlaying && media.title) ? 330 : 280)
+    ? (isDraggingOver ? 320 : isExpanded ? (isMediaExpanded ? 72 : 68) : (media.isPlaying && media.title) ? 300 : 250)
     : (isDraggingOver ? 54 : isExpanded ? (isMediaExpanded ? 72 : 64) : 44);
 
   const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
@@ -161,7 +161,8 @@ export const Island: React.FC = () => {
             });
             syncWindowCanvas(undefined, "TOP_LEFT", 0, 0);
           } else {
-            const newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            const rawOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            const newOy = Math.abs(rawOy) <= 60 ? 0 : rawOy;
             useSettingsStore.getState().updateSettings({
               dock_position: "LEFT",
               island_x_offset: 0,
@@ -179,7 +180,8 @@ export const Island: React.FC = () => {
             });
             syncWindowCanvas(undefined, "TOP_RIGHT", 0, 0);
           } else {
-            const newOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            const rawOy = Math.round(finalY - (screenH - targetHeight) / 2);
+            const newOy = Math.abs(rawOy) <= 60 ? 0 : rawOy;
             useSettingsStore.getState().updateSettings({
               dock_position: "RIGHT",
               island_x_offset: 0,
@@ -205,7 +207,9 @@ export const Island: React.FC = () => {
             });
             syncWindowCanvas(undefined, "TOP_RIGHT", 0, 0);
           } else {
-            const newOx = Math.round(finalX - (screenW - targetWidth) / 2);
+            const rawOx = Math.round(finalX - (screenW - targetWidth) / 2);
+            // Snap to true center if within 80px
+            const newOx = Math.abs(rawOx) <= 80 ? 0 : rawOx;
             useSettingsStore.getState().updateSettings({
               dock_position: "TOP_CENTER",
               island_x_offset: newOx,
