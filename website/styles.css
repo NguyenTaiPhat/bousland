@@ -27,7 +27,7 @@
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-hover: 0 12px 28px -6px rgba(0, 0, 0, 0.08);
-  --shadow-island: 0 16px 36px rgba(0, 0, 0, 0.28);
+  --shadow-island: 0 6px 16px rgba(0, 0, 0, 0.16), 0 1px 4px rgba(0, 0, 0, 0.08);
 
   --spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
