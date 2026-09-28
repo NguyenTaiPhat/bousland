@@ -3,7 +3,7 @@ import { Play, Pause, SkipBack, SkipForward, Music } from "lucide-react";
 import { motion } from "framer-motion";
 import { invoke } from "@tauri-apps/api/core";
 import { MediaChangedEvent } from "../../core/types";
-import { LiquidAurora } from "./LiquidAurora";
+import { AudioVisualizer } from "./AudioVisualizer";
 import styles from "./island.module.css";
 
 interface Props {
@@ -28,62 +28,75 @@ export const ExpandedMediaView: React.FC<Props> = ({ event }) => {
 
   return (
     <div className={styles.expandedMedia}>
+      {/* 1. High-res Album Art with Apple-grade Squircle */}
       <motion.div
-        className={styles.albumArt}
-        initial={{ scale: 0.8, opacity: 0 }}
+        className={styles.mediaArtwork}
+        initial={{ scale: 0.88, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+        transition={{ type: "spring", stiffness: 420, damping: 28 }}
       >
         {event.artwork ? (
-          <img src={event.artwork} alt="Album Art" />
+          <img src={event.artwork} alt={event.title || "Album Art"} />
         ) : (
-          <Music size={22} color="var(--accent-muted)" />
+          <div className={styles.mediaArtworkFallback}>
+            <Music size={20} color="var(--text-secondary)" />
+          </div>
         )}
       </motion.div>
 
-      <div className={styles.mediaDetails}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-          <div className={styles.songTitle} title={event.title}>
-            {event.title || "Không rõ bài hát"}
-          </div>
-          {event.isPlaying && (
-            <LiquidAurora isPlaying={event.isPlaying} width={54} height={12} className={styles.equalizerWave} />
-          )}
+      {/* 2. Track Title & Artist (Clean Typography & Ellipsis) */}
+      <div className={styles.mediaInfoCol}>
+        <div className={styles.mediaTrackTitle} title={event.title || "Không rõ bài hát"}>
+          {event.title || "Không rõ bài hát"}
         </div>
-
-        <div className={styles.artistName} title={event.artist}>
+        <div className={styles.mediaArtistName} title={event.artist || "Nghệ sĩ không xác định"}>
           {event.artist || "Nghệ sĩ không xác định"}
         </div>
+      </div>
 
-        <div className={styles.mediaControls}>
-          <motion.button
-            className={styles.controlBtn}
-            onClick={handlePrev}
-            title="Bài trước"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <SkipBack size={12} />
-          </motion.button>
-          <motion.button
-            className={styles.controlBtn}
-            onClick={handleToggle}
-            title={event.isPlaying ? "Tạm dừng" : "Phát tiếp"}
-            whileHover={{ scale: 1.18 }}
-            whileTap={{ scale: 0.88 }}
-          >
-            {event.isPlaying ? <Pause size={12} /> : <Play size={12} />}
-          </motion.button>
-          <motion.button
-            className={styles.controlBtn}
-            onClick={handleNext}
-            title="Bài tiếp theo"
-            whileHover={{ scale: 1.15 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <SkipForward size={12} />
-          </motion.button>
-        </div>
+      {/* 3. Centered Apple-Style Media Controls */}
+      <div className={styles.mediaControlsGroup}>
+        <motion.button
+          type="button"
+          className={styles.mediaBtnSecondary}
+          onClick={handlePrev}
+          title="Bài trước"
+          whileHover={{ scale: 1.12 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <SkipBack size={15} fill="currentColor" />
+        </motion.button>
+
+        <motion.button
+          type="button"
+          className={styles.mediaBtnPrimary}
+          onClick={handleToggle}
+          title={event.isPlaying ? "Tạm dừng" : "Phát tiếp"}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.92 }}
+        >
+          {event.isPlaying ? (
+            <Pause size={16} fill="currentColor" />
+          ) : (
+            <Play size={16} fill="currentColor" style={{ marginLeft: 2 }} />
+          )}
+        </motion.button>
+
+        <motion.button
+          type="button"
+          className={styles.mediaBtnSecondary}
+          onClick={handleNext}
+          title="Bài tiếp theo"
+          whileHover={{ scale: 1.12 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <SkipForward size={15} fill="currentColor" />
+        </motion.button>
+      </div>
+
+      {/* 4. Apple Dynamic Island 4-Bar Audio Equalizer */}
+      <div className={styles.mediaVisualizerCol}>
+        <AudioVisualizer isPlaying={event.isPlaying} />
       </div>
     </div>
   );

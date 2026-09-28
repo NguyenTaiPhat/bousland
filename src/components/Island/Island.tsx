@@ -39,8 +39,8 @@ export const Island: React.FC = () => {
     : (isDraggingOver ? 340 : isExpanded ? 420 : (media.isPlaying && media.title) ? 330 : 280);
 
   const targetHeight = isVertical
-    ? (isDraggingOver ? 340 : isExpanded ? (isMediaExpanded ? 80 : 68) : (media.isPlaying && media.title) ? 330 : 280)
-    : (isDraggingOver ? 54 : isExpanded ? (isMediaExpanded ? 80 : 64) : 44);
+    ? (isDraggingOver ? 340 : isExpanded ? (isMediaExpanded ? 72 : 68) : (media.isPlaying && media.title) ? 330 : 280)
+    : (isDraggingOver ? 54 : isExpanded ? (isMediaExpanded ? 72 : 64) : 44);
 
   const reactiveBorderRadius = getBorderRadiusForDock(dock_position, isExpanded);
   const contactingBorder = getContactingBorderStyle(dock_position);
@@ -55,13 +55,17 @@ export const Island: React.FC = () => {
     }
   }, [media.artwork, media.isPlaying]);
 
+  const isExpandedState = islandState !== "COMPACT";
   const isScreenshotFlash = activeEvent?.type === "SCREENSHOT_CAPTURED";
-  const auraState = resolveAuraState({
-    isScreenshotFlash,
-    isCharging: battery.charging,
-    isPlaying: media.isPlaying,
-    batteryPct: battery.percentage,
-  });
+  const isChargingEvent = activeEvent?.type === "BATTERY_CHANGED" && battery.charging;
+  const auraState = isExpandedState
+    ? "IDLE"
+    : resolveAuraState({
+        isScreenshotFlash,
+        isCharging: isChargingEvent,
+        isPlaying: media.isPlaying,
+        batteryPct: battery.percentage,
+      });
   const auraShadow = getAuraBoxShadow(auraState, dock_position, mediaAuraColor);
 
   const handleClick = () => {

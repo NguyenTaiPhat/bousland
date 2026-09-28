@@ -36,32 +36,32 @@ export function getAuraBoxShadow(
 ): string {
   if (state === "IDLE") return "none";
 
-  let color = "rgba(56, 189, 248, 0.4)"; // fallback accent
-  let blurRadius = 24;
-  let spreadRadius = 2;
+  let color = "rgba(56, 189, 248, 0.18)"; // fallback accent
+  let blurRadius = 14;
+  let spreadRadius = 0;
 
   switch (state) {
     case "FLASH":
-      color = "rgba(255, 255, 255, 0.9)";
-      blurRadius = 36;
-      spreadRadius = 6;
-      break;
-    case "CHARGING":
-      color = "rgba(16, 185, 129, 0.55)";
-      blurRadius = 26;
-      spreadRadius = 3;
-      break;
-    case "LOW_BATTERY":
-      color = "rgba(239, 68, 68, 0.5)";
+      color = "rgba(255, 255, 255, 0.8)";
       blurRadius = 24;
       spreadRadius = 2;
+      break;
+    case "CHARGING":
+      color = "rgba(16, 185, 129, 0.22)";
+      blurRadius = 12;
+      spreadRadius = 0;
+      break;
+    case "LOW_BATTERY":
+      color = "rgba(239, 68, 68, 0.22)";
+      blurRadius = 12;
+      spreadRadius = 0;
       break;
     case "MEDIA":
       if (dominantColor) {
         color = dominantColor;
       }
-      blurRadius = 28;
-      spreadRadius = 3;
+      blurRadius = 16;
+      spreadRadius = 0;
       break;
   }
 
@@ -93,5 +93,5 @@ export function getAuraBoxShadow(
       break;
   }
 
-  return `${offsetX}px ${offsetY}px ${blurRadius}px ${spreadRadius}px ${color}, 0 0 ${Math.round(blurRadius * 0.75)}px ${color}`;
+  return `${offsetX}px ${offsetY}px ${blurRadius}px ${spreadRadius}px ${color}`;
 }
