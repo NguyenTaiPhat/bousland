@@ -33,10 +33,144 @@ struct GitHubRelease {
     assets: Vec<GitHubAsset>,
 }
 
-async fn fetch_latest_github_release() -> Result<GitHubRelease, String> {
+async fn fetch_release_via_redirect() -> Result<GitHubRelease, String> {
+    let client = reqwest::Client::builder()
+        .user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+        .redirect(reqwest::redirect::Policy::none())
+        .timeout(std::time::Duration::from_secs(8))
+        .build()
+        .map_err(|e| format!("Lỗi tạo HTTP client: {}", e))?;
+
+    let res = match client.head("https://github.com/NguyenTaiPhat/bousland/releases/latest").send().await {
+        Ok(r) if r.status().is_redirection() => r,
+        _ => client
+            .get("https://github.com/NguyenTaiPhat/bousland/releases/latest")
+            .send()
+            .await
+            .map_err(|e| format!("Không thể kết nối github.com: {}", e))?,
+    };
+
+    if !res.status().is_redirection() {
+        return Err(format!("Không nhận được chuyển hướng release (mã {})", res.status()));
+    }
+
+    let loc_header = res
+        .headers()
+        .get("location")
+        .ok_or_else(|| "Không tìm thấy header location trong phản hồi chuyển hướng".to_string())?
+        .to_str()
+        .map_err(|e| format!("Header location không hợp lệ: {}", e))?;
+
+    let tag = loc_header
+        .split("/tag/")
+        .nth(1)
+        .ok_or_else(|| format!("URL chuyển hướng không chứa tag: {}", loc_header))?
+        .trim_matches('/')
+        .split('?')
+        .next()
+        .unwrap_or("")
+        .to_string();
+
+    if tag.is_empty() {
+        return Err("Tên tag phiên bản rỗng".to_string());
+    }
+
+    let clean_ver = tag.trim_start_matches(|c| c == 'v' || c == 'V').to_string();
+    let html_url = format!("https://github.com/NguyenTaiPhat/bousland/releases/tag/{}", tag);
+    let exe_name = format!("BousLand_{}_x64-setup.exe", clean_ver);
+    let msi_name = format!("BousLand_{}_x64_en-US.msi", clean_ver);
+
+    let assets = vec![
+        GitHubAsset {
+            name: exe_name.clone(),
+            browser_download_url: format!(
+                "https://github.com/NguyenTaiPhat/bousland/releases/download/{}/{}",
+                tag, exe_name
+            ),
+        },
+        GitHubAsset {
+            name: msi_name.clone(),
+            browser_download_url: format!(
+                "https://github.com/NguyenTaiPhat/bousland/releases/download/{}/{}",
+                tag, msi_name
+            ),
+        },
+    ];
+
+    Ok(GitHubRelease {
+        tag_name: tag,
+        body: Some(format!(
+            "Bản phát hành BousLand v{} đã sẵn sàng trên GitHub Releases.",
+            clean_ver
+        )),
+        html_url,
+        published_at: None,
+        assets,
+    })
+}
+
+async fn fetch_release_via_raw_package() -> Result<GitHubRelease, String> {
     let client = reqwest::Client::builder()
         .user_agent("BousLand-App")
-        .timeout(std::time::Duration::from_secs(10))
+        .timeout(std::time::Duration::from_secs(8))
+        .build()
+        .map_err(|e| format!("Lỗi tạo HTTP client: {}", e))?;
+
+    let res = client
+        .get("https://raw.githubusercontent.com/NguyenTaiPhat/bousland/main/package.json")
+        .send()
+        .await
+        .map_err(|e| format!("Không thể kết nối raw.githubusercontent.com: {}", e))?;
+
+    if !res.status().is_success() {
+        return Err(format!("raw.githubusercontent.com phản hồi mã {}", res.status()));
+    }
+
+    #[derive(Deserialize)]
+    struct Pkg {
+        version: String,
+    }
+
+    let pkg: Pkg = res.json().await.map_err(|e| format!("Lỗi parse package.json: {}", e))?;
+    let clean_ver = pkg.version.trim().to_string();
+    let tag = format!("v{}", clean_ver);
+    let html_url = format!("https://github.com/NguyenTaiPhat/bousland/releases/tag/{}", tag);
+    let exe_name = format!("BousLand_{}_x64-setup.exe", clean_ver);
+    let msi_name = format!("BousLand_{}_x64_en-US.msi", clean_ver);
+
+    let assets = vec![
+        GitHubAsset {
+            name: exe_name.clone(),
+            browser_download_url: format!(
+                "https://github.com/NguyenTaiPhat/bousland/releases/download/{}/{}",
+                tag, exe_name
+            ),
+        },
+        GitHubAsset {
+            name: msi_name.clone(),
+            browser_download_url: format!(
+                "https://github.com/NguyenTaiPhat/bousland/releases/download/{}/{}",
+                tag, msi_name
+            ),
+        },
+    ];
+
+    Ok(GitHubRelease {
+        tag_name: tag,
+        body: Some(format!(
+            "Bản phát hành BousLand v{} đã sẵn sàng trên GitHub Releases.",
+            clean_ver
+        )),
+        html_url,
+        published_at: None,
+        assets,
+    })
+}
+
+async fn fetch_release_via_api() -> Result<GitHubRelease, String> {
+    let client = reqwest::Client::builder()
+        .user_agent("BousLand-App")
+        .timeout(std::time::Duration::from_secs(8))
         .build()
         .map_err(|e| format!("Lỗi tạo HTTP client: {}", e))?;
 
@@ -44,10 +178,10 @@ async fn fetch_latest_github_release() -> Result<GitHubRelease, String> {
         .get("https://api.github.com/repos/NguyenTaiPhat/bousland/releases/latest")
         .send()
         .await
-        .map_err(|e| format!("Không thể kết nối máy chủ GitHub: {}", e))?;
+        .map_err(|e| format!("Không thể kết nối máy chủ GitHub API: {}", e))?;
 
     if !res.status().is_success() {
-        return Err(format!("Máy chủ GitHub phản hồi mã {}", res.status()));
+        return Err(format!("Máy chủ GitHub API phản hồi mã {}", res.status()));
     }
 
     let release = res
@@ -56,6 +190,21 @@ async fn fetch_latest_github_release() -> Result<GitHubRelease, String> {
         .map_err(|e| format!("Lỗi phân tích dữ liệu phát hành: {}", e))?;
 
     Ok(release)
+}
+
+async fn fetch_latest_github_release() -> Result<GitHubRelease, String> {
+    // 1. Redirect probe: dùng public redirect web của GitHub, không bị rate limit 60 req/h
+    if let Ok(rel) = fetch_release_via_redirect().await {
+        return Ok(rel);
+    }
+
+    // 2. Raw GitHub CDN: kiểm tra version trên package.json nhánh main
+    if let Ok(rel) = fetch_release_via_raw_package().await {
+        return Ok(rel);
+    }
+
+    // 3. Fallback: GitHub REST API (nếu IP chưa bị rate limit hoặc môi trường có credentials)
+    fetch_release_via_api().await
 }
 
 #[tauri::command]
@@ -82,7 +231,7 @@ pub async fn check_for_updates(app: AppHandle) -> Result<UpdateInfo, String> {
         }
     }
 
-    // 2. Fallback: Truy vấn trực tiếp GitHub Releases API để luôn nhận diện chính xác bản mới nhất
+    // 2. Fallback: Truy vấn qua redirect/CDN/API để luôn nhận diện chính xác bản mới nhất
     match fetch_latest_github_release().await {
         Ok(release) => {
             let remote_tag = release
@@ -142,14 +291,7 @@ pub async fn check_for_updates(app: AppHandle) -> Result<UpdateInfo, String> {
         }
         Err(err) => {
             eprintln!("[Updater] GitHub fallback error: {}", err);
-            Ok(UpdateInfo {
-                available: false,
-                current_version: current_ver.clone(),
-                latest_version: current_ver,
-                notes: format!("Không thể kết nối máy chủ cập nhật: {}", err),
-                pub_date: String::new(),
-                download_url: String::new(),
-            })
+            Err(format!("Không thể kết nối máy chủ cập nhật: {}", err))
         }
     }
 }

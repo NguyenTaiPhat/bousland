@@ -20,6 +20,8 @@ import {
   Cpu,
   Sun,
   Snowflake,
+  Compass,
+  Trees,
 } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,50 +37,72 @@ type TabId = "general" | "behavior" | "modules" | "shortcuts" | "privacy" | "abo
 const THEMES = [
   {
     id: "dark",
-    name: "Onyx Tối Giản",
-    shortName: "Onyx Đen",
-    desc: "Đen tuyền lịch lãm, viền mờ chống phân tâm",
+    name: "Onyx Black",
+    shortName: "Onyx",
+    desc: "Đen tuyền sâu thẳm, viền vi chamfer tinh giản sang trọng",
     icon: Moon,
-  },
-  {
-    id: "light",
-    name: "Trắng Sứ Tối Giản",
-    shortName: "Trắng Sứ",
-    desc: "Nền trắng tuyết hiện đại, chữ đen sắc nét",
-    icon: Sun,
-  },
-  {
-    id: "snow",
-    name: "Kính Mờ Băng Tuyết",
-    shortName: "Băng Tuyết",
-    desc: "Chất liệu kính trắng Fluent trong suốt cao cấp",
-    icon: Snowflake,
+    preview: { bg: "#000000", border: "rgba(255,255,255,0.22)", dot: "#FFFFFF" },
   },
   {
     id: "glass",
-    name: "Kính Mờ Trong Suốt",
-    shortName: "Acrylic Aero",
-    desc: "Hiệu ứng Acrylic nhìn xuyên thấu desktop",
+    name: "Liquid Glass",
+    shortName: "Thủy Tinh",
+    desc: "Kính trong mờ tinh khiết, khúc xạ quang học mềm mại",
     icon: Sparkles,
-  },
-  {
-    id: "mica",
-    name: "Mica Windows 11",
-    shortName: "Mica Win11",
-    desc: "Chất liệu Mica Fluent mờ nhẹ chuẩn Windows 11",
-    icon: Layers,
+    preview: { bg: "rgba(26,32,46,0.88)", border: "rgba(255,255,255,0.32)", dot: "#38bdf8" },
   },
   {
     id: "titanium",
-    name: "Titanium Slate",
+    name: "Titanium Satin",
     shortName: "Titanium",
-    desc: "Tông xám kim loại sang trọng thanh lịch",
+    desc: "Xám titan ấm ánh kim loại cao cấp, lịch lãm",
     icon: Box,
+    preview: { bg: "#1C1C1F", border: "rgba(235,226,214,0.32)", dot: "#F5F3EF" },
+  },
+  {
+    id: "midnight",
+    name: "Midnight Navy",
+    shortName: "Midnight",
+    desc: "Xanh đêm thẳm tĩnh lặng, huyền bí và sâu lắng",
+    icon: Compass,
+    preview: { bg: "#090E17", border: "rgba(147,197,253,0.32)", dot: "#60a5fa" },
+  },
+  {
+    id: "alpine",
+    name: "Alpine Forest",
+    shortName: "Alpine",
+    desc: "Xanh ngọc bích sẫm điềm đạm, cổ điển và thanh tao",
+    icon: Trees,
+    preview: { bg: "#0B1612", border: "rgba(110,231,183,0.32)", dot: "#34d399" },
+  },
+  {
+    id: "light",
+    name: "Ceramic White",
+    shortName: "Ceramic",
+    desc: "Trắng gốm sứ thuần khiết, tương phản chữ sắc nét",
+    icon: Sun,
+    preview: { bg: "#FFFFFF", border: "rgba(0,0,0,0.18)", dot: "#1D1D1F" },
+  },
+  {
+    id: "snow",
+    name: "Frost Ice",
+    shortName: "Frost",
+    desc: "Băng tuyết trong trẻo, ánh sắc lạnh dịu mắt",
+    icon: Snowflake,
+    preview: { bg: "#F0F6FA", border: "rgba(2,132,199,0.3)", dot: "#0284C7" },
+  },
+  {
+    id: "mica",
+    name: "Graphite Slate",
+    shortName: "Graphite",
+    desc: "Than chì trung tính, hài hòa và êm dịu",
+    icon: Layers,
+    preview: { bg: "#18191E", border: "rgba(255,255,255,0.2)", dot: "#a1a1aa" },
   },
 ];
 
 const ACCENT_COLORS = [
-  { id: "system", name: "Theo hệ thống Windows" },
+  { id: "system", name: "Theo hệ thống" },
   { id: "#FFFFFF", name: "Trắng Đen Tối Giản" },
   { id: "#38bdf8", name: "Xanh Băng Glacier" },
   { id: "#34d399", name: "Xanh Ngọc Emerald" },
@@ -107,7 +131,7 @@ export const SettingsModal: React.FC = () => {
   const direction = TAB_ORDER.indexOf(activeTab) >= TAB_ORDER.indexOf(prevTab) ? 1 : -1;
   const [customHex, setCustomHex] = useState("#6366f1");
   const [hexError, setHexError] = useState(false);
-  const [appVersion, setAppVersion] = useState("1.0.11");
+  const [appVersion, setAppVersion] = useState("1.0.12");
 
   useEffect(() => {
     invoke<string>("get_app_version")
@@ -192,11 +216,10 @@ export const SettingsModal: React.FC = () => {
               <>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <h3 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Phong cách & Chủ đề</h3>
-                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>6 giao diện Fluent</span>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)" }}>8 phong cách cao cấp</span>
                 </div>
                 <div className={styles.themeGrid}>
                   {THEMES.map((t) => {
-                    const Icon = t.icon;
                     const isActive = (settings.theme || "dark") === t.id;
                     return (
                       <button
@@ -206,20 +229,24 @@ export const SettingsModal: React.FC = () => {
                           isActive ? styles.themeCardActive : ""
                         }`}
                         onClick={() => settings.setTheme(t.id)}
-                        title={`${t.name}: ${t.desc}`}
+                        title={`${t.name} • ${t.desc}`}
                       >
                         <div className={styles.themeCardLeft}>
-                          <Icon
-                            size={14}
-                            color={
-                              isActive
-                                ? "var(--accent)"
-                                : "var(--text-secondary)"
-                            }
-                          />
+                          <div
+                            className={styles.themeSwatch}
+                            style={{
+                              backgroundColor: t.preview.bg,
+                              borderColor: t.preview.border,
+                            }}
+                          >
+                            <div
+                              className={styles.themeSwatchDot}
+                              style={{ backgroundColor: t.preview.dot }}
+                            />
+                          </div>
                           <span className={styles.themeName}>{t.shortName || t.name}</span>
                         </div>
-                        {isActive && <Check size={13} color="var(--accent)" />}
+                        {isActive && <Check size={12} color="var(--accent)" />}
                       </button>
                     );
                   })}
@@ -233,7 +260,7 @@ export const SettingsModal: React.FC = () => {
                       </span>
                       <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600 }}>
                         {settings.accent_color === "system"
-                          ? `Theo Windows (${settings.system_accent})`
+                          ? `Theo hệ thống (${settings.system_accent})`
                           : settings.accent_color.toUpperCase() === "#FFFFFF"
                           ? "Trắng Đen Tối Giản"
                           : settings.accent_color}
@@ -262,7 +289,7 @@ export const SettingsModal: React.FC = () => {
                             border: isWhite ? "1px solid rgba(255, 255, 255, 0.4)" : undefined,
                           }}
                           onClick={() => settings.setAccentColor(c.id)}
-                          title={isSystem ? `Theo hệ thống Windows (${settings.system_accent})` : c.name}
+                          title={isSystem ? `Theo màu hệ thống (${settings.system_accent})` : c.name}
                         >
                           {isActive ? (
                             <Check

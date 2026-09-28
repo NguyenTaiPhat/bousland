@@ -299,49 +299,40 @@ export const Island: React.FC = () => {
               ...contactingBorder,
             }}
             initial={{
-              y: -24,
+              y: -12,
               opacity: 0,
-              scaleX: 0.65,
-              scaleY: 0.25,
-              filter: "blur(8px)",
+              scaleX: 0.85,
+              scaleY: 0.85,
               borderRadius: reactiveBorderRadius,
             }}
             animate={{
               y: 0,
               opacity: 1,
-              scaleX: isDraggingWindow ? jellyScale.scaleX : 1,
-              scaleY: isDraggingWindow ? jellyScale.scaleY : 1,
-              filter: "blur(0px)",
-              scale: isDraggingOver ? 1.05 : 1,
+              scaleX: isDraggingWindow ? jellyScale.scaleX : (isDraggingOver ? 1.03 : 1),
+              scaleY: isDraggingWindow ? jellyScale.scaleY : (isDraggingOver ? 1.03 : 1),
               width: targetWidth,
               height: targetHeight,
               borderRadius: reactiveBorderRadius,
               boxShadow: auraShadow !== "none" ? `var(--shadow-island), ${auraShadow}` : undefined,
             }}
             exit={{
-              y: -24,
+              y: -12,
               opacity: 0,
-              scaleX: 0.65,
-              scaleY: 0.25,
-              filter: "blur(8px)",
+              scaleX: 0.85,
+              scaleY: 0.85,
               transition: {
-                type: "spring",
-                stiffness: 420,
-                damping: 28,
-                mass: 0.6,
+                duration: 0.16,
+                ease: [0.16, 1, 0.3, 1],
               },
             }}
-            whileHover={{
-              scale: isDraggingOver ? 1.05 : 1.02,
-            }}
             whileTap={{
-              scale: 0.97,
+              scale: 0.985,
             }}
             transition={{
               type: "spring",
-              stiffness: 450,
-              damping: 22,
-              mass: 0.5,
+              stiffness: 350,
+              damping: 32,
+              mass: 0.75,
             }}
             title="BousLand - Nhấp để mở Trung tâm điều khiển, chuột phải để ẩn"
           >

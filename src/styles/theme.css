@@ -1,27 +1,27 @@
 :root {
-  --bg-color: #0D0D0F;
-  --surface: #151518;
-  --surface-2: #1B1B20;
-  --surface-hover: #222228;
-  --surface-active: #2A2A32;
-  --border: rgba(255, 255, 255, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-focus: rgba(255, 255, 255, 0.24);
+  --bg-color: #000000;
+  --surface: #000000;
+  --surface-2: #121215;
+  --surface-hover: #1A1A1F;
+  --surface-active: #24242C;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-focus: rgba(255, 255, 255, 0.30);
   --text-primary: #FFFFFF;
-  --text-secondary: #8B8B93;
-  --text-muted: #5E5E66;
+  --text-secondary: #94949C;
+  --text-muted: #62626B;
   --accent: #FFFFFF;
   --accent-contrast: #000000;
-  --accent-hover: #E0E0E6;
-  --accent-muted: #6E6E78;
-  --accent-subtle: color-mix(in srgb, var(--accent) 16%, transparent);
-  --accent-border: color-mix(in srgb, var(--accent) 45%, transparent);
-  --accent-glow: color-mix(in srgb, var(--accent) 22%, transparent);
-  
-  --status-warning: #D4A346;
-  --status-critical: #E05D52;
-  --status-success: #4EAA78;
-  --status-info: #5B95E0;
+  --accent-hover: #E5E5EB;
+  --accent-muted: #72727D;
+  --accent-subtle: color-mix(in srgb, var(--accent) 14%, transparent);
+  --accent-border: color-mix(in srgb, var(--accent) 42%, transparent);
+  --accent-glow: color-mix(in srgb, var(--accent) 20%, transparent);
+
+  --status-warning: #FF9F0A;
+  --status-critical: #FF453A;
+  --status-success: #30D158;
+  --status-info: #0A84FF;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -29,109 +29,133 @@
   --radius-xl: 22px;
   --radius-full: 9999px;
 
-  --shadow-island: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --shadow-glow: 0 0 12px rgba(200, 200, 208, 0.06);
+  --shadow-island: 0 10px 30px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --shadow-glow: 0 0 14px rgba(255, 255, 255, 0.08);
   --glass-blur: none;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Consolas", monospace;
 
   --spring-easing: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 1. Onyx Dark (Tối giản đen sâu mặc định) */
+/* 1. Onyx Black (Sâu thẳm OLED, viền vi chamfer tinh xảo) */
 [data-theme="dark"] {
-  --surface: #151518;
-  --surface-2: #1B1B20;
-  --surface-hover: #222228;
-  --surface-active: #2A2A32;
-  --border: rgba(255, 255, 255, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-focus: rgba(255, 255, 255, 0.24);
-  --shadow-island: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  --glass-blur: none;
-}
-
-/* 2. Frost Glass (Kính mờ trong suốt Acrylic độ mờ chuẩn, text siêu nét) */
-[data-theme="glass"] {
-  --surface: rgba(22, 25, 34, 0.88);
-  --surface-2: rgba(30, 34, 46, 0.84);
-  --surface-hover: rgba(42, 48, 64, 0.80);
-  --surface-active: rgba(54, 60, 80, 0.86);
-  --border: rgba(255, 255, 255, 0.16);
-  --border-subtle: rgba(255, 255, 255, 0.08);
+  --bg-color: #000000;
+  --surface: #000000;
+  --surface-2: #101013;
+  --surface-hover: #18181D;
+  --surface-active: #222228;
+  --border: rgba(255, 255, 255, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.07);
   --border-focus: rgba(255, 255, 255, 0.32);
-  --shadow-island: 0 8px 24px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --shadow-glow: 0 0 12px rgba(255, 255, 255, 0.06);
+  --shadow-island: 0 12px 36px rgba(0, 0, 0, 0.65), 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.16);
   --glass-blur: none;
 }
 
-/* 3. Mica Windows 11 (Mica than chì êm dịu thay thế Cyber Neon) */
-[data-theme="mica"] {
-  --surface: #18191E;
-  --surface-2: #212228;
-  --surface-hover: #2B2C33;
-  --surface-active: #35363F;
-  --border: rgba(255, 255, 255, 0.10);
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-focus: rgba(255, 255, 255, 0.22);
-  --shadow-island: 0 4px 16px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.15);
-  --shadow-glow: 0 0 12px rgba(255, 255, 255, 0.05);
+/* 2. Liquid Glass (Kính trong mờ khí động học, khúc xạ quang học) */
+[data-theme="glass"],
+[data-theme="liquid-glass"] {
+  --bg-color: #0B0E14;
+  --surface: rgba(18, 22, 32, 0.82);
+  --surface-2: rgba(26, 32, 46, 0.85);
+  --surface-hover: rgba(36, 44, 62, 0.90);
+  --surface-active: rgba(48, 56, 78, 0.95);
+  --border: rgba(255, 255, 255, 0.18);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-focus: rgba(255, 255, 255, 0.36);
+  --shadow-island: 0 14px 40px rgba(0, 0, 0, 0.38), 0 3px 12px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-glow: 0 0 16px rgba(255, 255, 255, 0.08);
   --glass-blur: none;
 }
 
-/* 4. Titanium Slate (Kim loại xám thanh lịch) */
+/* 3. Titanium Satin (Kim loại xám ấm cao cấp, ánh kim sa tinh tế) */
 [data-theme="titanium"] {
-  --surface: #1a1c22;
-  --surface-2: #22252e;
-  --surface-hover: #2c303c;
-  --surface-active: #363c4a;
-  --border: rgba(255, 255, 255, 0.16);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-focus: rgba(255, 255, 255, 0.28);
-  --shadow-island: 0 4px 16px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.16);
-  --shadow-glow: 0 0 14px rgba(148, 163, 184, 0.1);
+  --bg-color: #151517;
+  --surface: #1B1B1E;
+  --surface-2: #242428;
+  --surface-hover: #2D2D33;
+  --surface-active: #38383F;
+  --border: rgba(235, 226, 214, 0.18);
+  --border-subtle: rgba(235, 226, 214, 0.08);
+  --border-focus: rgba(235, 226, 214, 0.36);
+  --text-primary: #F5F3EF;
+  --text-secondary: #A6A39C;
+  --text-muted: #6E6B65;
+  --shadow-island: 0 10px 30px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(245, 238, 228, 0.18);
+  --shadow-card: 0 3px 12px rgba(0, 0, 0, 0.25);
   --glass-blur: none;
 }
 
-/* 5. Pure Ceramic (Trắng sứ tối giản hiện đại) */
+/* 4. Midnight Navy (Xanh mực thẫm huyền bí, tĩnh lặng) */
+[data-theme="midnight"] {
+  --bg-color: #06090F;
+  --surface: #090E17;
+  --surface-2: #101826;
+  --surface-hover: #172236;
+  --surface-active: #202E48;
+  --border: rgba(147, 197, 253, 0.18);
+  --border-subtle: rgba(147, 197, 253, 0.08);
+  --border-focus: rgba(147, 197, 253, 0.36);
+  --text-secondary: #90A2BB;
+  --text-muted: #576882;
+  --shadow-island: 0 12px 36px rgba(3, 7, 15, 0.65), 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(191, 219, 254, 0.18);
+  --shadow-card: 0 4px 14px rgba(3, 7, 15, 0.32);
+  --glass-blur: none;
+}
+
+/* 5. Alpine Forest (Xanh ngọc bích sẫm điềm đạm, cổ điển) */
+[data-theme="alpine"] {
+  --bg-color: #070D0A;
+  --surface: #0B1612;
+  --surface-2: #13241D;
+  --surface-hover: #1C332A;
+  --surface-active: #264438;
+  --border: rgba(110, 231, 183, 0.18);
+  --border-subtle: rgba(110, 231, 183, 0.08);
+  --border-focus: rgba(110, 231, 183, 0.36);
+  --text-secondary: #8EAA9C;
+  --text-muted: #557264;
+  --shadow-island: 0 12px 36px rgba(2, 8, 5, 0.65), inset 0 1px 0 rgba(167, 243, 208, 0.18);
+  --shadow-card: 0 4px 14px rgba(2, 8, 5, 0.32);
+  --glass-blur: none;
+}
+
+/* 6. Ceramic White (Trắng sứ tinh khiết, tương phản sắc nét) */
 [data-theme="light"] {
-  --bg-color: #F8FAFC;
+  --bg-color: #F5F5F7;
   --surface: #FFFFFF;
-  --surface-2: #F8FAFC;
-  --surface-hover: #F1F5F9;
-  --surface-active: #E2E8F0;
-  --border: rgba(0, 0, 0, 0.10);
-  --border-subtle: rgba(0, 0, 0, 0.05);
-  --border-focus: rgba(0, 0, 0, 0.22);
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --accent: #0F172A;
-  --accent-hover: #1E293B;
+  --surface-2: #F5F5F7;
+  --surface-hover: #EBEBED;
+  --surface-active: #DFDFE2;
+  --border: rgba(0, 0, 0, 0.12);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-focus: rgba(0, 0, 0, 0.26);
+  --text-primary: #1D1D1F;
+  --text-secondary: #515154;
+  --text-muted: #86868B;
+  --accent: #1D1D1F;
+  --accent-hover: #2C2C2E;
   --accent-contrast: #FFFFFF;
-  --accent-subtle: rgba(15, 23, 42, 0.08);
-  --accent-border: rgba(15, 23, 42, 0.22);
-  --accent-glow: rgba(15, 23, 42, 0.12);
-  --shadow-island: 0 10px 30px rgba(0, 0, 0, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  --shadow-glow: 0 0 14px rgba(0, 0, 0, 0.06);
+  --accent-subtle: rgba(29, 29, 31, 0.08);
+  --accent-border: rgba(29, 29, 31, 0.22);
+  --accent-glow: rgba(29, 29, 31, 0.10);
+  --shadow-island: 0 12px 34px rgba(0, 0, 0, 0.10), 0 3px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --glass-blur: none;
 }
 
-/* 6. Frosted Snow (Kính mờ băng tuyết Fluent) */
+/* 7. Frost Ice (Băng tuyết trong trẻo, sắc lạnh dịu mắt) */
 [data-theme="snow"] {
-  --bg-color: #F0F9FF;
+  --bg-color: #F0F4F8;
   --surface: #FFFFFF;
-  --surface-2: #F0F9FF;
-  --surface-hover: #E0F2FE;
-  --surface-active: #BAE6FD;
-  --border: rgba(2, 132, 199, 0.14);
-  --border-subtle: rgba(0, 0, 0, 0.05);
+  --surface-2: #F0F6FA;
+  --surface-hover: #E2EEF6;
+  --surface-active: #CFE2F0;
+  --border: rgba(2, 132, 199, 0.16);
+  --border-subtle: rgba(0, 0, 0, 0.06);
   --border-focus: #0284C7;
   --text-primary: #0C4A6E;
   --text-secondary: #0369A1;
@@ -142,8 +166,21 @@
   --accent-subtle: rgba(2, 132, 199, 0.08);
   --accent-border: rgba(2, 132, 199, 0.22);
   --accent-glow: rgba(2, 132, 199, 0.10);
-  --shadow-island: 0 8px 24px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 1);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --shadow-glow: 0 0 8px rgba(0, 0, 0, 0.03);
+  --shadow-island: 0 10px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --glass-blur: none;
+}
+
+/* 8. Graphite Slate (Than chì trung tính, hài hòa và êm dịu) */
+[data-theme="mica"] {
+  --surface: #18191E;
+  --surface-2: #212228;
+  --surface-hover: #2B2C33;
+  --surface-active: #35363F;
+  --border: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(255, 255, 255, 0.24);
+  --shadow-island: 0 6px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.18);
   --glass-blur: none;
 }
