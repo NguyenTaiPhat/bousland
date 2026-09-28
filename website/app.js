@@ -451,9 +451,68 @@ function initFaqAccordion() {
 }
 
 /* ==========================================================================
-   6. Dynamic GitHub Release Links (Zero 404 Guard)
+   6. Dynamic GitHub Release Links & Auto Updating Status Handler
    ========================================================================== */
 function initDynamicReleaseLinks() {
+  const latestBtn = document.getElementById("latestDownloadBtn");
+  const latestBadge = document.getElementById("latestUpdatingBadge");
+  const latestTag = document.getElementById("latestVersionTag");
+  const heroBadgeText = document.querySelector(".hero-badge .badge-text");
+  const heroBtnLabel = document.getElementById("heroBtnLabel");
+  const heroBtnSub = document.getElementById("heroBtnSub");
+  const btnDownloadInstaller = document.getElementById("btnDownloadInstaller");
+  const btnBottomDownload = document.getElementById("btnBottomDownload");
+  const bottomVersionNote = document.getElementById("bottomVersionNote");
+
+  const STABLE_FALLBACK_VER = "1.0.11";
+  const STABLE_FALLBACK_URL = `https://github.com/NguyenTaiPhat/bousland/releases/download/v${STABLE_FALLBACK_VER}/BousLand_${STABLE_FALLBACK_VER}_x64_en-US.msi`;
+
+  function applyUpdatingStatus(isUpdating) {
+    if (isUpdating) {
+      if (latestBtn) latestBtn.style.display = "none";
+      if (latestBadge) latestBadge.style.display = "inline-flex";
+      if (latestTag) {
+        latestTag.className = "changelog-tag updating-tag";
+        latestTag.innerHTML = '<span class="pulse-dot"></span> Đang cập nhật';
+      }
+      if (heroBadgeText) {
+        heroBadgeText.innerHTML = `<span class="pulse-dot"></span> Bản 1.0.12 đang cập nhật • Bản ổn định v${STABLE_FALLBACK_VER} sẵn sàng`;
+      }
+      if (heroBtnLabel) {
+        heroBtnLabel.textContent = `v1.0.12 Đang Cập Nhật...`;
+      }
+      if (heroBtnSub) {
+        heroBtnSub.textContent = `Bấm để tải bản ổn định v${STABLE_FALLBACK_VER} (.msi)`;
+      }
+      if (btnDownloadInstaller) {
+        btnDownloadInstaller.href = STABLE_FALLBACK_URL;
+      }
+      if (btnBottomDownload) {
+        btnBottomDownload.href = STABLE_FALLBACK_URL;
+        const span = btnBottomDownload.querySelector("span");
+        if (span) span.textContent = `Tải Bản Ổn Định v${STABLE_FALLBACK_VER} (.msi)`;
+      }
+      if (bottomVersionNote) {
+        bottomVersionNote.textContent = `Phiên bản 1.0.12 đang cập nhật • Tải bản v${STABLE_FALLBACK_VER} ổn định • 100% Sạch & An toàn`;
+      }
+    } else {
+      if (latestBtn) latestBtn.style.display = "inline-flex";
+      if (latestBadge) latestBadge.style.display = "none";
+      if (latestTag) {
+        latestTag.className = "changelog-tag latest-tag";
+        latestTag.textContent = "Mới nhất";
+      }
+    }
+  }
+
+  // URL override parameter for instant inspection or manual packaging simulation
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get("status") === "updating" || urlParams.get("updating") === "true") {
+    applyUpdatingStatus(true);
+    return;
+  }
+
+  // Fetch repository releases to verify if latest release assets (.msi) are available
   fetch("https://api.github.com/repos/NguyenTaiPhat/bousland/releases")
     .then((res) => {
       if (!res.ok) return null;
@@ -461,20 +520,25 @@ function initDynamicReleaseLinks() {
     })
     .then((releases) => {
       if (!Array.isArray(releases) || releases.length === 0) return;
-      for (const rel of releases) {
-        if (!rel.assets || rel.assets.length === 0) continue;
-        const msiAsset = rel.assets.find((a) => a.name && a.name.endsWith(".msi"));
-        if (msiAsset && msiAsset.browser_download_url) {
-          const downloadBtns = document.querySelectorAll("a[href*='.msi']");
-          downloadBtns.forEach((btn) => {
-            btn.setAttribute("href", msiAsset.browser_download_url);
-          });
-          break;
+
+      // Find release v1.0.12
+      const targetRelease = releases.find((r) => r.tag_name === "v1.0.12") || releases[0];
+      const hasMsi = targetRelease && targetRelease.assets && targetRelease.assets.some((a) => a.name && a.name.endsWith(".msi"));
+
+      if (!hasMsi) {
+        // Assets are still compiling in GitHub Actions or release is pending
+        applyUpdatingStatus(true);
+      } else {
+        applyUpdatingStatus(false);
+        const msiAsset = targetRelease.assets.find((a) => a.name && a.name.endsWith(".msi"));
+        if (msiAsset && msiAsset.browser_download_url && latestBtn) {
+          latestBtn.setAttribute("href", msiAsset.browser_download_url);
         }
       }
     })
     .catch(() => {
-      // Fallback silently to HTML static link
+      // Offline or network error: keep static reliable fallback defaults
     });
 }
+
 

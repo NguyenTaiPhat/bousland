@@ -252,6 +252,25 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-cta-ghost {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 22px;
+  border-radius: 980px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+.btn-cta-ghost:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--border-light);
+  transform: translateY(-1px);
+}
+
 .btn-icon {
   display: flex;
   align-items: center;
@@ -1328,6 +1347,104 @@ body {
 .changelog-link:hover {
   color: var(--text-primary);
 }
+
+.changelog-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.changelog-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 980px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  transition: all 0.18s var(--spring);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.changelog-download-btn:hover {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.changelog-download-btn.changelog-download-latest {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
+}
+
+.changelog-download-btn.changelog-download-latest:hover {
+  background: #262626;
+  border-color: #262626;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+
+.changelog-download-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.changelog-download-btn:hover svg {
+  transform: translateY(1px);
+}
+
+.changelog-status-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border-radius: 980px;
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.changelog-status-btn.updating {
+  background: rgba(245, 158, 11, 0.12);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
+.changelog-tag.updating-tag {
+  background: rgba(245, 158, 11, 0.15);
+  color: #B45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F59E0B;
+  display: inline-block;
+  animation: pulseDotAnim 1.4s ease-in-out infinite;
+}
+
+@keyframes pulseDotAnim {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
+}
 .changelog-body {
   display: flex;
   flex-direction: column;
@@ -1495,7 +1612,8 @@ body {
   .simulator-controls { flex-direction: column; width: 100%; }
   .sim-btn { width: 100%; justify-content: center; }
   .hero-cta-group { flex-direction: column; width: 100%; }
-  .btn-cta-main, .btn-cta-secondary { width: 100%; justify-content: center; }
+  .btn-cta-main, .btn-cta-secondary, .btn-cta-ghost { width: 100%; justify-content: center; }
+  .changelog-actions { width: 100%; justify-content: flex-start; }
   .showcase-tabs { flex-wrap: wrap; border-radius: 12px; }
   .perf-metrics-grid { grid-template-columns: 1fr; }
   .perf-benchmark-card { padding: 24px 18px; }

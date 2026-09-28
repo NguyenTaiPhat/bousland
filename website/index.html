@@ -82,12 +82,26 @@
             </svg>
           </div>
           <div class="btn-text">
-            <span class="btn-label">Tải Bộ Cài Đặt (.msi)</span>
-            <span class="btn-sub">Windows 10 / 11 • Tự động Update</span>
+            <span class="btn-label" id="heroBtnLabel">Tải Bản Mới Nhất v1.0.12 (.msi)</span>
+            <span class="btn-sub" id="heroBtnSub">Windows 10 / 11 • Tự động Update</span>
           </div>
         </a>
 
-        <a href="https://github.com/NguyenTaiPhat/bousland/releases" target="_blank" rel="noopener noreferrer" class="btn-cta-secondary" id="btnDownloadPortable">
+        <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.11/BousLand_1.0.11_x64_en-US.msi" class="btn-cta-secondary" id="btnDownloadStableFallback" title="Tải bản v1.0.11 ổn định">
+          <div class="btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+          </div>
+          <div class="btn-text">
+            <span class="btn-label">Tải Bản v1.0.11 (.msi)</span>
+            <span class="btn-sub">Bản ổn định đã kiểm chứng</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/NguyenTaiPhat/bousland/releases" target="_blank" rel="noopener noreferrer" class="btn-cta-ghost" id="btnDownloadPortable">
           <div class="btn-icon">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -97,7 +111,7 @@
           </div>
           <div class="btn-text">
             <span class="btn-label">Tất Cả Phiên Bản</span>
-            <span class="btn-sub">GitHub Releases • Mã nguồn mở</span>
+            <span class="btn-sub">GitHub Releases</span>
           </div>
         </a>
       </div>
@@ -731,21 +745,35 @@
 
       <div class="changelog-list">
         <!-- Release v1.0.12 -->
-        <div class="changelog-card changelog-latest">
+        <div class="changelog-card changelog-latest" id="releaseCardLatest">
           <div class="changelog-header">
             <div class="changelog-meta">
-              <span class="changelog-tag latest-tag">Mới nhất</span>
-              <h3 class="changelog-version">Phiên bản 1.0.12</h3>
+              <span class="changelog-tag latest-tag" id="latestVersionTag">Mới nhất</span>
+              <h3 class="changelog-version" id="latestVersionTitle">Phiên bản 1.0.12</h3>
               <span class="changelog-date">28 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.12" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.12/BousLand_1.0.12_x64_en-US.msi" class="changelog-download-btn changelog-download-latest" id="latestDownloadBtn" data-version="1.0.12" title="Tải trực tiếp bản cài đặt v1.0.12">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.12 (.msi)</span>
+              </a>
+              <div class="changelog-status-btn updating" id="latestUpdatingBadge" style="display: none;">
+                <span class="pulse-dot"></span>
+                <span>Đang cập nhật...</span>
+              </div>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.12" target="_blank" rel="noopener noreferrer" class="changelog-link" id="latestGithubLink">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -775,14 +803,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.11</h3>
               <span class="changelog-date">28 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.11" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.11/BousLand_1.0.11_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.11" title="Tải trực tiếp bản cài đặt v1.0.11">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.11 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.11" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -812,14 +850,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.10</h3>
               <span class="changelog-date">28 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.10" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.10/BousLand_1.0.10_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.10" title="Tải trực tiếp bản cài đặt v1.0.10">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.10 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.10" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -846,14 +894,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.9</h3>
               <span class="changelog-date">28 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.9" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.9/BousLand_1.0.9_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.9" title="Tải trực tiếp bản cài đặt v1.0.9">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.9 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.9" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -883,14 +941,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.8</h3>
               <span class="changelog-date">28 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.8" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.8/BousLand_1.0.8_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.8" title="Tải trực tiếp bản cài đặt v1.0.8">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.8 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.8" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -923,14 +991,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.7</h3>
               <span class="changelog-date">27 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.7" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.7/BousLand_1.0.7_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.7" title="Tải trực tiếp bản cài đặt v1.0.7">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.7 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.7" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -966,14 +1044,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.6</h3>
               <span class="changelog-date">27 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.6" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.6/BousLand_1.0.6_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.6" title="Tải trực tiếp bản cài đặt v1.0.6">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.6 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.6" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1006,14 +1094,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.5</h3>
               <span class="changelog-date">27 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.5" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.5/BousLand_1.0.5_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.5" title="Tải trực tiếp bản cài đặt v1.0.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.5 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.5" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1046,14 +1144,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.4</h3>
               <span class="changelog-date">27 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.4" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.4/BousLand_1.0.4_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.4" title="Tải trực tiếp bản cài đặt v1.0.4">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.4 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.4" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1091,14 +1199,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.3</h3>
               <span class="changelog-date">26 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.3" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.3/BousLand_1.0.3_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.3" title="Tải trực tiếp bản cài đặt v1.0.3">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.3 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.3" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1126,14 +1244,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.2</h3>
               <span class="changelog-date">26 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.2" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.2/BousLand_1.0.2_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.2" title="Tải trực tiếp bản cài đặt v1.0.2">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.2 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.2" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1181,14 +1309,24 @@
               <h3 class="changelog-version">Phiên bản 1.0.0</h3>
               <span class="changelog-date">25 Tháng 09, 2026</span>
             </div>
-            <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="changelog-link">
-              <span>Chi tiết GitHub</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                <polyline points="15 3 21 3 21 9"></polyline>
-                <line x1="10" y1="14" x2="21" y2="3"></line>
-              </svg>
-            </a>
+            <div class="changelog-actions">
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.0/BousLand_1.0.0_x64_en-US.msi" class="changelog-download-btn" data-version="1.0.0" title="Tải trực tiếp bản cài đặt v1.0.0">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Tải v1.0.0 (.msi)</span>
+              </a>
+              <a href="https://github.com/NguyenTaiPhat/bousland/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="changelog-link">
+                <span>Chi tiết GitHub</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <line x1="10" y1="14" x2="21" y2="3"></line>
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div class="changelog-body">
@@ -1297,7 +1435,7 @@
         <h2 class="cta-title">Sẵn Sàng Nâng Tầm Màn Hình Windows Của Bạn?</h2>
         <p class="cta-desc">Tải về miễn phí ngay hôm nay. Trải nghiệm không gian Dynamic Island thông minh, mượt mà và sang trọng.</p>
         <div class="cta-buttons">
-          <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.12/BousLand_1.0.12_x64_en-US.msi" class="btn-primary btn-large">
+          <a href="https://github.com/NguyenTaiPhat/bousland/releases/download/v1.0.12/BousLand_1.0.12_x64_en-US.msi" class="btn-primary btn-large" id="btnBottomDownload">
             <span>Tải Bộ Cài Đặt Windows (.msi)</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -1306,7 +1444,7 @@
             </svg>
           </a>
         </div>
-        <span class="cta-version-note">Phiên bản 1.0.12 • Tương thích Windows 10 / 11 • 100% Sạch & An toàn</span>
+        <span class="cta-version-note" id="bottomVersionNote">Phiên bản 1.0.12 • Tương thích Windows 10 / 11 • 100% Sạch & An toàn</span>
       </div>
     </div>
   </section>
